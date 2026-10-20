@@ -101,7 +101,7 @@ export default function VerseOfTheDayPage() {
         </div>
 
         {/* Quick actions */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-3 gap-3">
           <Link href={`/reader/${slug}/${chapter}#v${verse}`}
             className="p-3 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 text-center transition-all">
             <span className="text-lg">📖</span>
@@ -116,11 +116,6 @@ export default function VerseOfTheDayPage() {
             className="p-3 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 text-center transition-all">
             <span className="text-lg">🔗</span>
             <p className="text-xs text-parchment-400 mt-1">{xrefCount} Cross-Refs</p>
-          </Link>
-          <Link href={`/analytics?book=${book}`}
-            className="p-3 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 text-center transition-all">
-            <span className="text-lg">📊</span>
-            <p className="text-xs text-parchment-400 mt-1">Book Analytics</p>
           </Link>
         </div>
       </main>

@@ -43,37 +43,6 @@ export interface WordStrongs {
   position: number;
 }
 
-/** Word provenance / etymology chain */
-export interface WordProvenance {
-  id: number;
-  word: string;
-  language: string;
-  lemma: string;
-  definition: string;
-  etymology: string | null;
-  proto_root: string | null;
-  first_occurrence: string | null;
-  parent_word_id: number | null;
-  manuscript_sources: string; // JSON array
-  textual_variants: string; // JSON array
-  academic_refs: string; // JSON object
-  logeion_url: string | null;
-  perseus_url: string | null;
-  part_of_speech: string | null;
-}
-
-/** Latin word entry */
-export interface LatinWord {
-  id: number;
-  word: string;
-  lemma: string;
-  definition: string | null;
-  part_of_speech: string | null;
-  etymology: string | null;
-  occurrences: number;
-  provenance_id: number | null;
-}
-
 /** Bible book info */
 export interface BookInfo {
   id: number;

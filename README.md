@@ -39,7 +39,8 @@ Bible Logos runs on your own computer. It downloads public-domain Bible texts an
 ### 📝 Personal study
 
 - Bookmarks, study notes and reading plans, saved in your browser.
-- Topical pages (parables, miracles, prophecies, covenants, names of God and more).
+- Key Passages: the Beatitudes, the Lord's Prayer, the Ten Commandments and the Bible's songs and doxologies, each opened in the reader.
+- Reference indexes (parables, miracles, prophecies, covenants, people, places, names of God and more) that link straight to the verses.
 - Research links for any verse, with live results from Semantic Scholar, PubMed and Open Library.
 
 ## 🚀 Getting started
@@ -81,6 +82,7 @@ The seed script downloads everything below; none of it is stored in this reposit
 - **SQLite** via `better-sqlite3`, with an FTS5 full-text index
 - `scripts/seed.ts` builds the database; `scripts/kjv-strongs.ts` parses the Strong's lexicon and the tagged KJV
 - `src/lib/strongs.ts` holds the Strong's queries shared by the pages and API
+- `src/lib/navigation.ts` lists the app's pages for the sidebar, footer, home page and search
 
 ## 🙏 Credits
 

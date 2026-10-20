@@ -19,8 +19,7 @@ describe('Seed Data Integrity', () => {
     expect(names).toContain('cross_references');
     expect(names).toContain('strongs');
     expect(names).toContain('word_strongs');
-    expect(names).toContain('word_provenance');
-    expect(names).toContain('latin_words');
+    expect(names).toContain('verse_tokens');
   });
 
   it('all indexes exist', () => {
@@ -44,24 +43,6 @@ describe('Seed Data Integrity', () => {
       SELECT ws.id, ws.strongs_id FROM word_strongs ws
       LEFT JOIN strongs s ON s.id = ws.strongs_id
       WHERE s.id IS NULL
-    `).all();
-    expect(orphans).toHaveLength(0);
-  });
-
-  it('provenance parent links are valid', () => {
-    const orphans = db.prepare(`
-      SELECT wp.id, wp.parent_word_id FROM word_provenance wp
-      LEFT JOIN word_provenance parent ON parent.id = wp.parent_word_id
-      WHERE wp.parent_word_id IS NOT NULL AND parent.id IS NULL
-    `).all();
-    expect(orphans).toHaveLength(0);
-  });
-
-  it('latin_words provenance links are valid', () => {
-    const orphans = db.prepare(`
-      SELECT lw.id, lw.provenance_id FROM latin_words lw
-      LEFT JOIN word_provenance wp ON wp.id = lw.provenance_id
-      WHERE lw.provenance_id IS NOT NULL AND wp.id IS NULL
     `).all();
     expect(orphans).toHaveLength(0);
   });

@@ -1,13 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getBookById } from '@/lib/bible-books';
 import CrossRefPanel from './CrossRefPanel';
 import StrongsPanel from './StrongsPanel';
 import ResearchPanel from './ResearchPanel';
-import ManuscriptPanel from './ManuscriptPanel';
-import WordDNA from './WordDNA';
 import IntertextualPanel from './IntertextualPanel';
 import CopyButton from './CopyButton';
 import { primaryStrongs, type StrongsSummary, type VerseToken } from '@/lib/strongs';
@@ -20,28 +18,27 @@ interface Verse {
   translation: string;
 }
 
-interface LatinWordProv {
-  word: string;
-  lemma: string;
-  id: number;
-  language: string;
-  definition: string;
-  parent_word_id: number | null;
-  chain?: any[];
-}
-
 interface Props {
   verses: Verse[];
   translations: string[];
   kjvTokens?: Record<number, VerseToken[]>; // Strong's-tagged KJV, keyed by verse
   lexicon?: Record<string, StrongsSummary>;
-  latinWords?: Record<string, LatinWordProv[]>; // keyed by lemma
 }
 
-export default function VerseDisplay({ verses, translations, kjvTokens, lexicon, latinWords }: Props) {
+export default function VerseDisplay({ verses, translations, kjvTokens, lexicon }: Props) {
   const [selectedVerse, setSelectedVerse] = useState<{ book: number; chapter: number; verse: number } | null>(null);
-  const [showPanel, setShowPanel] = useState<'crossref' | 'strongs' | 'research' | 'manuscripts' | 'intertextual' | null>(null);
+  const [showPanel, setShowPanel] = useState<'crossref' | 'strongs' | 'research' | 'intertextual' | null>(null);
   const [selectedStrongs, setSelectedStrongs] = useState<string | null>(null);
+  const [targetVerse, setTargetVerse] = useState<number | null>(null);
+
+  // Scroll to a linked verse (#v16). Browsers do this on a full page load, but not after
+  // client-side navigation, where the verses render after the router has tried to scroll.
+  useEffect(() => {
+    const match = /^#v(\d+)$/.exec(window.location.hash);
+    if (!match) return;
+    setTargetVerse(Number(match[1]));
+    document.getElementById(`v${match[1]}`)?.scrollIntoView();
+  }, [verses]);
 
   // Group by verse number
   const grouped: Record<number, Verse[]> = {};
@@ -66,27 +63,6 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon,
   };
 
   const renderVerseText = (v: Verse) => {
-
-    // For VUL verses with latin word data, render with WordDNA popups
-    if (v.translation === 'VUL' && latinWords) {
-      return v.text.split(/(\s+)/).map((token, i) => {
-        const clean = token.toLowerCase().replace(/[^a-zàáâãäåèéêëìíîïòóôõöùúûüý]/g, '');
-        const lw = latinWords[clean];
-        if (lw && lw.length > 0) {
-          const prov = lw[0];
-          return (
-            <WordDNA
-              key={i}
-              word={token}
-              provenance={prov}
-              chain={prov.chain}
-            />
-          );
-        }
-        return token;
-      });
-    }
-
     const tokens = v.translation === 'KJV' ? kjvTokens?.[v.verse] : undefined;
     if (!tokens) return v.text;
 
@@ -125,10 +101,13 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon,
           .map(([verseNum, verseTranslations]) => (
             <div
               key={verseNum}
-              className={`group py-3 px-4 rounded-lg mb-2 cursor-pointer transition-colors ${
-                selectedVerse?.verse === parseInt(verseNum) 
-                  ? 'bg-parchment-800/80 ring-1 ring-gold-500/30' 
-                  : 'hover:bg-parchment-900/50'
+              id={`v${verseNum}`}
+              className={`py-2 px-4 rounded-lg mb-1 cursor-pointer transition-colors scroll-mt-4 ${
+                selectedVerse?.verse === parseInt(verseNum)
+                  ? 'bg-parchment-800/80 ring-1 ring-gold-500/30'
+                  : targetVerse === parseInt(verseNum)
+                    ? 'ring-1 ring-gold-500/50 hover:bg-parchment-900/50'
+                    : 'hover:bg-parchment-900/50'
               }`}
               onClick={() => {
                 const v = verseTranslations[0];
@@ -159,8 +138,9 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon,
                 </div>
               </div>
               
-              {/* Action buttons */}
-              <div className="flex gap-2 mt-2 ml-12 opacity-0 group-hover:opacity-100 transition-opacity">
+              {/* Action buttons for the selected verse */}
+              {selectedVerse?.verse === parseInt(verseNum) && (
+              <div className="flex flex-wrap gap-2 mt-2 ml-12">
                 <button
                   onClick={(e) => { e.stopPropagation(); handleVerseClick(verseTranslations[0].book, verseTranslations[0].chapter, parseInt(verseNum)); }}
                   className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:text-gold-400 hover:bg-parchment-700 transition-colors"
@@ -181,21 +161,11 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon,
                   onClick={(e) => {
                     e.stopPropagation();
                     setSelectedVerse({ book: verseTranslations[0].book, chapter: verseTranslations[0].chapter, verse: parseInt(verseNum) });
-                    setShowPanel('manuscripts');
-                  }}
-                  className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:text-gold-400 hover:bg-parchment-700 transition-colors"
-                >
-                  📜 Manuscripts
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedVerse({ book: verseTranslations[0].book, chapter: verseTranslations[0].chapter, verse: parseInt(verseNum) });
                     setShowPanel('intertextual');
                   }}
                   className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:text-gold-400 hover:bg-parchment-700 transition-colors"
                 >
-                  🔗 Intertextual
+                  🧬 Shared words
                 </button>
                 <Link
                   href={`/compare?book=${verseTranslations[0].book}&chapter=${verseTranslations[0].chapter}&verse=${verseNum}`}
@@ -209,6 +179,7 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon,
                   label="Copy verse with reference"
                 />
               </div>
+              )}
             </div>
           ))}
       </div>
@@ -219,13 +190,13 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon,
           <div className="flex justify-between items-center mb-3">
             <h3 className="text-sm font-semibold text-gold-400">{verseRef}</h3>
             <div className="flex gap-1">
-              {(['crossref', 'research', 'manuscripts', 'intertextual'] as const).map(panel => (
+              {(['crossref', 'research', 'intertextual'] as const).map(panel => (
                 <button
                   key={panel}
                   onClick={() => setShowPanel(panel)}
                   className={`text-xs px-2 py-1 rounded transition-colors ${showPanel === panel ? 'bg-gold-600 text-parchment-950' : 'bg-parchment-800 text-parchment-400 hover:text-gold-400'}`}
                 >
-                  {panel === 'crossref' ? '🔗' : panel === 'research' ? '🎓' : panel === 'manuscripts' ? '📜' : '🧬'}
+                  {panel === 'crossref' ? '🔗' : panel === 'research' ? '🎓' : '🧬'}
                 </button>
               ))}
               <button
@@ -240,7 +211,6 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon,
           {showPanel === 'crossref' && <CrossRefPanel {...selectedVerse} />}
           {showPanel === 'strongs' && selectedStrongs && <StrongsPanel strongsId={selectedStrongs} />}
           {showPanel === 'research' && <ResearchPanel {...selectedVerse} />}
-          {showPanel === 'manuscripts' && <ManuscriptPanel {...selectedVerse} />}
           {showPanel === 'intertextual' && <IntertextualPanel {...selectedVerse} />}
         </div>
       )}

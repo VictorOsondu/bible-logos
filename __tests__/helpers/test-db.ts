@@ -65,35 +65,6 @@ export function createTestDb(): Database.Database {
       PRIMARY KEY (book, chapter, verse)
     );
 
-    CREATE TABLE IF NOT EXISTS word_provenance (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      word TEXT NOT NULL,
-      language TEXT NOT NULL,
-      lemma TEXT NOT NULL,
-      definition TEXT NOT NULL,
-      etymology TEXT,
-      proto_root TEXT,
-      first_occurrence TEXT,
-      parent_word_id INTEGER,
-      manuscript_sources TEXT DEFAULT '[]',
-      textual_variants TEXT DEFAULT '[]',
-      academic_refs TEXT DEFAULT '{}',
-      logeion_url TEXT,
-      perseus_url TEXT,
-      part_of_speech TEXT
-    );
-
-    CREATE TABLE IF NOT EXISTS latin_words (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      word TEXT NOT NULL,
-      lemma TEXT NOT NULL UNIQUE,
-      definition TEXT,
-      part_of_speech TEXT,
-      etymology TEXT,
-      occurrences INTEGER DEFAULT 0,
-      provenance_id INTEGER
-    );
-
     CREATE VIRTUAL TABLE IF NOT EXISTS verses_fts USING fts5(text, content='verses', content_rowid='id');
   `);
 
@@ -166,24 +137,5 @@ export function seedTestDb(db: Database.Database): void {
     JSON.stringify(['In the beginning ', { t: 'God', s: ['H430'] }, ' ', { t: 'created', s: ['H853', 'H1254'] }, ' the heaven.'])
   );
 
-  // Seed word provenance
-  const insertProv = db.prepare(`INSERT INTO word_provenance
-    (word, language, lemma, definition, etymology, proto_root, first_occurrence,
-     parent_word_id, manuscript_sources, textual_variants, academic_refs,
-     logeion_url, perseus_url, part_of_speech)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 
-  db.transaction(() => {
-    insertProv.run('אהבה', 'hebrew', 'ahavah', 'Love, affection', 'From root א-ה-ב', '*ʔhb', 'Genesis 29:20', null, '["MT","DSS"]', '[]', '{"BDB":"p.12"}', null, null, 'noun');
-    insertProv.run('ἀγάπη', 'greek', 'agape', 'Love, charity', 'From ἀγαπάω', null, 'Septuagint', 1, '["P46","Sinaiticus"]', '[]', '{"BDAG":"p.5"}', 'https://logeion.uchicago.edu/agape', null, 'noun');
-    insertProv.run('amor', 'latin', 'amor', 'Love, desire', 'From PIE *h₂em-', '*h₂em-', 'Ennius', 2, '["Codex Amiatinus"]', '["caritas"]', '{"OLD":"p.120"}', 'https://logeion.uchicago.edu/amor', 'https://perseus.tufts.edu/hopper/text?doc=Perseus:text:1999.04.0059:entry=amor', 'noun');
-  })();
-
-  // Seed latin_words
-  const insertLatin = db.prepare(
-    'INSERT OR IGNORE INTO latin_words (word, lemma, definition, part_of_speech, etymology, occurrences, provenance_id) VALUES (?, ?, ?, ?, ?, ?, ?)'
-  );
-  db.transaction(() => {
-    insertLatin.run('amor', 'amor', 'Love, desire', 'noun', 'From PIE *h₂em-', 42, 3);
-  })();
 }

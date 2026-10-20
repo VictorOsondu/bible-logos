@@ -2,7 +2,6 @@ import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { getDb } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
-import { langEmoji, langLabel } from '@/lib/provenance';
 import WordRelationships from '@/components/WordRelationships';
 import { getKjvRenderings, getOccurrences } from '@/lib/strongs';
 
@@ -11,10 +10,6 @@ const PAGE_SIZE = 100;
 interface Props {
   params: { strongs: string };
   searchParams: { page?: string };
-}
-
-function parseJson(s: string | null): any {
-  try { return s ? JSON.parse(s) : null; } catch { return null; }
 }
 
 export default function WordPage({ params, searchParams }: Props) {
@@ -132,78 +127,6 @@ export default function WordPage({ params, searchParams }: Props) {
             )}
           </div>
         )}
-
-        {/* Latin Translation Chain */}
-        {(() => {
-          // Find provenance entries that match this Strong's word
-          const strongsLang = entry.language === 'hebrew' ? 'hebrew' : 'greek';
-          const provEntries = db.prepare(
-            `SELECT * FROM word_provenance WHERE language = ? AND (word = ? OR lemma = ?)`
-          ).all(strongsLang, entry.original, entry.transliteration.toLowerCase()) as any[];
-
-          if (provEntries.length === 0) return null;
-
-          // For each provenance entry, find children (translations)
-          const chains = provEntries.map((prov: any) => {
-            const children = db.prepare('SELECT * FROM word_provenance WHERE parent_word_id = ?').all(prov.id) as any[];
-            const grandchildren = children.flatMap((child: any) =>
-              (db.prepare('SELECT * FROM word_provenance WHERE parent_word_id = ?').all(child.id) as any[]).map(gc => ({ ...gc, parentLang: child.language }))
-            );
-            return { root: prov, children, grandchildren };
-          });
-
-          return (
-            <div className="mb-8">
-              <h2 className="text-xl font-semibold text-parchment-200 mb-4">🔗 Translation Chain</h2>
-              <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6">
-                <p className="text-sm text-parchment-400 mb-4">
-                  How has this word been translated through history? From the original language, through the Septuagint and Vulgate, to today.
-                </p>
-                {chains.map(({ root, children, grandchildren }: any, ci: number) => (
-                  <div key={ci} className="space-y-2">
-                    {/* Root */}
-                    <div className="flex items-center gap-2 p-3 rounded-lg bg-parchment-800">
-                      <span className="text-xl">{langEmoji(root.language)}</span>
-                      <Link href={`/word/${root.language}/${root.lemma}`} className="font-serif text-lg text-parchment-100 hover:text-gold-400">
-                        {root.word}
-                      </Link>
-                      <span className="text-sm text-parchment-400">({root.lemma})</span>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-parchment-700 text-parchment-300">{langLabel(root.language)}</span>
-                    </div>
-                    {/* Children */}
-                    {children.map((child: any) => (
-                      <div key={child.id} className="ml-8">
-                        <div className="flex items-center gap-1 text-gold-500 text-xs mb-1">↓ translated as</div>
-                        <div className="flex items-center gap-2 p-3 rounded-lg bg-parchment-800/60">
-                          <span className="text-xl">{langEmoji(child.language)}</span>
-                          <Link href={child.language === 'latin' ? `/latin/${child.lemma}` : `/word/${child.language}/${child.lemma}`} className="font-serif text-lg text-parchment-100 hover:text-gold-400">
-                            {child.word}
-                          </Link>
-                          <span className="text-sm text-parchment-400">({child.lemma})</span>
-                          <span className="text-xs px-2 py-0.5 rounded-full bg-parchment-700 text-parchment-300">{langLabel(child.language)}</span>
-                        </div>
-                        {/* Grandchildren from this child */}
-                        {grandchildren.filter((gc: any) => gc.parentLang === child.language).map((gc: any) => (
-                          <div key={gc.id} className="ml-8 mt-2">
-                            <div className="flex items-center gap-1 text-gold-500 text-xs mb-1">↓ translated as</div>
-                            <div className="flex items-center gap-2 p-3 rounded-lg bg-parchment-800/30">
-                              <span className="text-xl">{langEmoji(gc.language)}</span>
-                              <Link href={gc.language === 'latin' ? `/latin/${gc.lemma}` : `/word/${gc.language}/${gc.lemma}`} className="font-serif text-lg text-parchment-100 hover:text-gold-400">
-                                {gc.word}
-                              </Link>
-                              <span className="text-sm text-parchment-400">({gc.lemma})</span>
-                              <span className="text-xs px-2 py-0.5 rounded-full bg-parchment-700 text-parchment-300">{langLabel(gc.language)}</span>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        })()}
 
         {/* Word Relationships */}
         <div className="mb-8">

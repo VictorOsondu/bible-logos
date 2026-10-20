@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Sidebar from '@/components/Sidebar';
 import VerseDisplay from '@/components/VerseDisplay';
 import KeyboardNav from '@/components/KeyboardNav';
-import ChapterTools from '@/components/ChapterTools';
 import { getBookBySlug, getBookById, BIBLE_BOOKS } from '@/lib/bible-books';
 import { getDb } from '@/lib/db';
 import { getChapterTokens } from '@/lib/strongs';
@@ -45,31 +44,6 @@ export default function ReaderPage({ params, searchParams }: Props) {
 
   // Strong's-tagged KJV text for this chapter
   const { tokens: kjvTokens, lexicon } = getChapterTokens(db, bookInfo.id, chapter);
-
-  // Load Latin word provenance for VUL hover
-  const latinWords: Record<string, any[]> = {};
-  if (selectedTranslations.includes('VUL')) {
-    const allLatinProv = db.prepare(
-      `SELECT * FROM word_provenance WHERE language = 'latin'`
-    ).all() as any[];
-
-    for (const prov of allLatinProv) {
-      const lemma = prov.lemma.toLowerCase();
-      // Build chain for each word
-      const chain: any[] = [prov];
-      let current = prov;
-      while (current?.parent_word_id) {
-        const parent = db.prepare('SELECT * FROM word_provenance WHERE id = ?').get(current.parent_word_id) as any;
-        if (parent) { chain.push(parent); current = parent; } else break;
-      }
-      latinWords[lemma] = [{ ...prov, chain }];
-      // Also index by word (may differ from lemma)
-      const word = prov.word.toLowerCase();
-      if (word !== lemma && !latinWords[word]) {
-        latinWords[word] = [{ ...prov, chain }];
-      }
-    }
-  }
 
   // Available translations
   const allTranslations = db.prepare(
@@ -150,11 +124,7 @@ export default function ReaderPage({ params, searchParams }: Props) {
           translations={selectedTranslations}
           kjvTokens={kjvTokens}
           lexicon={lexicon}
-          latinWords={latinWords}
         />
-
-        {/* Chapter Tools */}
-        <ChapterTools book={bookInfo.id} chapter={chapter} />
 
         {/* Navigation */}
         <div className="flex justify-between items-center mt-8 pt-4 border-t border-parchment-800">

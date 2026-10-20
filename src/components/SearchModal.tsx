@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { BIBLE_BOOKS } from '@/lib/bible-books';
+import { NAV_SECTIONS } from '@/lib/navigation';
 
 export default function SearchModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,35 +37,8 @@ export default function SearchModal() {
     }
   }, [isOpen]);
 
-  const PAGES = [
-    { label: 'Search', href: '/search', icon: '🔍' },
-    { label: 'Compare Translations', href: '/compare', icon: '⚖️' },
-    { label: 'Analytics Dashboard', href: '/analytics', icon: '📊' },
-    { label: "Strong's Concordance", href: '/concordance', icon: '📖' },
-    { label: 'Latin Vulgate', href: '/latin/amor', icon: '📜' },
-    { label: 'Word Heatmap', href: '/heatmap', icon: '🔥' },
-    { label: 'Synoptic Parallels', href: '/parallels', icon: '🔀' },
-    { label: 'Chiastic Structures', href: '/chiasm', icon: '🔄' },
-    { label: 'Typology', href: '/typology', icon: '🔗' },
-    { label: 'Prophecies', href: '/prophecies', icon: '🔮' },
-    { label: 'Covenants', href: '/covenants', icon: '📜' },
-    { label: 'Beatitudes', href: '/beatitudes', icon: '😇' },
-    { label: 'Figures of Speech', href: '/figures', icon: '🎭' },
-    { label: 'Names of God', href: '/names-of-god', icon: '✡️' },
-    { label: 'Key Persons', href: '/persons', icon: '👤' },
-    { label: 'Parables', href: '/parables', icon: '🌾' },
-    { label: 'Miracles', href: '/miracles', icon: '✨' },
-    { label: 'Prayers', href: '/prayers', icon: '🙏' },
-    { label: 'Sacrifices', href: '/sacrifices', icon: '🔥' },
-    { label: 'Geography', href: '/geography', icon: '🗺️' },
-    { label: 'Alphabets', href: '/alphabet', icon: '🔤' },
-    { label: 'Genealogies', href: '/genealogy', icon: '🌳' },
-    { label: 'Verse of the Day', href: '/verse-of-the-day', icon: '✨' },
-    { label: 'Bookmarks', href: '/bookmarks', icon: '📑' },
-    { label: 'Timeline', href: '/timeline', icon: '📅' },
-    { label: 'Study Notes', href: '/study-notes', icon: '📝' },
-    { label: 'Reading Plans', href: '/reading-plans', icon: '📅' },
-  ];
+  const PAGES = NAV_SECTIONS.flatMap(section => section.links)
+    .map(({ label, href, icon }) => ({ label, href, icon }));
 
   const computeResults = useCallback((q: string) => {
     if (!q.trim()) {

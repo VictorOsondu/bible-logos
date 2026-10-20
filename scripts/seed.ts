@@ -157,55 +157,6 @@ async function main() {
     );
 
     CREATE VIRTUAL TABLE IF NOT EXISTS verses_fts USING fts5(text, content=verses, content_rowid=id);
-
-    -- Word Provenance: full etymology chain across languages
-    CREATE TABLE IF NOT EXISTS word_provenance (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      word TEXT NOT NULL,
-      language TEXT NOT NULL,
-      lemma TEXT NOT NULL,
-      definition TEXT NOT NULL,
-      etymology TEXT,
-      proto_root TEXT,
-      first_occurrence TEXT,
-      parent_word_id INTEGER,
-      manuscript_sources TEXT,
-      textual_variants TEXT,
-      academic_refs TEXT,
-      logeion_url TEXT,
-      perseus_url TEXT,
-      part_of_speech TEXT,
-      FOREIGN KEY (parent_word_id) REFERENCES word_provenance(id)
-    );
-    CREATE INDEX idx_provenance_lemma ON word_provenance(lemma);
-    CREATE INDEX idx_provenance_language ON word_provenance(language);
-    CREATE INDEX idx_provenance_word ON word_provenance(word);
-    CREATE INDEX idx_provenance_parent ON word_provenance(parent_word_id);
-
-    -- Latin words (quick lookup for Vulgata reader)
-    CREATE TABLE IF NOT EXISTS latin_words (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      word TEXT NOT NULL UNIQUE,
-      lemma TEXT,
-      definition TEXT,
-      part_of_speech TEXT,
-      etymology TEXT,
-      occurrences INTEGER DEFAULT 0,
-      provenance_id INTEGER,
-      FOREIGN KEY (provenance_id) REFERENCES word_provenance(id)
-    );
-    CREATE INDEX idx_latin_words_lemma ON latin_words(lemma);
-
-    -- Verse-level latin word positions
-    CREATE TABLE IF NOT EXISTS verse_latin_words (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      verse_id INTEGER,
-      word TEXT,
-      position INTEGER,
-      lemma TEXT
-    );
-    CREATE INDEX idx_vlw_verse ON verse_latin_words(verse_id);
-    CREATE INDEX idx_vlw_word ON verse_latin_words(word);
   `);
 
   // ── Load Bible Translations ─────────────────────────────────
@@ -324,87 +275,6 @@ async function main() {
   })();
   console.log(`  ${wordLinks} word links across ${taggedKjv.length} verses.`);
 
-  // ── Word Provenance ─────────────────────────────────────────
-  console.log('Seeding word provenance data...');
-  const provenanceData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'provenance.json'), 'utf-8'));
-
-  const insertProvenance = db.prepare(`INSERT INTO word_provenance
-    (word, language, lemma, definition, etymology, proto_root, first_occurrence,
-     parent_word_id, manuscript_sources, textual_variants, academic_refs,
-     logeion_url, perseus_url, part_of_speech)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-
-  // Two passes: first insert all, then resolve parent links
-  const lemmaToId: Record<string, number> = {};
-
-  db.transaction(() => {
-    for (const entry of provenanceData) {
-      const result = insertProvenance.run(
-        entry.word, entry.language, entry.lemma, entry.definition,
-        entry.etymology || null, entry.proto_root || null, entry.first_occurrence || null,
-        null, // parent_word_id resolved in pass 2
-        JSON.stringify(entry.manuscript_sources || []),
-        JSON.stringify(entry.textual_variants || []),
-        JSON.stringify(entry.academic_refs || {}),
-        entry.logeion_url || null, entry.perseus_url || null,
-        entry.part_of_speech || null
-      );
-      const id = Number(result.lastInsertRowid);
-      lemmaToId[`${entry.language}:${entry.lemma}`] = id;
-    }
-  })();
-
-  // Pass 2: resolve parent links
-  const updateParent = db.prepare('UPDATE word_provenance SET parent_word_id = ? WHERE id = ?');
-  db.transaction(() => {
-    for (const entry of provenanceData) {
-      if (entry.parent_lemma && entry.parent_language) {
-        const childId = lemmaToId[`${entry.language}:${entry.lemma}`];
-        const parentId = lemmaToId[`${entry.parent_language}:${entry.parent_lemma}`];
-        if (childId && parentId) {
-          updateParent.run(parentId, childId);
-        }
-      }
-    }
-  })();
-  console.log(`  ${provenanceData.length} word provenance entries seeded.`);
-
-  // ── Latin Words table ───────────────────────────────────────
-  console.log('Populating latin_words from provenance...');
-  const latinEntries = provenanceData.filter((e: any) => e.language === 'latin');
-  const insertLatinWord = db.prepare(`INSERT OR IGNORE INTO latin_words
-    (word, lemma, definition, part_of_speech, etymology, provenance_id) VALUES (?, ?, ?, ?, ?, ?)`);
-
-  db.transaction(() => {
-    for (const entry of latinEntries) {
-      const provId = lemmaToId[`latin:${entry.lemma}`];
-      insertLatinWord.run(entry.word, entry.lemma, entry.definition, entry.part_of_speech, entry.etymology, provId || null);
-    }
-  })();
-
-  // Count Vulgate occurrences for each latin word
-  console.log('Counting Latin word occurrences in Vulgate...');
-  const vulVerses = db.prepare("SELECT id, text FROM verses WHERE translation = 'VUL'").all() as { id: number; text: string }[];
-  const wordCounts: Record<string, number> = {};
-  const latinWordSet = new Set(latinEntries.map((e: any) => e.lemma.toLowerCase()));
-
-  for (const v of vulVerses) {
-    const words = v.text.toLowerCase().replace(/[^a-zàáâãäåèéêëìíîïòóôõöùúûüý]/g, ' ').split(/\s+/).filter(Boolean);
-    for (const w of words) {
-      if (latinWordSet.has(w)) {
-        wordCounts[w] = (wordCounts[w] || 0) + 1;
-      }
-    }
-  }
-
-  const updateOccurrences = db.prepare('UPDATE latin_words SET occurrences = ? WHERE lemma = ?');
-  db.transaction(() => {
-    for (const [word, count] of Object.entries(wordCounts)) {
-      updateOccurrences.run(count, word);
-    }
-  })();
-  console.log(`  Latin word occurrences counted.`);
-
   db.close();
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`\n✅ Database seeded successfully in ${elapsed}s!`);
@@ -412,11 +282,9 @@ async function main() {
   const statsDb = new Database(DB_PATH, { readonly: true });
   const verseCount = statsDb.prepare('SELECT COUNT(*) as c FROM verses').get() as any;
   const xrefCount = statsDb.prepare('SELECT COUNT(*) as c FROM cross_references').get() as any;
-  const provCount = statsDb.prepare('SELECT COUNT(*) as c FROM word_provenance').get() as any;
   const translationStats = statsDb.prepare('SELECT translation, COUNT(*) as c FROM verses GROUP BY translation').all();
   console.log(`Total verses: ${verseCount.c}`);
   console.log(`Cross-references: ${xrefCount.c}`);
-  console.log(`Word provenance entries: ${provCount.c}`);
   console.log('Translations:', translationStats);
   statsDb.close();
 }

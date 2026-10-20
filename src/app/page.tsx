@@ -1,7 +1,8 @@
 import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { getDb, isDatabaseAvailable } from '@/lib/db';
-import { getBookById, BIBLE_BOOKS } from '@/lib/bible-books';
+import { getBookById } from '@/lib/bible-books';
+import { NAV_SECTIONS } from '@/lib/navigation';
 
 export const dynamic = 'force-dynamic';
 
@@ -61,10 +62,10 @@ export default function Home() {
         {/* Hero */}
         <div className="text-center mb-10 pt-4 lg:pt-8">
           <h1 className="text-5xl font-bold font-serif text-parchment-100 mb-3">
-            📖 <span className="text-gold-400">Bible</span>Lens
+            📖 Bible <span className="text-gold-400">Logos</span>
           </h1>
           <p className="text-lg text-parchment-400 max-w-xl mx-auto">
-            Analytical Bible Study — Multi-translation comparison, Strong&apos;s concordance, cross-references, word etymology, and scholarly research tools.
+            Personal Bible study and research: read in several translations, with every KJV word linked to its Hebrew or Greek original.
           </p>
         </div>
 
@@ -83,189 +84,34 @@ export default function Home() {
           </Link>
         )}
 
-        {/* Quick Access Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-8">
-          <Link href="/search" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🔍</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Search</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Full-text search</p>
-          </Link>
-          <Link href="/compare" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">⚖️</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Compare</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Translation comparison</p>
-          </Link>
-          <Link href="/analytics" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">📊</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Analytics</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Word frequency &amp; sentiment</p>
-          </Link>
-          <Link href="/word/G26" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">📖</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Strong&apos;s</p>
-            <p className="text-xs text-parchment-500 mt-0.5">{strongsCount} entries</p>
-          </Link>
-          <Link href="/latin/amor" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">📜</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Latin</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Vulgate vocabulary</p>
-          </Link>
-          <Link href="/verse-of-the-day" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">✨</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Daily Verse</p>
-            <p className="text-xs text-parchment-500 mt-0.5">All translations</p>
-          </Link>
-          <Link href="/reader/genesis/1" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🕎</span>
+        {/* Start reading */}
+        <div className="grid grid-cols-2 gap-3 mb-8">
+          <Link href="/reader/genesis/1" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center">
+            <span className="text-2xl">🕎</span>
             <p className="text-sm text-parchment-200 mt-2 font-semibold">Old Testament</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Start reading</p>
+            <p className="text-xs text-parchment-500 mt-0.5">Start at Genesis</p>
           </Link>
-          <Link href="/reader/matthew/1" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">✝️</span>
+          <Link href="/reader/matthew/1" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center">
+            <span className="text-2xl">✝️</span>
             <p className="text-sm text-parchment-200 mt-2 font-semibold">New Testament</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Start reading</p>
-          </Link>
-          <Link href="/parallels" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🔀</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Parallels</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Synoptic comparisons</p>
-          </Link>
-          <Link href="/bookmarks" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">📑</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Bookmarks</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Saved passages</p>
-          </Link>
-          <Link href="/timeline" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">📅</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Timeline</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Biblical chronology</p>
-          </Link>
-          <Link href="/study-notes" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">📝</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Study Notes</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Personal annotations</p>
-          </Link>
-          <Link href="/reading-plans" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">📅</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Reading Plans</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Guided study tracks</p>
-          </Link>
-          <Link href="/alphabet" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🔤</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Alphabets</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Hebrew &amp; Greek</p>
-          </Link>
-          <Link href="/chiasm" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🔄</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Chiasms</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Literary structures</p>
-          </Link>
-          <Link href="/concordance" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">📖</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Concordance</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Browse all entries</p>
-          </Link>
-          <Link href="/geography" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🗺️</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Geography</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Biblical places</p>
-          </Link>
-          <Link href="/figures" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🎭</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Figures of Speech</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Literary devices</p>
-          </Link>
-          <Link href="/heatmap" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🔥</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Word Heatmap</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Visual distribution</p>
-          </Link>
-          <Link href="/names-of-god" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">✡️</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Names of God</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Divine names &amp; titles</p>
-          </Link>
-          <Link href="/persons" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">👤</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Key Persons</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Biblical figures</p>
-          </Link>
-          <Link href="/parables" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🌾</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Parables</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Jesus&apos;s teachings</p>
-          </Link>
-          <Link href="/typology" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🔗</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Typology</p>
-            <p className="text-xs text-parchment-500 mt-0.5">OT → NT connections</p>
-          </Link>
-          <Link href="/prophecies" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🔮</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Prophecies</p>
-            <p className="text-xs text-parchment-500 mt-0.5">OT→NT fulfillment tracker</p>
-          </Link>
-          <Link href="/covenants" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">📜</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Covenants</p>
-            <p className="text-xs text-parchment-500 mt-0.5">God&apos;s binding promises</p>
-          </Link>
-          <Link href="/sacrifices" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🔥</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Sacrifices</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Levitical offerings &amp; fulfillment</p>
-          </Link>
-          <Link href="/miracles" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">✨</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Miracles</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Supernatural acts catalogued</p>
-          </Link>
-          <Link href="/prayers" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🙏</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Prayers</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Notable prayers of Scripture</p>
-          </Link>
-          <Link href="/beatitudes" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">😇</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Beatitudes</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Sermon on the Mount blessings</p>
-          </Link>
-          <Link href="/genealogy" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🌳</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Genealogies</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Biblical family trees</p>
-          </Link>
-          <Link href="/ten-commandments" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">⛰️</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Ten Commandments</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Decalogue with Hebrew roots</p>
-          </Link>
-          <Link href="/fruit-of-spirit" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🍇</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Fruit of the Spirit</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Galatians 5:22–23 deep dive</p>
-          </Link>
-          <Link href="/armor-of-god" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">⚔️</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Armor of God</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Spiritual warfare equipment</p>
-          </Link>
-          <Link href="/doxologies" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🎵</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Doxologies</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Hymns &amp; canticles of Scripture</p>
-          </Link>
-          <Link href="/lords-prayer" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🙏</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Lord&apos;s Prayer</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Petition-by-petition analysis</p>
-          </Link>
-          <Link href="/themes" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center group">
-            <span className="text-2xl group-hover:scale-110 inline-block transition-transform">🎨</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Themes</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Theological theme explorer</p>
+            <p className="text-xs text-parchment-500 mt-0.5">Start at Matthew</p>
           </Link>
         </div>
+
+        {/* Tools, by section */}
+        {NAV_SECTIONS.map(section => (
+          <section key={section.label} className="mb-8">
+            <h2 className="text-xl font-semibold text-parchment-200 mb-4 font-serif">{section.icon} {section.label}</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+              {section.links.map(link => (
+                <Link key={link.href} href={link.href} className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all">
+                  <p className="text-sm text-parchment-200 font-semibold">{link.icon} {link.label}</p>
+                  <p className="text-xs text-parchment-500 mt-1">{link.description}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
 
         {/* Popular Passages */}
         <section className="mb-8">
@@ -299,7 +145,7 @@ export default function Home() {
             { label: 'Verses', value: verseCount.toLocaleString(), icon: '📜' },
             { label: 'Translations', value: translationCount, icon: '🌐' },
             { label: 'Cross-References', value: (xrefCount / 1000).toFixed(0) + 'k', icon: '🔗' },
-            { label: 'Strong\'s Entries', value: strongsCount, icon: '📖' },
+            { label: 'Strong\'s Entries', value: strongsCount.toLocaleString('en-GB'), icon: '📖' },
           ].map(s => (
             <div key={s.label} className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
               <div className="text-lg mb-1">{s.icon}</div>

@@ -3,68 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { BIBLE_BOOKS, BookInfo } from '@/lib/bible-books';
-
-interface NavSection {
-  label: string;
-  links: { href: string; icon: string; label: string }[];
-}
-
-const NAV_SECTIONS: NavSection[] = [
-  {
-    label: '📚 Study Tools',
-    links: [
-      { href: '/search', icon: '🔍', label: 'Search' },
-      { href: '/compare', icon: '⚖️', label: 'Compare' },
-      { href: '/analytics', icon: '📊', label: 'Analytics' },
-      { href: '/word/G26', icon: '📖', label: "Strong's" },
-      { href: '/latin/amor', icon: '📜', label: 'Latin' },
-      { href: '/concordance', icon: '📖', label: 'Concordance' },
-      { href: '/heatmap', icon: '🔥', label: 'Heatmap' },
-    ],
-  },
-  {
-    label: '⛪ Theological',
-    links: [
-      { href: '/parallels', icon: '🔀', label: 'Parallels' },
-      { href: '/chiasm', icon: '🔄', label: 'Chiasm' },
-      { href: '/typology', icon: '🔗', label: 'Typology' },
-      { href: '/prophecies', icon: '🔮', label: 'Prophecies' },
-      { href: '/covenants', icon: '📜', label: 'Covenants' },
-      { href: '/beatitudes', icon: '😇', label: 'Beatitudes' },
-      { href: '/ten-commandments', icon: '⛰️', label: 'Commandments' },
-      { href: '/fruit-of-spirit', icon: '🍇', label: 'Fruit of Spirit' },
-      { href: '/armor-of-god', icon: '⚔️', label: 'Armor of God' },
-      { href: '/figures', icon: '🎭', label: 'Figures' },
-      { href: '/doxologies', icon: '🎵', label: 'Doxologies' },
-      { href: '/lords-prayer', icon: '🙏', label: "Lord's Prayer" },
-      { href: '/themes', icon: '🎨', label: 'Themes' },
-    ],
-  },
-  {
-    label: '📖 Reference',
-    links: [
-      { href: '/names-of-god', icon: '✡️', label: 'Names' },
-      { href: '/persons', icon: '👤', label: 'Persons' },
-      { href: '/parables', icon: '🌾', label: 'Parables' },
-      { href: '/miracles', icon: '✨', label: 'Miracles' },
-      { href: '/prayers', icon: '🙏', label: 'Prayers' },
-      { href: '/sacrifices', icon: '🔥', label: 'Sacrifices' },
-      { href: '/geography', icon: '🗺️', label: 'Geography' },
-      { href: '/alphabet', icon: '🔤', label: 'Alphabet' },
-      { href: '/genealogy', icon: '🌳', label: 'Genealogy' },
-    ],
-  },
-  {
-    label: '📝 Personal',
-    links: [
-      { href: '/verse-of-the-day', icon: '✨', label: 'Daily' },
-      { href: '/bookmarks', icon: '📑', label: 'Bookmarks' },
-      { href: '/timeline', icon: '📅', label: 'Timeline' },
-      { href: '/study-notes', icon: '📝', label: 'Notes' },
-      { href: '/reading-plans', icon: '📅', label: 'Plans' },
-    ],
-  },
-];
+import { NAV_SECTIONS } from '@/lib/navigation';
 
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -151,7 +90,7 @@ export default function Sidebar() {
                   onClick={() => toggleSection(section.label)}
                   className="w-full flex items-center justify-between px-2 py-1.5 text-xs font-semibold text-gold-500 uppercase tracking-wider hover:text-gold-400 transition-colors"
                 >
-                  <span>{section.label}</span>
+                  <span>{section.icon} {section.label}</span>
                   <svg
                     className={`w-3 h-3 transition-transform ${isCollapsed ? '-rotate-90' : ''}`}
                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
