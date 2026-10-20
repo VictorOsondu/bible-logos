@@ -1,7 +1,33 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { fetchExternal, handleApiError, upstreamError } from '@/lib/api-utils';
+import { fetchExternal, handleApiError, peekCached, setCached, upstreamError } from '@/lib/api-utils';
+import { RateLimiter, clientKey } from '@/lib/rate-limit';
+
+// Results from outside services change slowly; keep them for a day.
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+// Each uncached request calls an outside service, so limit them per client and overall.
+const perClient = new RateLimiter(20, 60_000);
+const overall = new RateLimiter(120, 60_000);
 
 export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const cacheKey = `research:${searchParams.get('source') || 'semanticscholar'}:${searchParams.get('limit') || ''}:${searchParams.get('q') || ''}`;
+  const cached = peekCached<unknown>(cacheKey);
+  if (cached !== undefined) return NextResponse.json(cached, { headers: { 'X-Cache': 'HIT' } });
+
+  const wait = perClient.hit(clientKey(request.headers)) || overall.hit('all');
+  if (wait > 0) {
+    return NextResponse.json(
+      { error: 'Too many research requests. Please wait a moment.' },
+      { status: 429, headers: { 'Retry-After': String(Math.ceil(wait / 1000)) } }
+    );
+  }
+
+  const response = await queryService(request);
+  if (response.status === 200) setCached(cacheKey, await response.clone().json(), CACHE_TTL_MS);
+  return response;
+}
+
+async function queryService(request: NextRequest): Promise<NextResponse> {
   try {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('q');
