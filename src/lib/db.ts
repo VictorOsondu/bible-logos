@@ -25,8 +25,7 @@ export function getDb(): Database.Database {
         'Database not found. Run "npm run seed" to populate the database.'
       );
     }
-    db = new Database(dbPath, { readonly: true });
-    db.pragma('journal_mode = WAL');
+    db = new Database(dbPath, { readonly: true, fileMustExist: true });
   }
   return db;
 }

@@ -1,12 +1,16 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
-import { STRONGS_HEBREW_URL, STRONGS_GREEK_URL, KJV_OSIS_URL, parseLexicon, parseKjvOsis, tokensToText, TaggedVerse } from './kjv-strongs';
+import crypto from 'crypto';
+import { parseLexicon, parseKjvOsis, tokensToText, TaggedVerse } from './kjv-strongs';
+import { SOURCES, type Source } from './sources';
 import { plainText } from '../src/lib/strongs';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DB_PATH = path.join(DATA_DIR, 'bible.db');
-const BASE_URL = 'https://raw.githubusercontent.com/scrollmapper/bible_databases/master/formats';
+const BUILD_PATH = `${DB_PATH}.building`;
+// Verified downloads are kept here so re-seeding (and CI) does not fetch them again
+const CACHE_DIR = path.join(DATA_DIR, 'sources');
 
 const BOOK_MAP: Record<string, number> = {
   'Genesis':1,'Exodus':2,'Leviticus':3,'Numbers':4,'Deuteronomy':5,
@@ -39,30 +43,37 @@ async function sleep(ms: number): Promise<void> {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function downloadWithRetry<T>(url: string, maxRetries = 3, responseType: 'json' | 'text' = 'json'): Promise<T> {
-  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+const sha256 = (data: Buffer) => crypto.createHash('sha256').update(data).digest('hex');
+
+/** Returns a pinned source's contents, from the local cache or downloaded, after checking its hash. */
+async function fetchSource({ url, sha256: expected }: Source, maxRetries = 3): Promise<string> {
+  const cached = path.join(CACHE_DIR, `${expected.slice(0, 16)}-${path.basename(new URL(url).pathname)}`);
+  if (fs.existsSync(cached)) {
+    const data = fs.readFileSync(cached);
+    if (sha256(data) === expected) return data.toString('utf8').replace(/^\uFEFF/, '');
+    console.warn(`  Cached ${path.basename(cached)} is corrupt; downloading again.`);
+  }
+
+  for (let attempt = 1; ; attempt++) {
     try {
       console.log(`  Downloading ${url}${attempt > 1 ? ` (attempt ${attempt}/${maxRetries})` : ''}...`);
       const res = await fetch(url, { signal: AbortSignal.timeout(120000) });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return (responseType === 'json' ? await res.json() : await res.text()) as T;
-    } catch (error: any) {
-      const msg = error?.message || String(error);
-      if (attempt === maxRetries) {
-        console.error(`  ❌ Failed after ${maxRetries} attempts: ${msg}`);
-        throw error;
+      const data = Buffer.from(await res.arrayBuffer());
+      const actual = sha256(data);
+      if (actual !== expected) {
+        throw new Error(`checksum mismatch for ${url}: expected ${expected}, got ${actual}`);
       }
+      fs.mkdirSync(CACHE_DIR, { recursive: true });
+      fs.writeFileSync(cached, data);
+      return data.toString('utf8').replace(/^\uFEFF/, '');
+    } catch (error: any) {
+      if (attempt >= maxRetries || error?.message?.startsWith('checksum mismatch')) throw error;
       const delay = attempt * 2000;
-      console.warn(`  ⚠️  Attempt ${attempt} failed (${msg}), retrying in ${delay / 1000}s...`);
+      console.warn(`  Attempt ${attempt} failed (${error?.message || error}), retrying in ${delay / 1000}s...`);
       await sleep(delay);
     }
   }
-  throw new Error('Unreachable');
-}
-
-async function downloadBible(filename: string): Promise<ScrollmapperBible> {
-  const url = `${BASE_URL}/json/${filename}`;
-  return downloadWithRetry<ScrollmapperBible>(url);
 }
 
 function flattenBible(bible: ScrollmapperBible): { book: number; chapter: number; verse: number; text: string }[] {
@@ -86,12 +97,9 @@ async function main() {
 
   console.log(`📂 Data directory: ${DATA_DIR}`);
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
-  if (fs.existsSync(DB_PATH)) {
-    console.log('🗑️  Removing existing database...');
-    fs.unlinkSync(DB_PATH);
-  }
-
-  const db = new Database(DB_PATH);
+  // Build into a temporary file; the live database is only replaced once the new one is complete.
+  for (const f of [BUILD_PATH, `${BUILD_PATH}-wal`, `${BUILD_PATH}-shm`]) if (fs.existsSync(f)) fs.unlinkSync(f);
+  const db = new Database(BUILD_PATH);
   db.pragma('journal_mode = WAL');
 
   // ── Schema ──────────────────────────────────────────────────
@@ -169,37 +177,24 @@ async function main() {
     }
   });
 
-  const translations: { file: string; name: string; offset: number }[] = [
-    { file: 'KJV.json', name: 'KJV', offset: 0 },
-    { file: 'ASV.json', name: 'ASV', offset: 100000000 },
-    { file: 'BBE.json', name: 'BBE', offset: 200000000 },
-    { file: 'YLT.json', name: 'YLT', offset: 300000000 },
-    { file: 'Vulgate.json', name: 'VUL', offset: 400000000 },
+  const translations: { source: Source; name: string; offset: number }[] = [
+    { source: SOURCES.asv, name: 'ASV', offset: 100000000 },
+    { source: SOURCES.bbe, name: 'BBE', offset: 200000000 },
+    { source: SOURCES.ylt, name: 'YLT', offset: 300000000 },
+    { source: SOURCES.vulgate, name: 'VUL', offset: 400000000 },
   ];
 
   // The KJV comes from CrossWire's Strong's-tagged edition so the reader's text and tags always agree.
-  let taggedKjv: TaggedVerse[] = [];
-  try {
-    console.log("Loading Strong's-tagged KJV (CrossWire)...");
-    taggedKjv = parseKjvOsis(await downloadWithRetry<string>(KJV_OSIS_URL, 3, 'text'));
-    insertBible(taggedKjv.map(v => ({ book: v.book, chapter: v.chapter, verse: v.verse, text: tokensToText(v.tokens) })), 'KJV', 0);
-    console.log(`  KJV: ${taggedKjv.length} verses`);
-  } catch (e: any) {
-    console.log(`  Tagged KJV failed (${e.message}); falling back to untagged KJV.`);
-  }
+  console.log("Loading Strong's-tagged KJV (CrossWire)...");
+  const taggedKjv: TaggedVerse[] = parseKjvOsis(await fetchSource(SOURCES.kjvOsis));
+  insertBible(taggedKjv.map(v => ({ book: v.book, chapter: v.chapter, verse: v.verse, text: tokensToText(v.tokens) })), 'KJV', 0);
+  console.log(`  KJV: ${taggedKjv.length} verses`);
 
   for (const t of translations) {
-    if (t.name === 'KJV' && taggedKjv.length) continue;
-    try {
-      console.log(`Loading ${t.name}...`);
-      const bible = await downloadBible(t.file);
-      const flat = flattenBible(bible);
-      console.log(`  ${t.name}: ${flat.length} verses`);
-      insertBible(flat, t.name, t.offset);
-      console.log(`  ${t.name} loaded.`);
-    } catch (e: any) {
-      console.log(`  ${t.name} failed: ${e.message}`);
-    }
+    console.log(`Loading ${t.name}...`);
+    const flat = flattenBible(JSON.parse(await fetchSource(t.source)) as ScrollmapperBible);
+    insertBible(flat, t.name, t.offset);
+    console.log(`  ${t.name}: ${flat.length} verses`);
   }
 
   // Build FTS index
@@ -208,38 +203,31 @@ async function main() {
 
   // ── Cross-references ────────────────────────────────────────
   console.log('Loading cross-references...');
-  try {
-    const insertXref = db.prepare(`INSERT INTO cross_references
-      (from_book, from_chapter, from_verse_start, from_verse_end, to_book, to_chapter, to_verse_start, to_verse_end, votes)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+  const insertXref = db.prepare(`INSERT INTO cross_references
+    (from_book, from_chapter, from_verse_start, from_verse_end, to_book, to_chapter, to_verse_start, to_verse_end, votes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 
-    let xrefCount = 0;
-    const parseXrefSql = (sql: string): number => {
-      let count = 0;
-      const regex = /VALUES\s*\('([^']+)',\s*(\d+),\s*(\d+),\s*'([^']+)',\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)/gi;
-      let match;
-      while ((match = regex.exec(sql)) !== null) {
-        const fb = BOOK_MAP[match[1]], tb = BOOK_MAP[match[4]];
-        if (fb && tb) {
-          insertXref.run(fb, parseInt(match[2]), parseInt(match[3]), parseInt(match[3]),
-            tb, parseInt(match[5]), parseInt(match[6]), parseInt(match[7]) || parseInt(match[6]), parseInt(match[8]) || 0);
-          count++;
-        }
+  let xrefTotal = 0;
+  const parseXrefSql = (sql: string): number => {
+    let count = 0;
+    const regex = /VALUES\s*\('([^']+)',\s*(\d+),\s*(\d+),\s*'([^']+)',\s*(\d+),\s*(\d+),\s*(\d+),\s*(\d+)\)/gi;
+    let match;
+    while ((match = regex.exec(sql)) !== null) {
+      const fb = BOOK_MAP[match[1]], tb = BOOK_MAP[match[4]];
+      if (fb && tb) {
+        insertXref.run(fb, parseInt(match[2]), parseInt(match[3]), parseInt(match[3]),
+          tb, parseInt(match[5]), parseInt(match[6]), parseInt(match[7]) || parseInt(match[6]), parseInt(match[8]) || 0);
+        count++;
       }
-      return count;
-    };
-    const batchInsert = db.transaction((sql: string) => parseXrefSql(sql));
-
-    for (let i = 0; i <= 6; i++) {
-      try {
-        const sqlText = await downloadWithRetry<string>(`${BASE_URL}/sql/extras/cross_references_${i}.sql`, 3, 'text');
-        const c = batchInsert(sqlText);
-        xrefCount += c;
-        console.log(`  Loaded ${c} cross-references from file ${i}. Total: ${xrefCount}`);
-      } catch (e: any) { console.log(`  Cross-references file ${i} failed: ${e.message}`); }
     }
-  } catch (e: any) {
-    console.log(`  Cross-references loading failed: ${e.message}`);
+    return count;
+  };
+  const batchInsert = db.transaction((sql: string) => parseXrefSql(sql));
+
+  for (const [i, src] of SOURCES.crossReferences.entries()) {
+    const c = batchInsert(await fetchSource(src));
+    xrefTotal += c;
+    console.log(`  Loaded ${c} cross-references from file ${i}. Total: ${xrefTotal}`);
   }
 
   // ── Strong's Concordance ────────────────────────────────────
@@ -247,8 +235,8 @@ async function main() {
   const insertStrong = db.prepare(`INSERT OR REPLACE INTO strongs
     (id, original, transliteration, translit_plain, pronunciation, definition, kjv_usage, derivation, language)
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
-  for (const [url, language] of [[STRONGS_HEBREW_URL, 'hebrew'], [STRONGS_GREEK_URL, 'greek']] as const) {
-    const entries = parseLexicon(await downloadWithRetry<string>(url, 3, 'text'), language);
+  for (const [src, language] of [[SOURCES.strongsHebrew, 'hebrew'], [SOURCES.strongsGreek, 'greek']] as const) {
+    const entries = parseLexicon(await fetchSource(src), language);
     db.transaction(() => {
       for (const e of entries) {
         insertStrong.run(e.id, e.original, e.transliteration, plainText(e.transliteration), e.pronunciation, e.definition, e.kjv_usage, e.derivation, e.language);
@@ -275,7 +263,12 @@ async function main() {
   })();
   console.log(`  ${wordLinks} word links across ${taggedKjv.length} verses.`);
 
+  // A finished database is only read: a plain journal mode lets it work on read-only disks.
+  db.pragma('journal_mode = DELETE');
   db.close();
+  // Side files from an older database must not be paired with the new one
+  for (const f of [`${DB_PATH}-wal`, `${DB_PATH}-shm`]) if (fs.existsSync(f)) fs.unlinkSync(f);
+  fs.renameSync(BUILD_PATH, DB_PATH);
   const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
   console.log(`\n✅ Database seeded successfully in ${elapsed}s!`);
 
@@ -291,6 +284,9 @@ async function main() {
 
 main().catch((error) => {
   console.error('\n❌ Seeding failed:', error?.message || error);
-  console.error('   Try running again — downloads may have timed out.');
+  console.error('   The existing database (if any) was left unchanged. Try again — downloads may have timed out.');
+  for (const f of [BUILD_PATH, `${BUILD_PATH}-wal`, `${BUILD_PATH}-shm`]) {
+    try { fs.unlinkSync(f); } catch { /* not created */ }
+  }
   process.exit(1);
 });

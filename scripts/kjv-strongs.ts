@@ -5,10 +5,6 @@ import type { VerseToken } from '../src/lib/strongs';
 
 export type { VerseToken };
 
-export const STRONGS_HEBREW_URL = 'https://raw.githubusercontent.com/openscriptures/strongs/master/hebrew/strongs-hebrew-dictionary.js';
-export const STRONGS_GREEK_URL = 'https://raw.githubusercontent.com/openscriptures/strongs/master/greek/strongs-greek-dictionary.js';
-export const KJV_OSIS_URL = 'https://gitlab.com/crosswire-bible-society/kjv/-/raw/master/kjv.osis.xml';
-
 // OSIS book IDs in canonical order; index + 1 is the app's book number.
 export const OSIS_BOOKS = [
   'Gen', 'Exod', 'Lev', 'Num', 'Deut', 'Josh', 'Judg', 'Ruth', '1Sam', '2Sam',
