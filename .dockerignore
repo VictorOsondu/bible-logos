@@ -1,0 +1,12 @@
+.git
+.github
+node_modules
+.next
+data
+coverage
+test-results
+playwright-report
+*.tsbuildinfo
+.env*
+Dockerfile
+.dockerignore
