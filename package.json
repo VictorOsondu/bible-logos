@@ -1,6 +1,7 @@
 {
-  "name": "biblelens",
+  "name": "bible-logos",
   "version": "0.1.0",
+  "description": "Personal Bible study and research tool with a fully Strong's-tagged KJV. Based on BibleLens by Nicola Spieser.",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -13,7 +14,6 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "axios": "^1.7.9",
     "better-sqlite3": "^11.8.2",
     "clsx": "^2.1.1",
     "lucide-react": "^0.468.0",

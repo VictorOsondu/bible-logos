@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
 import { handleApiError } from '@/lib/api-utils';
+import { getKjvRenderings, getOccurrences, searchStrongs } from '@/lib/strongs';
+
+const intParam = (value: string | null, fallback: number, max: number) =>
+  Math.min(Math.max(parseInt(value || '') || fallback, 0), max);
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,26 +13,19 @@ export async function GET(request: NextRequest) {
   const book = searchParams.get('book');
   const chapter = searchParams.get('chapter');
   const verse = searchParams.get('verse');
+  const limit = intParam(searchParams.get('limit'), 100, 1000);
+  const offset = intParam(searchParams.get('offset'), 0, Number.MAX_SAFE_INTEGER);
 
   const db = getDb();
 
   if (strongs) {
-    // Get Strong's entry
     const entry = db.prepare('SELECT * FROM strongs WHERE id = ?').get(strongs);
     if (!entry) {
       return NextResponse.json({ error: 'Strong\'s number not found' }, { status: 404 });
     }
 
-    // Get all occurrences
-    const occurrences = db.prepare(`
-      SELECT ws.book, ws.chapter, ws.verse, ws.word, ws.position, v.text
-      FROM word_strongs ws
-      LEFT JOIN verses v ON v.book = ws.book AND v.chapter = ws.chapter AND v.verse = ws.verse AND v.translation = 'KJV'
-      WHERE ws.strongs_id = ?
-      ORDER BY ws.book, ws.chapter, ws.verse
-    `).all(strongs);
-
-    return NextResponse.json({ entry, occurrences });
+    const { totalWords, totalVerses, occurrences } = getOccurrences(db, strongs, { limit, offset });
+    return NextResponse.json({ entry, renderings: getKjvRenderings(db, strongs), totalWords, totalVerses, occurrences });
   }
 
   if (book && chapter && verse) {
@@ -44,9 +41,14 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ words });
   }
 
-  // List all Strong's entries
-  const all = db.prepare('SELECT id, original, transliteration, language FROM strongs ORDER BY id').all();
-  return NextResponse.json({ entries: all });
+  // Search / browse Strong's entries
+  const { total, entries } = searchStrongs(db, {
+    q: searchParams.get('q') || '',
+    language: searchParams.get('language') || undefined,
+    limit,
+    offset,
+  });
+  return NextResponse.json({ total, entries });
   } catch (error) {
     return handleApiError(error);
   }

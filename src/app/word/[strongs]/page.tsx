@@ -4,16 +4,20 @@ import { getDb } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
 import { langEmoji, langLabel } from '@/lib/provenance';
 import WordRelationships from '@/components/WordRelationships';
+import { getKjvRenderings, getOccurrences } from '@/lib/strongs';
+
+const PAGE_SIZE = 100;
 
 interface Props {
   params: { strongs: string };
+  searchParams: { page?: string };
 }
 
 function parseJson(s: string | null): any {
   try { return s ? JSON.parse(s) : null; } catch { return null; }
 }
 
-export default function WordPage({ params }: Props) {
+export default function WordPage({ params, searchParams }: Props) {
   const db = getDb();
   
   const entry = db.prepare('SELECT * FROM strongs WHERE id = ?').get(params.strongs) as any;
@@ -24,23 +28,31 @@ export default function WordPage({ params }: Props) {
         <Sidebar />
         <main className="flex-1 p-8">
           <h1 className="text-2xl text-parchment-100 font-serif">Strong&apos;s {params.strongs} not found</h1>
-          <p className="text-parchment-500 mt-2">This entry is not in the demo dataset.</p>
+          <p className="text-parchment-500 mt-2">Check the number, or search the <Link href="/concordance" className="text-gold-400 hover:text-gold-300">concordance</Link>.</p>
           <Link href="/" className="text-gold-400 mt-4 inline-block hover:text-gold-300">← Back to home</Link>
         </main>
       </>
     );
   }
 
-  const occurrences = db.prepare(`
-    SELECT ws.book, ws.chapter, ws.verse, ws.word, v.text
-    FROM word_strongs ws
-    LEFT JOIN verses v ON v.book = ws.book AND v.chapter = ws.chapter AND v.verse = ws.verse AND v.translation = 'KJV'
-    WHERE ws.strongs_id = ?
-    ORDER BY ws.book, ws.chapter, ws.verse
-  `).all(params.strongs) as any[];
+  const page = Math.max(parseInt(searchParams.page || '1') || 1, 1);
+  const { totalWords, totalVerses, occurrences } = getOccurrences(db, params.strongs, {
+    limit: PAGE_SIZE,
+    offset: (page - 1) * PAGE_SIZE,
+  });
+  const pages = Math.ceil(totalVerses / PAGE_SIZE);
+  const renderings = getKjvRenderings(db, params.strongs, 30);
 
-  // Get all Strong's entries for browse
-  const allEntries = db.prepare('SELECT id, original, transliteration, language FROM strongs ORDER BY id').all() as any[];
+  // Neighbouring entries for browsing
+  const prefix = params.strongs[0];
+  const num = parseInt(params.strongs.slice(1));
+  const neighbour = (dir: 1 | -1) => db.prepare(`
+    SELECT id, transliteration FROM strongs
+    WHERE id LIKE ? AND CAST(SUBSTR(id, 2) AS INTEGER) ${dir === 1 ? '>' : '<'} ?
+    ORDER BY CAST(SUBSTR(id, 2) AS INTEGER) ${dir === 1 ? 'ASC' : 'DESC'} LIMIT 1
+  `).get(`${prefix}%`, num) as { id: string; transliteration: string } | undefined;
+  const prev = neighbour(-1);
+  const next = neighbour(1);
 
   return (
     <>
@@ -56,19 +68,38 @@ export default function WordPage({ params }: Props) {
         <div className="bg-parchment-900 border border-parchment-800 rounded-2xl p-8 mb-8 text-center">
           <div className="text-6xl mb-4 font-serif">{entry.original}</div>
           <h1 className="text-2xl font-bold text-gold-400 mb-1">{entry.transliteration}</h1>
+          {entry.pronunciation && <p className="text-sm text-parchment-400 italic mb-1">{entry.pronunciation}</p>}
           <p className="text-sm text-parchment-500 mb-4">
             {entry.id} · {entry.language === 'hebrew' ? '🕎 Hebrew (Old Testament)' : '🏛️ Greek (New Testament)'}
           </p>
           <p className="text-lg text-parchment-200 max-w-2xl mx-auto leading-relaxed font-serif">
             {entry.definition}
           </p>
+          {entry.derivation && <p className="text-sm text-parchment-500 mt-3">{entry.derivation}</p>}
+          {entry.kjv_usage && (
+            <p className="text-sm text-parchment-400 mt-2"><span className="text-parchment-500">KJV usage:</span> {entry.kjv_usage}</p>
+          )}
         </div>
+
+        {renderings.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-parchment-200 mb-4">Translated in the KJV as</h2>
+            <div className="flex flex-wrap gap-2">
+              {renderings.map(r => (
+                <span key={r.word} className="text-sm px-3 py-1 rounded-full bg-parchment-900 border border-parchment-800 text-parchment-300">
+                  {r.word} <span className="text-parchment-500">{r.count}</span>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Occurrences */}
         {occurrences.length > 0 && (
           <div className="mb-8">
             <h2 className="text-xl font-semibold text-parchment-200 mb-4">
-              Occurrences ({occurrences.length})
+              {totalWords} occurrences in {totalVerses} verses
+              {pages > 1 && <span className="text-sm text-parchment-500 font-normal"> · page {page} of {pages}</span>}
             </h2>
             <div className="space-y-2">
               {occurrences.map((o: any, i: number) => {
@@ -77,7 +108,7 @@ export default function WordPage({ params }: Props) {
                 return (
                   <Link
                     key={i}
-                    href={`/reader/${slug}/${o.chapter}`}
+                    href={`/reader/${slug}/${o.chapter}#v${o.verse}`}
                     className="block p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all"
                   >
                     <div className="flex items-center gap-3 mb-1">
@@ -93,6 +124,12 @@ export default function WordPage({ params }: Props) {
                 );
               })}
             </div>
+            {pages > 1 && (
+              <div className="flex justify-between mt-4 text-sm">
+                {page > 1 ? <Link href={`/word/${entry.id}?page=${page - 1}`} className="text-gold-400 hover:text-gold-300">← Previous {PAGE_SIZE}</Link> : <span />}
+                {page < pages && <Link href={`/word/${entry.id}?page=${page + 1}`} className="text-gold-400 hover:text-gold-300">Next {PAGE_SIZE} →</Link>}
+              </div>
+            )}
           </div>
         )}
 
@@ -117,10 +154,10 @@ export default function WordPage({ params }: Props) {
 
           return (
             <div className="mb-8">
-              <h2 className="text-xl font-semibold text-parchment-200 mb-4">🔗 Übersetzungskette (Translation Chain)</h2>
+              <h2 className="text-xl font-semibold text-parchment-200 mb-4">🔗 Translation Chain</h2>
               <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6">
                 <p className="text-sm text-parchment-400 mb-4">
-                  Wie wurde dieses Wort durch die Geschichte übersetzt? Von der Originalsprache über die Septuaginta/Vulgata bis heute.
+                  How has this word been translated through history? From the original language, through the Septuagint and Vulgate, to today.
                 </p>
                 {chains.map(({ root, children, grandchildren }: any, ci: number) => (
                   <div key={ci} className="space-y-2">
@@ -136,7 +173,7 @@ export default function WordPage({ params }: Props) {
                     {/* Children */}
                     {children.map((child: any) => (
                       <div key={child.id} className="ml-8">
-                        <div className="flex items-center gap-1 text-gold-500 text-xs mb-1">↓ übersetzt als</div>
+                        <div className="flex items-center gap-1 text-gold-500 text-xs mb-1">↓ translated as</div>
                         <div className="flex items-center gap-2 p-3 rounded-lg bg-parchment-800/60">
                           <span className="text-xl">{langEmoji(child.language)}</span>
                           <Link href={child.language === 'latin' ? `/latin/${child.lemma}` : `/word/${child.language}/${child.lemma}`} className="font-serif text-lg text-parchment-100 hover:text-gold-400">
@@ -148,7 +185,7 @@ export default function WordPage({ params }: Props) {
                         {/* Grandchildren from this child */}
                         {grandchildren.filter((gc: any) => gc.parentLang === child.language).map((gc: any) => (
                           <div key={gc.id} className="ml-8 mt-2">
-                            <div className="flex items-center gap-1 text-gold-500 text-xs mb-1">↓ übersetzt als</div>
+                            <div className="flex items-center gap-1 text-gold-500 text-xs mb-1">↓ translated as</div>
                             <div className="flex items-center gap-2 p-3 rounded-lg bg-parchment-800/30">
                               <span className="text-xl">{langEmoji(gc.language)}</span>
                               <Link href={gc.language === 'latin' ? `/latin/${gc.lemma}` : `/word/${gc.language}/${gc.lemma}`} className="font-serif text-lg text-parchment-100 hover:text-gold-400">
@@ -173,30 +210,11 @@ export default function WordPage({ params }: Props) {
           <WordRelationships strongsId={params.strongs} />
         </div>
 
-        {/* Browse All */}
-        <div>
-          <h2 className="text-xl font-semibold text-parchment-200 mb-4">Browse Strong&apos;s Concordance</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-            {allEntries.map((e: any) => (
-              <Link
-                key={e.id}
-                href={`/word/${e.id}`}
-                className={`p-3 rounded-lg border transition-all ${
-                  e.id === params.strongs
-                    ? 'bg-gold-600/20 border-gold-500/50'
-                    : 'bg-parchment-900 border-parchment-800 hover:border-gold-500/30'
-                }`}
-              >
-                <div className="flex items-center gap-3">
-                  <span className="text-xl font-serif">{e.original}</span>
-                  <div>
-                    <span className="text-sm text-gold-400">{e.transliteration}</span>
-                    <span className="text-xs text-parchment-600 ml-2">{e.id}</span>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+        {/* Browse neighbouring entries */}
+        <div className="flex justify-between text-sm">
+          {prev ? <Link href={`/word/${prev.id}`} className="text-gold-400 hover:text-gold-300">← {prev.id} {prev.transliteration}</Link> : <span />}
+          <Link href="/concordance" className="text-parchment-400 hover:text-gold-400">Browse concordance</Link>
+          {next ? <Link href={`/word/${next.id}`} className="text-gold-400 hover:text-gold-300">{next.id} {next.transliteration} →</Link> : <span />}
         </div>
       </main>
     </>

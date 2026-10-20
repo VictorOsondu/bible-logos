@@ -10,6 +10,7 @@ import ManuscriptPanel from './ManuscriptPanel';
 import WordDNA from './WordDNA';
 import IntertextualPanel from './IntertextualPanel';
 import CopyButton from './CopyButton';
+import { primaryStrongs, type StrongsSummary, type VerseToken } from '@/lib/strongs';
 
 interface Verse {
   book: number;
@@ -17,16 +18,6 @@ interface Verse {
   verse: number;
   text: string;
   translation: string;
-}
-
-interface WordStrongs {
-  word: string;
-  strongs_id: string;
-  position: number;
-  original: string;
-  transliteration: string;
-  definition: string;
-  language: string;
 }
 
 interface LatinWordProv {
@@ -42,11 +33,12 @@ interface LatinWordProv {
 interface Props {
   verses: Verse[];
   translations: string[];
-  strongsWords?: Record<string, WordStrongs[]>;
+  kjvTokens?: Record<number, VerseToken[]>; // Strong's-tagged KJV, keyed by verse
+  lexicon?: Record<string, StrongsSummary>;
   latinWords?: Record<string, LatinWordProv[]>; // keyed by lemma
 }
 
-export default function VerseDisplay({ verses, translations, strongsWords, latinWords }: Props) {
+export default function VerseDisplay({ verses, translations, kjvTokens, lexicon, latinWords }: Props) {
   const [selectedVerse, setSelectedVerse] = useState<{ book: number; chapter: number; verse: number } | null>(null);
   const [showPanel, setShowPanel] = useState<'crossref' | 'strongs' | 'research' | 'manuscripts' | 'intertextual' | null>(null);
   const [selectedStrongs, setSelectedStrongs] = useState<string | null>(null);
@@ -68,13 +60,12 @@ export default function VerseDisplay({ verses, translations, strongsWords, latin
     }
   };
 
-  const handleWordClick = (word: string, strongsId: string) => {
+  const handleWordClick = (strongsId: string) => {
     setSelectedStrongs(strongsId);
     setShowPanel('strongs');
   };
 
   const renderVerseText = (v: Verse) => {
-    const key = `${v.book}-${v.chapter}-${v.verse}`;
 
     // For VUL verses with latin word data, render with WordDNA popups
     if (v.translation === 'VUL' && latinWords) {
@@ -96,30 +87,28 @@ export default function VerseDisplay({ verses, translations, strongsWords, latin
       });
     }
 
-    const words = strongsWords?.[key];
-    if (!words || words.length === 0) return v.text;
-    
-    const wordMap = new Map(words.map(w => [w.word.toLowerCase(), w]));
-    
-    return v.text.split(/(\s+)/).map((token, i) => {
-      const clean = token.toLowerCase().replace(/[^a-z]/g, '');
-      const sw = wordMap.get(clean);
-      if (sw) {
-        return (
-          <span
-            key={i}
-            className="strongs-word"
-            title={`${sw.strongs_id}: ${sw.transliteration} — ${sw.original}`}
-            onClick={(e) => {
-              e.stopPropagation();
-              handleWordClick(sw.word, sw.strongs_id);
-            }}
-          >
-            {token}
-          </span>
-        );
-      }
-      return token;
+    const tokens = v.translation === 'KJV' ? kjvTokens?.[v.verse] : undefined;
+    if (!tokens) return v.text;
+
+    return tokens.map((token, i) => {
+      if (typeof token === 'string') return token;
+      if (token.a) return <em key={i} className="text-parchment-300">{token.t}</em>;
+      const id = token.s && primaryStrongs(token.s);
+      if (!id) return token.t;
+      const info = lexicon?.[id];
+      return (
+        <span
+          key={i}
+          className="strongs-word"
+          title={info ? `${id}: ${info.transliteration} (${info.original}) — ${info.definition}` : id}
+          onClick={(e) => {
+            e.stopPropagation();
+            handleWordClick(id);
+          }}
+        >
+          {token.t}
+        </span>
+      );
     });
   };
 

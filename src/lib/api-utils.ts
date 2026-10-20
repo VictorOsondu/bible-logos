@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { DatabaseNotAvailableError } from './db';
 
 export function handleApiError(error: unknown): NextResponse {
+  // Next.js signals "this route is dynamic" by throwing during the build; let it through.
+  if ((error as { digest?: string })?.digest === 'DYNAMIC_SERVER_USAGE') throw error;
+
   if (error instanceof DatabaseNotAvailableError) {
     return NextResponse.json(
       { error: 'Database not available. Run "npm run seed" first.' },

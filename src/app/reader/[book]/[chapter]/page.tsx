@@ -6,6 +6,7 @@ import KeyboardNav from '@/components/KeyboardNav';
 import ChapterTools from '@/components/ChapterTools';
 import { getBookBySlug, getBookById, BIBLE_BOOKS } from '@/lib/bible-books';
 import { getDb } from '@/lib/db';
+import { getChapterTokens } from '@/lib/strongs';
 
 import type { Metadata } from 'next';
 
@@ -16,7 +17,7 @@ interface Props {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const bookInfo = getBookBySlug(params.book);
-  const title = bookInfo ? `${bookInfo.name} ${params.chapter} — BibleLens` : 'BibleLens';
+  const title = bookInfo ? `${bookInfo.name} ${params.chapter} — Bible Logos` : 'Bible Logos';
   return {
     title,
     description: bookInfo ? `Read ${bookInfo.name} chapter ${params.chapter} with multi-translation comparison, Strong's concordance, and cross-references.` : undefined,
@@ -42,22 +43,8 @@ export default function ReaderPage({ params, searchParams }: Props) {
     ORDER BY verse, translation
   `).all(bookInfo.id, chapter, ...selectedTranslations) as any[];
 
-  // Get Strong's words for this chapter
-  const strongsWords: Record<string, any[]> = {};
-  const words = db.prepare(`
-    SELECT ws.book, ws.chapter, ws.verse, ws.word, ws.strongs_id, ws.position, 
-           s.original, s.transliteration, s.definition, s.language
-    FROM word_strongs ws
-    JOIN strongs s ON s.id = ws.strongs_id
-    WHERE ws.book = ? AND ws.chapter = ?
-    ORDER BY ws.verse, ws.position
-  `).all(bookInfo.id, chapter) as any[];
-  
-  for (const w of words) {
-    const key = `${w.book}-${w.chapter}-${w.verse}`;
-    if (!strongsWords[key]) strongsWords[key] = [];
-    strongsWords[key].push(w);
-  }
+  // Strong's-tagged KJV text for this chapter
+  const { tokens: kjvTokens, lexicon } = getChapterTokens(db, bookInfo.id, chapter);
 
   // Load Latin word provenance for VUL hover
   const latinWords: Record<string, any[]> = {};
@@ -161,7 +148,8 @@ export default function ReaderPage({ params, searchParams }: Props) {
         <VerseDisplay
           verses={verses}
           translations={selectedTranslations}
-          strongsWords={strongsWords}
+          kjvTokens={kjvTokens}
+          lexicon={lexicon}
           latinWords={latinWords}
         />
 

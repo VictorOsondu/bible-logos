@@ -37,7 +37,11 @@ export function createTestDb(): Database.Database {
       id TEXT PRIMARY KEY,
       original TEXT NOT NULL,
       transliteration TEXT NOT NULL,
+      translit_plain TEXT NOT NULL DEFAULT '',
+      pronunciation TEXT,
       definition TEXT NOT NULL,
+      kjv_usage TEXT,
+      derivation TEXT,
       language TEXT NOT NULL
     );
 
@@ -52,6 +56,14 @@ export function createTestDb(): Database.Database {
     );
     CREATE INDEX idx_ws_verse ON word_strongs(book, chapter, verse);
     CREATE INDEX idx_ws_strongs ON word_strongs(strongs_id);
+
+    CREATE TABLE IF NOT EXISTS verse_tokens (
+      book INTEGER NOT NULL,
+      chapter INTEGER NOT NULL,
+      verse INTEGER NOT NULL,
+      tokens TEXT NOT NULL,
+      PRIMARY KEY (book, chapter, verse)
+    );
 
     CREATE TABLE IF NOT EXISTS word_provenance (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -128,14 +140,14 @@ export function seedTestDb(db: Database.Database): void {
 
   // Seed Strong's
   const insertStrong = db.prepare(
-    'INSERT INTO strongs (id, original, transliteration, definition, language) VALUES (?, ?, ?, ?, ?)'
+    'INSERT INTO strongs (id, original, transliteration, translit_plain, definition, kjv_usage, language) VALUES (?, ?, ?, ?, ?, ?, ?)'
   );
   db.transaction(() => {
-    insertStrong.run('G26', 'ἀγάπη', 'agapē', 'Love, affection, good will', 'greek');
-    insertStrong.run('H430', 'אֱלֹהִים', 'elohim', 'God, gods, judges', 'hebrew');
-    insertStrong.run('H1254', 'בָּרָא', 'bara', 'To create, shape, form', 'hebrew');
-    insertStrong.run('G2316', 'θεός', 'theos', 'God, the supreme Deity', 'greek');
-    insertStrong.run('G3056', 'λόγος', 'logos', 'Word, speech, reason', 'greek');
+    insertStrong.run('G26', 'ἀγάπη', 'agapē', 'agape', 'Love, affection, good will', 'charity, love', 'greek');
+    insertStrong.run('H430', 'אֱלֹהִים', 'elohim', 'elohim', 'God, gods, judges', 'God, gods', 'hebrew');
+    insertStrong.run('H1254', 'בָּרָא', 'bara', 'bara', 'To create, shape, form', 'create', 'hebrew');
+    insertStrong.run('G2316', 'θεός', 'theos', 'theos', 'God, the supreme Deity', 'God, god', 'greek');
+    insertStrong.run('G3056', 'λόγος', 'logos', 'logos', 'Word, speech, reason', 'word, saying', 'greek');
   })();
 
   // Seed word-strongs mappings
@@ -148,6 +160,11 @@ export function seedTestDb(db: Database.Database): void {
     insertWS.run(43, 3, 16, 'God', 'G2316', 2);
     insertWS.run(43, 3, 16, 'loved', 'G26', 4);
   })();
+
+  db.prepare('INSERT INTO verse_tokens (book, chapter, verse, tokens) VALUES (?, ?, ?, ?)').run(
+    1, 1, 1,
+    JSON.stringify(['In the beginning ', { t: 'God', s: ['H430'] }, ' ', { t: 'created', s: ['H853', 'H1254'] }, ' the heaven.'])
+  );
 
   // Seed word provenance
   const insertProv = db.prepare(`INSERT INTO word_provenance
