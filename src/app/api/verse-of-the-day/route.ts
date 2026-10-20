@@ -41,7 +41,7 @@ export async function GET(request: NextRequest) {
   const [book, chapter, verse] = NOTABLE_VERSES[idx];
 
   const db = getDb();
-  const translations = ['KJV', 'ASV', 'WEB', 'VUL'];
+  const translations = ['KJV', 'ASV', 'BBE', 'VUL'];
   const texts: Record<string, string> = {};
 
   for (const t of translations) {

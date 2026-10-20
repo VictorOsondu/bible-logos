@@ -221,7 +221,7 @@ async function main() {
   const translations: { file: string; name: string; offset: number }[] = [
     { file: 'KJV.json', name: 'KJV', offset: 0 },
     { file: 'ASV.json', name: 'ASV', offset: 100000000 },
-    { file: 'BBE.json', name: 'WEB', offset: 200000000 },
+    { file: 'BBE.json', name: 'BBE', offset: 200000000 },
     { file: 'YLT.json', name: 'YLT', offset: 300000000 },
     { file: 'Vulgate.json', name: 'VUL', offset: 400000000 },
   ];

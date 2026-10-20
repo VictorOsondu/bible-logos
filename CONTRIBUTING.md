@@ -14,7 +14,7 @@ Thank you for your interest in contributing to BibleLens! This project aims to b
 
 - **Tech stack**: Next.js 14 (App Router), TypeScript, Tailwind CSS, SQLite (better-sqlite3)
 - **Code style**: TypeScript strict mode, functional components, Tailwind for styling
-- **Testing**: We welcome test contributions! Jest + React Testing Library preferred.
+- **Testing**: We welcome test contributions! Vitest + React Testing Library (`npm test`).
 
 ## Areas Where Help Is Needed
 

@@ -87,7 +87,7 @@ export default async function SearchPage({ searchParams }: Props) {
                 className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-3 text-sm border border-parchment-700">
                 <option value="KJV" selected={!searchParams.translation || searchParams.translation === 'KJV'}>KJV</option>
                 <option value="ASV" selected={searchParams.translation === 'ASV'}>ASV</option>
-                <option value="WEB" selected={searchParams.translation === 'WEB'}>WEB</option>
+                <option value="BBE" selected={searchParams.translation === 'BBE'}>BBE</option>
                 <option value="YLT" selected={searchParams.translation === 'YLT'}>YLT</option>
               </select>
             </div>

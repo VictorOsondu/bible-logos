@@ -2,7 +2,7 @@
 
 # 📖 BibleLens
 
-### The world's most powerful open-source Bible research platform.
+### An open-source, analytical Bible research platform.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
@@ -26,11 +26,11 @@ BibleLens brings **data science, academic research, and textual analysis** to Bi
 **What makes it different:**
 
 - 🔬 **Data science layer** — word frequency analysis, sentiment tracking, authorship statistics, network graphs
-- 🎓 **Academic integration** — live queries to Semantic Scholar, PubMed, JSTOR, Google Scholar
+- 🎓 **Academic integration** — queries to Semantic Scholar, PubMed, OpenLibrary and more
 - 📜 **Manuscript awareness** — which ancient codices attest each passage, textual variants between manuscripts
 - 🗺️ **Historical context** — interactive timelines, geographic mapping, archaeological evidence
 - 🤖 **AI research links** — one-click queries to Perplexity, ChatGPT, Claude for deeper analysis
-- ⚖️ **Multi-translation comparison** — up to 6 translations side-by-side with diff highlighting
+- ⚖️ **Multi-translation comparison** — translations side-by-side with diff highlighting
 - 🔗 **340,000+ cross-references** — bidirectional verse connections with categories
 - 📖 **Strong's concordance** — click any word for Hebrew/Greek originals, definitions, all occurrences
 
@@ -40,14 +40,14 @@ BibleLens brings **data science, academic research, and textual analysis** to Bi
 
 Read any chapter with multiple translations displayed simultaneously. Navigate the full Bible — Genesis to Revelation — with an intuitive book/chapter sidebar.
 
-- **4 translations**: KJV, ASV, BBE (WEB), YLT — loaded from public domain sources
+- **5 translations**: KJV, ASV, BBE, YLT, Latin Vulgate — loaded from public domain sources
 - **31,102 verses** fully indexed and searchable
 - Verse-by-verse parallel display
 - Responsive: works on mobile and desktop
 
 ### ⚖️ Translation Comparison
 
-Place up to 6 translations side-by-side for any verse. Words that differ between translations are **highlighted in gold**, making textual divergence immediately visible.
+Place translations side-by-side for any verse. Words that differ between translations are **highlighted in gold**, making textual divergence immediately visible.
 
 ### 🔗 Cross-References
 
