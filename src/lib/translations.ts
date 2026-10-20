@@ -24,6 +24,7 @@ export const TRANSLATIONS: Translation[] = [
   { id: 'UST', name: 'unfoldingWord Simplified Text', licence: 'CC BY-SA 4.0, unfoldingWord', note: 'Still in progress: Numbers, 1–2 Chronicles, Ecclesiastes, Isaiah, Jeremiah and Ezekiel are not yet published. Words in {braces} are implied by the original.' },
   { id: 'OEB', name: 'Open English Bible', licence: 'Public domain (CC0)', note: 'Still in progress: parts of the Old Testament are not yet translated.' },
   { id: 'WMB', name: 'World Messianic Bible', licence: 'Public domain (the name is a trademark)', note: 'The World English Bible with Hebrew forms of names.' },
+  { id: 'HTL', name: 'Hebrew Old Testament (transliterated)', licence: 'CC BY 4.0, STEPBible.org (Tyndale House, Cambridge)', note: 'The Hebrew text word for word in Latin letters; a capital marks the stressed syllable. Hebrew Scriptures only.' },
   { id: 'JPS', name: 'Jewish Publication Society Tanakh', licence: 'Public domain', note: 'Hebrew Scriptures only; renumbered to match the English verse numbers.' },
   { id: 'CPDV', name: 'Catholic Public Domain Version', licence: 'Public domain', note: 'Psalms are numbered as in the Latin Vulgate.' },
   { id: 'WYC', name: 'Wycliffe Bible', licence: 'Public domain', note: 'Middle English. Psalms are numbered as in the Latin Vulgate.' },

@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  cleanText, parseChapterBundle, parseScrollmapper, parseUsfm, parseUsfx, parseVersificationMappings, parseZefania, toEnglishVersification,
+  cleanText, parseChapterBundle, parseScrollmapper, parseTahot, parseUsfm, parseUsfx, readableTransliteration, parseVersificationMappings, parseZefania, toEnglishVersification,
 } from '../../scripts/bibles';
 
 describe('Bible text parsers', () => {
@@ -48,6 +48,36 @@ describe('USFM', () => {
       { book: 19, chapter: 24, verse: 1, text: 'A psalm of David. The earth.' },
       { book: 19, chapter: 23, verse: 1, text: 'Yahweh is my shepherd;' },
       { book: 19, chapter: 23, verse: 2, text: 'He makes me lie down.' },
+    ]);
+  });
+});
+
+describe('TAHOT transliteration', () => {
+  it('drops syllable dots, prefix slashes and placeholders but keeps the stress', () => {
+    expect(readableTransliteration('be./re.Shit')).toBe('bereShit');
+    expect(readableTransliteration("Kedor-la.'\u05B9o.mer")).toBe("Kedor-la'omer");
+    expect(readableTransliteration('[ ]')).toBe('');
+  });
+
+  it('joins words into verses, linking maqqef words and placing psalm titles before verse 1', () => {
+    const rows = [
+      'Eng (Heb) Ref & Type\tHebrew\tTransliteration\tTranslation',
+      'Gen.1.1#01=L\tבְּ/רֵאשִׁ֖ית\tbe./re.Shit\tin/ beginning',
+      'Gen.1.1#02=L\tבָּרָ֣א\tba.Ra\'\the created',
+      'Gen.4.8#03=L\tאֶל\t\'el-\tto',
+      'Gen.4.8#04=L\tהֶבֶל\tHe.vel\tAbel',
+      'Gen.4.8#0501=X\tנֵלְכָה\tne.le.Khah\tlet us go',
+      'Psa.23.0(23.1)#01=L\tמִזְמוֹר\tmiz.Mor\ta psalm',
+      'Psa.23.1(23.1)#03=L\tיְהוָה\tYah.weh\tYahweh',
+      'Mal.4.1(3.19)#01=L\tכִּי\tki-\tfor',
+      'Mal.4.1(3.19)#02=L\tהִנֵּה\thi.Neh\tbehold',
+      '1Sa.9.1#04=Q(K)\t\t[ ]\t',
+    ].join('\n');
+    expect(parseTahot(rows)).toEqual([
+      { book: 1, chapter: 1, verse: 1, text: "bereShit baRa'" },
+      { book: 1, chapter: 4, verse: 8, text: "'el-Hevel" },
+      { book: 19, chapter: 23, verse: 1, text: 'mizMor Yahweh' },
+      { book: 39, chapter: 4, verse: 1, text: 'ki-hiNeh' },
     ]);
   });
 });

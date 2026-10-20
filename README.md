@@ -6,7 +6,7 @@
 
 **A simple but powerful tool for personal Bible study and research.**
 
-Read 18 openly licensed translations side by side, open the Hebrew or Greek behind every word of the King James Version, and follow 430,000 cross-references, all on your own computer.
+Read 19 openly licensed translations side by side, including the Hebrew Old Testament in transliteration, open the Hebrew or Greek behind every word of the King James Version, and follow 430,000 cross-references, all on your own computer.
 
 [![CI](https://github.com/VictorOsondu/bible-logos/actions/workflows/ci.yml/badge.svg)](https://github.com/VictorOsondu/bible-logos/actions/workflows/ci.yml)
 [![Licence: MIT](https://img.shields.io/badge/licence-MIT-a0701a.svg)](LICENSE)
@@ -32,7 +32,7 @@ Every word of the King James Version is linked to its Hebrew or Greek original. 
 
 ### Translations side by side
 
-Choose any of the [18 translations](#translations) and read them verse by verse. Every translation is stored with the KJV's verse numbers, so they always line up, and each one's licence is credited beneath the text.
+Choose any of the [19 translations](#translations) and read them verse by verse. Every translation is stored with the KJV's verse numbers, so they always line up, and each one's licence is credited beneath the text.
 
 <table>
   <tr>
@@ -104,12 +104,27 @@ A calm, uncluttered layout that puts the text first:
 | UST | unfoldingWord® Simplified Text | CC BY-SA 4.0, unfoldingWord | As for the ULT; words in {braces} are implied by the original |
 | OEB | Open English Bible | Public domain (CC0) | In progress: parts of the Old Testament not yet translated |
 | WMB | World Messianic Bible | Public domain (the name is a trademark) | The World English Bible with Hebrew forms of names |
+| HTL | Hebrew Old Testament, transliterated | CC BY 4.0, STEPBible.org (Tyndale House, Cambridge) | The Hebrew word for word in Latin letters (see below) |
 | JPS | Jewish Publication Society Tanakh (1917) | Public domain | Hebrew Scriptures only; renumbered to the English verse numbers |
 | CPDV | Catholic Public Domain Version | Public domain | Psalms numbered as in the Latin Vulgate |
 | WYC | Wycliffe Bible | Public domain | Middle English; Psalms numbered as in the Latin Vulgate |
 | VUL | Latin Vulgate | Public domain | |
 
 Only the 66 books of the Protestant canon are included for now.
+
+### Reading the Hebrew in transliteration
+
+**HTL** gives the Hebrew Old Testament word for word in Latin letters, so you can follow the sound and shape of the original beside an English translation without reading Hebrew script. It comes from STEPBible's *Translators Amalgamated Hebrew OT* (TAHOT), which follows the Leningrad Codex:
+
+> **Genesis 1:1** bereShit baRa' 'EloHim 'et hashaMayim ve'Et ha'Aretz
+
+- A **capital letter** marks the stressed syllable: *bereShit* is said *be-re-SHEET*.
+- An **apostrophe** stands for the letters aleph and ayin, which have no English equivalent.
+- **Hyphens** join words the Hebrew links with a maqqef, as in *'el-Hevel* ("to Abel").
+- Where the Hebrew margin tells readers to say a word differently from how it is written (*qere*), the spoken form is given.
+- Words found only in other ancient witnesses, such as the Septuagint, are left out.
+- The divine name is shown as *Yahweh*, as in TAHOT.
+- Verse numbers follow the English Bible; psalm titles, which the Hebrew counts as verse 1, begin verse 1.
 
 ## Getting started
 
@@ -174,6 +189,7 @@ The seed script downloads everything below; none of it is stored in this reposit
 | [wldeh/bible-api](https://github.com/wldeh/bible-api) | Literal Standard Version text | CC BY-SA 4.0 |
 | [unfoldingWord on Door43](https://git.door43.org/unfoldingWord) (release v91) | ULT and UST texts | CC BY-SA 4.0 |
 | [eBible.org](https://ebible.org/Scriptures/details.php?id=engwmb) | World Messianic Bible text | Public domain |
+| [STEPBible Data](https://github.com/STEPBible/STEPBible-Data) (TAHOT) | Hebrew Old Testament transliteration | CC BY 4.0, STEPBible.org |
 | [BibleNLP/ebible](https://github.com/BibleNLP/ebible) | English–Hebrew verse number mapping (Paratext `eng.vrs`), used to renumber the JPS | Reference data (verse numbers only) |
 | [OpenBible.info](https://www.openbible.info/labs/cross-references/) (via scrollmapper) | Cross-references | CC BY |
 | [Semantic Scholar](https://www.semanticscholar.org/), [PubMed](https://pubmed.ncbi.nlm.nih.gov/), [Open Library](https://openlibrary.org/) | Live research results | Queried on demand |

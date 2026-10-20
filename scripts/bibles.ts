@@ -185,3 +185,48 @@ export function toEnglishVersification(verses: FlatVerse[], mappings: Map<Ref, R
   }
   return [...byRef.values()];
 }
+
+// STEPBible's book abbreviations in TAHOT, in canonical order
+const TAHOT_BOOKS = [
+  'Gen', 'Exo', 'Lev', 'Num', 'Deu', 'Jos', 'Jdg', 'Rut', '1Sa', '2Sa', '1Ki', '2Ki', '1Ch', '2Ch', 'Ezr', 'Neh',
+  'Est', 'Job', 'Psa', 'Pro', 'Ecc', 'Sng', 'Isa', 'Jer', 'Lam', 'Ezk', 'Dan', 'Hos', 'Jol', 'Amo', 'Oba', 'Jon',
+  'Mic', 'Nam', 'Hab', 'Zep', 'Hag', 'Zec', 'Mal',
+];
+
+/**
+ * Makes a TAHOT transliteration easier to read: syllable dots and the slashes between prefixes are
+ * removed, while the capital letter that marks the stressed syllable is kept ("be./re.Shit" → "bereShit").
+ * Stray Hebrew points and "[ ]" placeholders (words read aloud but not written) are dropped.
+ */
+export const readableTransliteration = (word: string) =>
+  word.replace(/\[\s*\]/g, '').replace(/[֐-׿]/g, '').replace(/[./]/g, '').replace(/\s+/g, ' ').trim();
+
+/**
+ * The transliteration column of STEPBible's Translators Amalgamated Hebrew OT (TAHOT), one row per
+ * word, joined into verses. Rows carry the English reference first ("Psa.3.0(3.1)"), so no
+ * renumbering is needed; a psalm title (English verse 0) is joined to the start of verse 1. Words
+ * marked X come from other ancient witnesses rather than the Hebrew text and are left out.
+ */
+export function parseTahot(text: string): FlatVerse[] {
+  const verses = new Map<Ref, FlatVerse>();
+  const titles = new Map<Ref, string>();
+  for (const line of text.split('\n')) {
+    const row = /^([1-3]?[A-Z][a-z]+)\.(\d+)\.(\d+)(?:\([^)]*\))?#\d+=([^\t]*)\t[^\t]*\t([^\t]*)/.exec(line);
+    if (!row || row[4] === 'X') continue;
+    const book = TAHOT_BOOKS.indexOf(row[1]) + 1;
+    const word = readableTransliteration(row[5]);
+    if (!book || !word) continue;
+    const [chapter, verse] = [Number(row[2]), Number(row[3])];
+    const key = ref(book, chapter, Math.max(verse, 1));
+    const previous = verse === 0 ? titles.get(key) : verses.get(key)?.text;
+    // A word ending in a hyphen (maqqef) is joined to the next one
+    const joined = previous === undefined ? word : previous.endsWith('-') ? previous + word : `${previous} ${word}`;
+    if (verse === 0) titles.set(key, joined);
+    else verses.set(key, { book, chapter, verse, text: joined });
+  }
+  for (const [key, title] of titles) {
+    const verse = verses.get(key);
+    if (verse) verse.text = `${title} ${verse.text}`;
+  }
+  return finish([...verses.values()]);
+}

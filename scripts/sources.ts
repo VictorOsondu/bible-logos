@@ -10,6 +10,7 @@ const OPEN_SCRIPTURES = 'https://raw.githubusercontent.com/openscriptures/strong
 const CROSSWIRE = 'https://gitlab.com/crosswire-bible-society/kjv/-/raw/d490be7e34762deb2c76cb2c1306d4808e27890d';
 const OPEN_BIBLES = 'https://raw.githubusercontent.com/seven1m/open-bibles/f257a3559025c3f873b48a75019f53a9354ed7de';
 const BIBLE_API = 'https://raw.githubusercontent.com/wldeh/bible-api/1d6987e268fcadb1e96ceb487e3d365a5e837f4a/bibles';
+const STEPBIBLE = 'https://raw.githubusercontent.com/STEPBible/STEPBible-Data/ed476a8ee6e3f7b3a46fc48af6c7dabc02387b1d/Translators%20Amalgamated%20OT%2BNT';
 const EBIBLE_CORPUS = 'https://raw.githubusercontent.com/BibleNLP/ebible/32326194b9131b6881d902e1fec191719fe56e2d';
 
 export interface Source {
@@ -45,7 +46,12 @@ export type TranslationSource =
   | { format: 'scrollmapper' | 'zefania' | 'usfx'; source: Source; hebrewVerses?: boolean }
   | { format: 'zipped-usfx'; source: Source; optional: true }
   | { format: 'chapters'; source: ChapterSource }
-  | { format: 'usfm-books'; source: FileSetSource };
+  | { format: 'usfm-books'; source: FileSetSource }
+  | { format: 'tahot'; sources: Source[] };
+
+/** One part of STEPBible's Translators Amalgamated Hebrew OT (TAHOT), e.g. 'Gen-Deu'. */
+const tahot = (books: string, sha256: string): Source =>
+  source(`${STEPBIBLE}/TAHOT%20${books}%20-%20Translators%20Amalgamated%20Hebrew%20OT%20-%20STEPBible.org%20CC%20BY.txt`, sha256);
 
 // Books unfoldingWord has not yet released in the ULT and UST
 const UNFOLDINGWORD_UNRELEASED = ['NUM', '1CH', '2CH', 'ECC', 'ISA', 'JER', 'EZK'];
@@ -106,6 +112,16 @@ export const TRANSLATION_SOURCES: Record<string, TranslationSource> = {
   // eBible.org does not version its files, so when it publishes an update the seed skips the WMB
   // until this hash is refreshed
   WMB: { format: 'zipped-usfx', source: source('https://ebible.org/Scriptures/engwmb_usfx.zip', '98f05b0e1dd1c0e37656b4f862c1e9affc4112d7b9d745d54c7d04a7b2cd63cb'), optional: true },
+  // The Hebrew Old Testament in transliteration, from STEPBible (CC BY 4.0)
+  HTL: {
+    format: 'tahot',
+    sources: [
+      tahot('Gen-Deu', 'e9b8546ee48fe0bfc57c3b70f5f40e98d96580e803526d19026224e31753368b'),
+      tahot('Jos-Est', '195fee1dc3653bab33701f170734eb894ed647c10cd08cc61749375fe8b73775'),
+      tahot('Job-Sng', 'bb508af3af07822fca84cc43a0eba79eb70eecf672aabc0245b8d8cecf329d96'),
+      tahot('Isa-Mal', 'f3ded203d2a74d6368932c97ae550d1d0754b271af491dc0dedf36fe3ba0bcc5'),
+    ],
+  },
   JPS: scrollmapper('JPS.json', 'cb698cfbf2e97843dd4357b725c96ac6e9b2f3f23c5e3e3f6a3cdb5912ca183a', true),
   CPDV: scrollmapper('CPDV.json', 'f91a5dc9556d77a441a18adff5a272f8f4b1fea1745e01d0c3c2a93aa7929a38'),
   WYC: scrollmapper('Wycliffe.json', '61a5d8486068d3b9d66fa2bb3664ecd9db3d3d81a3dbe5267300663336854edf'),
