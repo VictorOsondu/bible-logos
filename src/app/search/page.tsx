@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { toFtsQuery } from '@/lib/search';
 import { getBookById, BIBLE_BOOKS } from '@/lib/bible-books';
 
 export const dynamic = 'force-dynamic';
@@ -8,16 +9,17 @@ interface Props {
 }
 
 async function searchVerses(params: Props['searchParams']) {
-  if (!params.q) return { results: [], total: 0 };
+  const match = toFtsQuery(params.q || '');
+  if (!match) return { results: [], total: 0 };
   
   // Use internal API — this runs server-side
   const { getDb } = await import('@/lib/db');
   const db = getDb();
   
-  const q = params.q;
   const translation = params.translation || 'KJV';
   const limit = 50;
-  const offset = parseInt(params.offset || '0');
+  const offset = Math.max(parseInt(params.offset || '0') || 0, 0);
+  const book = parseInt(params.book || '') || null;
   
   let query = `
     SELECT v.book, v.chapter, v.verse, v.text, v.translation
@@ -25,11 +27,11 @@ async function searchVerses(params: Props['searchParams']) {
     JOIN verses v ON v.id = fts.rowid
     WHERE fts.text MATCH ? AND v.translation = ?
   `;
-  const queryParams: any[] = [q, translation];
-  
-  if (params.book) {
+  const queryParams: any[] = [match, translation];
+
+  if (book) {
     query += ' AND v.book = ?';
-    queryParams.push(parseInt(params.book));
+    queryParams.push(book);
   }
   if (params.testament === 'OT') query += ' AND v.book <= 39';
   if (params.testament === 'NT') query += ' AND v.book >= 40';
@@ -41,14 +43,15 @@ async function searchVerses(params: Props['searchParams']) {
     const results = db.prepare(query).all(...queryParams);
     
     let countQuery = `SELECT COUNT(*) as total FROM verses_fts fts JOIN verses v ON v.id = fts.rowid WHERE fts.text MATCH ? AND v.translation = ?`;
-    const countParams: any[] = [q, translation];
-    if (params.book) { countQuery += ' AND v.book = ?'; countParams.push(parseInt(params.book)); }
+    const countParams: any[] = [match, translation];
+    if (book) { countQuery += ' AND v.book = ?'; countParams.push(book); }
     if (params.testament === 'OT') countQuery += ' AND v.book <= 39';
     if (params.testament === 'NT') countQuery += ' AND v.book >= 40';
     
     const total = (db.prepare(countQuery).get(...countParams) as any).total;
     return { results, total, limit, offset };
-  } catch {
+  } catch (error) {
+    console.error('Search failed:', error);
     return { results: [], total: 0, limit, offset };
   }
 }
@@ -56,7 +59,14 @@ async function searchVerses(params: Props['searchParams']) {
 export default async function SearchPage({ searchParams }: Props) {
   const data = await searchVerses(searchParams);
   const q = searchParams.q || '';
-  const currentOffset = parseInt(searchParams.offset || '0');
+  const currentOffset = Math.max(parseInt(searchParams.offset || '0') || 0, 0);
+  const pageHref = (offset: number) => `/search?${new URLSearchParams({
+    q,
+    offset: String(offset),
+    testament: searchParams.testament || '',
+    translation: searchParams.translation || 'KJV',
+    ...(searchParams.book ? { book: searchParams.book } : {}),
+  })}`;
 
   return (
     <>
@@ -125,7 +135,7 @@ export default async function SearchPage({ searchParams }: Props) {
         {data.total > 50 && (
           <div className="flex gap-2 mt-6 justify-center">
             {currentOffset > 0 && (
-              <Link href={`/search?q=${q}&offset=${currentOffset - 50}&testament=${searchParams.testament || ''}&translation=${searchParams.translation || 'KJV'}`}
+              <Link href={pageHref(currentOffset - 50)}
                 className="px-4 py-2 rounded-lg bg-parchment-800 text-gold-400 hover:bg-parchment-700 text-sm">
                 ← Previous
               </Link>
@@ -134,7 +144,7 @@ export default async function SearchPage({ searchParams }: Props) {
               {currentOffset + 1}–{Math.min(currentOffset + 50, data.total)} of {data.total}
             </span>
             {currentOffset + 50 < data.total && (
-              <Link href={`/search?q=${q}&offset=${currentOffset + 50}&testament=${searchParams.testament || ''}&translation=${searchParams.translation || 'KJV'}`}
+              <Link href={pageHref(currentOffset + 50)}
                 className="px-4 py-2 rounded-lg bg-parchment-800 text-gold-400 hover:bg-parchment-700 text-sm">
                 Next →
               </Link>

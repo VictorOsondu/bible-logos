@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useJson } from '@/lib/useJson';
+import LoadError from './LoadError';
 import Link from 'next/link';
 import { getBookById } from '@/lib/bible-books';
 
@@ -32,22 +33,11 @@ interface WordData {
 }
 
 export default function StrongsPanel({ strongsId }: { strongsId: string }) {
-  const [data, setData] = useState<WordData | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`/api/word?strongs=${strongsId}&limit=50`)
-      .then(r => r.json())
-      .then(d => {
-        setData(d.entry ? d : null);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [strongsId]);
+  const { data, loading, error, retry } = useJson<WordData>(`/api/word?strongs=${encodeURIComponent(strongsId)}&limit=50`);
 
   if (loading) return <div className="text-parchment-500 text-sm animate-pulse">Loading…</div>;
-  if (!data) return <div className="text-parchment-500 text-sm">Strong&apos;s entry not found.</div>;
+  if (error) return <LoadError what="this word" onRetry={retry} />;
+  if (!data?.entry) return <div className="text-parchment-500 text-sm">Strong&apos;s entry not found.</div>;
   const { entry, renderings, totalWords, totalVerses, occurrences } = data;
 
   return (

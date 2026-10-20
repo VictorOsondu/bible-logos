@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useJson } from '@/lib/useJson';
+import LoadError from './LoadError';
 import Link from 'next/link';
 
 interface CoOccurrence {
@@ -17,16 +18,9 @@ interface Props {
 }
 
 export default function WordRelationships({ strongsId }: Props) {
-  const [data, setData] = useState<{ coOccurrences: CoOccurrence[]; distribution: { oldTestament: number; newTestament: number } } | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`/api/word-relationships?id=${strongsId}`)
-      .then(r => r.json())
-      .then(d => { setData(d); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, [strongsId]);
+  const { data, loading, error, retry } = useJson<{ coOccurrences: CoOccurrence[]; distribution: { oldTestament: number; newTestament: number } }>(
+    `/api/word-relationships?id=${encodeURIComponent(strongsId)}`
+  );
 
   if (loading) {
     return (
@@ -39,6 +33,7 @@ export default function WordRelationships({ strongsId }: Props) {
     );
   }
 
+  if (error) return <LoadError what="related words" onRetry={retry} />;
   if (!data || (!data.coOccurrences?.length && !data.distribution)) return null;
 
   const total = (data.distribution?.oldTestament || 0) + (data.distribution?.newTestament || 0);

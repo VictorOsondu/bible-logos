@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useJson } from '@/lib/useJson';
+import LoadError from './LoadError';
 import Link from 'next/link';
 import { getBookById } from '@/lib/bible-books';
 
@@ -14,23 +15,14 @@ interface CrossRef {
 }
 
 export default function CrossRefPanel({ book, chapter, verse }: { book: number; chapter: number; verse: number }) {
-  const [fromRefs, setFromRefs] = useState<CrossRef[]>([]);
-  const [toRefs, setToRefs] = useState<CrossRef[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`/api/crossrefs?book=${book}&chapter=${chapter}&verse=${verse}`)
-      .then(r => r.json())
-      .then(data => {
-        setFromRefs(data.from || []);
-        setToRefs(data.to || []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [book, chapter, verse]);
+  const { data, loading, error, retry } = useJson<{ from: CrossRef[]; to: CrossRef[] }>(
+    `/api/crossrefs?book=${book}&chapter=${chapter}&verse=${verse}`
+  );
 
   if (loading) return <div className="text-parchment-500 text-sm animate-pulse">Loading cross-references…</div>;
+  if (error) return <LoadError what="cross-references" onRetry={retry} />;
+  const fromRefs = data?.from ?? [];
+  const toRefs = data?.to ?? [];
 
   const total = fromRefs.length + toRefs.length;
   if (total === 0) return <div className="text-parchment-500 text-sm">No cross-references found.</div>;

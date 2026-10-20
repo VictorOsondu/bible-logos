@@ -38,6 +38,9 @@ export function plainText(s: string): string {
 
 const NUMERIC_ORDER = 'language DESC, CAST(SUBSTR(id, 2) AS INTEGER)';
 
+/** Escapes LIKE wildcards so "%" or "_" in a search match themselves (use with ESCAPE '\\'). */
+export const escapeLike = (s: string) => s.replace(/[\\%_]/g, c => `\\${c}`);
+
 export function searchStrongs(
   db: Database.Database,
   { q = '', language, limit = 100, offset = 0 }: { q?: string; language?: string; limit?: number; offset?: number }
@@ -53,10 +56,10 @@ export function searchStrongs(
   const orderParams: (string | number)[] = [];
   if (term) {
     const id = /^[HG]?\d+$/i.test(term) ? term.toUpperCase() : null;
-    const like = `%${plainText(term)}%`;
-    where.push(`(${id ? (/^\d/.test(id) ? 'SUBSTR(id, 2) = ? OR ' : 'id = ? OR ') : ''}translit_plain LIKE ? OR original LIKE ? OR LOWER(definition) LIKE ? OR LOWER(kjv_usage) LIKE ?)`);
+    const like = `%${escapeLike(plainText(term))}%`;
+    where.push(`(${id ? (/^\d/.test(id) ? 'SUBSTR(id, 2) = ? OR ' : 'id = ? OR ') : ''}translit_plain LIKE ? ESCAPE '\\' OR original LIKE ? ESCAPE '\\' OR LOWER(definition) LIKE ? ESCAPE '\\' OR LOWER(kjv_usage) LIKE ? ESCAPE '\\')`);
     if (id) params.push(id);
-    params.push(like, `%${term}%`, like, like);
+    params.push(like, `%${escapeLike(term)}%`, like, like);
 
     // Best matches first: the exact number, then the transliteration, then English meanings
     // where the term starts a word ("grace" but not "disgrace"), then the most-used words.
@@ -66,8 +69,8 @@ export function searchStrongs(
       `LOWER(definition || ' ' || COALESCE(kjv_usage, ''))`
     )}`;
     order = `(id = ? OR SUBSTR(id, 2) = ?) DESC, (translit_plain = ?) DESC,
-      (translit_plain LIKE ? OR ${words} LIKE ?) DESC, uses DESC, ${NUMERIC_ORDER}`;
-    orderParams.push(term.toUpperCase(), term, plain, `${plain}%`, `% ${term.toLowerCase()}%`);
+      (translit_plain LIKE ? ESCAPE '\\' OR ${words} LIKE ? ESCAPE '\\') DESC, uses DESC, ${NUMERIC_ORDER}`;
+    orderParams.push(term.toUpperCase(), term, plain, `${escapeLike(plain)}%`, `% ${escapeLike(term.toLowerCase())}%`);
   }
   const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : '';
   const total = (db.prepare(`SELECT COUNT(*) AS c FROM strongs ${whereSql}`).get(...params) as { c: number }).c;

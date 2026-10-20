@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import Database from 'better-sqlite3';
 import { createTestDb, seedTestDb } from '../helpers/test-db';
-import { coreRendering, getChapterTokens, getKjvRenderings, getOccurrences, plainText, primaryStrongs, searchStrongs } from '../../src/lib/strongs';
+import { coreRendering, escapeLike, getChapterTokens, getKjvRenderings, getOccurrences, plainText, primaryStrongs, searchStrongs } from '../../src/lib/strongs';
 
 describe('primaryStrongs', () => {
   it('prefers the content word over the Hebrew object marker or Greek article', () => {
@@ -65,6 +65,12 @@ describe('Strong\'s queries', () => {
   it('searches transliterations without accents and English meanings', () => {
     expect(searchStrongs(db, { q: 'agape' }).entries[0].id).toBe('G26');
     expect(searchStrongs(db, { q: 'charity' }).entries[0].id).toBe('G26');
+  });
+
+  it('treats % and _ as literal characters', () => {
+    expect(escapeLike('50%_off')).toBe('50\\%\\_off');
+    expect(searchStrongs(db, { q: '%' }).total).toBe(0);
+    expect(searchStrongs(db, { q: '_' }).total).toBe(0);
   });
 
   it('filters by language and orders numerically', () => {

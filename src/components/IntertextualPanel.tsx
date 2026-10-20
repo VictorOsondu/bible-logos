@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useJson } from '@/lib/useJson';
+import LoadError from './LoadError';
 import Link from 'next/link';
 import { getBookById } from '@/lib/bible-books';
 
@@ -26,25 +27,16 @@ interface Connection {
 }
 
 export default function IntertextualPanel({ book, chapter, verse }: Props) {
-  const [connections, setConnections] = useState<Connection[]>([]);
-  const [sourceWords, setSourceWords] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(`/api/intertextual?book=${book}&chapter=${chapter}&verse=${verse}`)
-      .then(r => r.json())
-      .then(data => {
-        setConnections(data.data || []);
-        setSourceWords(data.sourceWords || []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [book, chapter, verse]);
+  const { data, loading, error, retry } = useJson<{ data: Connection[]; sourceWords: any[] }>(
+    `/api/intertextual?book=${book}&chapter=${chapter}&verse=${verse}`
+  );
 
   if (loading) {
-    return <div className="text-sm text-parchment-500 animate-pulse">Loading intertextual connections...</div>;
+    return <div className="text-sm text-parchment-500 animate-pulse">Finding verses with shared words…</div>;
   }
+  if (error) return <LoadError what="shared words" onRetry={retry} />;
+  const connections = data?.data ?? [];
+  const sourceWords = data?.sourceWords ?? [];
 
   if (connections.length === 0) {
     return <div className="text-sm text-parchment-500">No intertextual connections found for this verse.</div>;

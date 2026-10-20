@@ -56,6 +56,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
   const [wikiResults, setWikiResults] = useState<any[]>([]);
   const [perseusResults, setPerseusResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [failedTab, setFailedTab] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'ai' | 'scholar' | 'pubmed' | 'books' | 'crossref' | 'openalex' | 'archive' | 'europepmc' | 'googlebooks' | 'core' | 'wiki' | 'perseus' | 'wikidata' | 'sacredtexts' | 'resources'>('ai');
 
   const bookInfo = getBookById(book);
@@ -68,9 +69,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(searchQuery + ' biblical scholarship')}&source=semanticscholar&limit=8`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setPapers(data.data || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -79,9 +81,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(searchQuery + ' archaeology')}&source=pubmed&limit=8`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setPubmed(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -90,9 +93,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(bookName + ' bible commentary')}&source=openlibrary&limit=10`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setOpenlib(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -101,9 +105,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(searchQuery + ' biblical exegesis')}&source=crossref&limit=8`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setCrossref(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -112,9 +117,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(searchQuery + ' biblical theology')}&source=openalex&limit=8`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setOpenalex(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -123,9 +129,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(bookName + ' bible commentary')}&source=internetarchive&limit=8`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setArchive(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -134,9 +141,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(searchQuery + ' biblical studies')}&source=europepmc&limit=8`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setEuropepmc(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -145,9 +153,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(searchQuery + ' bible commentary')}&source=googlebooks&limit=8`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setGooglebooks(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -156,9 +165,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(searchQuery + ' biblical theology')}&source=core&limit=8`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setCoreResults(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -167,9 +177,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(searchQuery + ' Bible')}&source=wikipedia&limit=8`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setWikiResults(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
@@ -178,13 +189,15 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     setLoading(true);
     try {
       const res = await fetch(`/api/research?q=${encodeURIComponent(searchQuery)}&source=perseus&limit=5`);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setPerseusResults(data.results || []);
-    } catch { /* ignore */ }
+    } catch { setFailedTab(activeTab); }
     setLoading(false);
   };
 
-  useEffect(() => {
+  const runFetch = () => {
+    setFailedTab(null);
     if (activeTab === 'scholar') fetchScholar();
     if (activeTab === 'pubmed') fetchPubMed();
     if (activeTab === 'books') fetchOpenLib();
@@ -196,7 +209,8 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
     if (activeTab === 'core') fetchCore();
     if (activeTab === 'wiki') fetchWiki();
     if (activeTab === 'perseus') fetchPerseus();
-  }, [activeTab]);
+  };
+  useEffect(runFetch, [activeTab]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // AI research queries
   const aiQueries = [
@@ -261,6 +275,13 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
         ))}
       </div>
 
+      {failedTab === activeTab && (
+        <p className="text-sm text-parchment-400">
+          Couldn&apos;t reach this service just now.{' '}
+          <button onClick={runFetch} className="underline underline-offset-2 hover:text-parchment-100">Try again</button>
+        </p>
+      )}
+
       {/* AI Tab */}
       {activeTab === 'ai' && (
         <div className="space-y-3">
@@ -290,7 +311,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       {activeTab === 'scholar' && (
         <div className="space-y-2 max-h-[50vh] overflow-y-auto">
           {loading && <div className="text-parchment-500 text-sm animate-pulse">Searching Semantic Scholar…</div>}
-          {!loading && papers.length === 0 && <div className="text-parchment-500 text-sm">No papers found. Try a broader search.</div>}
+          {!loading && failedTab !== activeTab && papers.length === 0 && <div className="text-parchment-500 text-sm">No papers found. Try a broader search.</div>}
           {papers.map((p, i) => (
             <a
               key={i}
@@ -319,7 +340,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       {activeTab === 'pubmed' && (
         <div className="space-y-2 max-h-[50vh] overflow-y-auto">
           {loading && <div className="text-parchment-500 text-sm animate-pulse">Searching PubMed…</div>}
-          {!loading && pubmed.length === 0 && <div className="text-parchment-500 text-sm">No PubMed results found.</div>}
+          {!loading && failedTab !== activeTab && pubmed.length === 0 && <div className="text-parchment-500 text-sm">No PubMed results found.</div>}
           {pubmed.map((p, i) => (
             <a
               key={i}
@@ -345,7 +366,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       {activeTab === 'books' && (
         <div className="space-y-2 max-h-[50vh] overflow-y-auto">
           {loading && <div className="text-parchment-500 text-sm animate-pulse">Searching OpenLibrary…</div>}
-          {!loading && openlib.length === 0 && <div className="text-parchment-500 text-sm">No books found.</div>}
+          {!loading && failedTab !== activeTab && openlib.length === 0 && <div className="text-parchment-500 text-sm">No books found.</div>}
           {openlib.map((b, i) => (
             <a
               key={i}
@@ -379,7 +400,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       {activeTab === 'crossref' && (
         <div className="space-y-2 max-h-[50vh] overflow-y-auto">
           {loading && <div className="text-parchment-500 text-sm animate-pulse">Searching CrossRef…</div>}
-          {!loading && crossref.length === 0 && <div className="text-parchment-500 text-sm">No articles found.</div>}
+          {!loading && failedTab !== activeTab && crossref.length === 0 && <div className="text-parchment-500 text-sm">No articles found.</div>}
           {crossref.map((c, i) => (
             <a
               key={i}
@@ -411,7 +432,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       {activeTab === 'openalex' && (
         <div className="space-y-2 max-h-[50vh] overflow-y-auto">
           {loading && <div className="text-parchment-500 text-sm animate-pulse">Searching OpenAlex…</div>}
-          {!loading && openalex.length === 0 && <div className="text-parchment-500 text-sm">No results found.</div>}
+          {!loading && failedTab !== activeTab && openalex.length === 0 && <div className="text-parchment-500 text-sm">No results found.</div>}
           {openalex.map((item: any, i: number) => (
             <a
               key={i}
@@ -441,7 +462,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       {activeTab === 'archive' && (
         <div className="space-y-2 max-h-[50vh] overflow-y-auto">
           {loading && <div className="text-parchment-500 text-sm animate-pulse">Searching Internet Archive…</div>}
-          {!loading && archive.length === 0 && <div className="text-parchment-500 text-sm">No results found.</div>}
+          {!loading && failedTab !== activeTab && archive.length === 0 && <div className="text-parchment-500 text-sm">No results found.</div>}
           {archive.map((item: any, i: number) => (
             <a
               key={i}
@@ -477,7 +498,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       {activeTab === 'europepmc' && (
         <div className="space-y-2 max-h-[50vh] overflow-y-auto">
           {loading && <div className="text-parchment-500 text-sm animate-pulse">Searching Europe PMC…</div>}
-          {!loading && europepmc.length === 0 && <div className="text-parchment-500 text-sm">No results found.</div>}
+          {!loading && failedTab !== activeTab && europepmc.length === 0 && <div className="text-parchment-500 text-sm">No results found.</div>}
           {europepmc.map((item: any, i: number) => (
             <a
               key={i}
@@ -507,7 +528,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       {activeTab === 'googlebooks' && (
         <div className="space-y-2 max-h-[50vh] overflow-y-auto">
           {loading && <div className="text-parchment-500 text-sm animate-pulse">Searching Google Books…</div>}
-          {!loading && googlebooks.length === 0 && <div className="text-parchment-500 text-sm">No results found.</div>}
+          {!loading && failedTab !== activeTab && googlebooks.length === 0 && <div className="text-parchment-500 text-sm">No results found.</div>}
           {googlebooks.map((item: any, i: number) => (
             <a
               key={i}
@@ -557,7 +578,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
               {item.abstract && <p className="text-xs text-parchment-500 mt-1 line-clamp-2">{item.abstract}</p>}
             </a>
           ))}
-          {!loading && coreResults.length === 0 && <p className="text-sm text-parchment-500">No results found.</p>}
+          {!loading && failedTab !== activeTab && coreResults.length === 0 && <p className="text-sm text-parchment-500">No results found.</p>}
         </div>
       )}
 
@@ -576,7 +597,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
               {item.snippet && <p className="text-xs text-parchment-500 mt-1 line-clamp-2">{item.snippet}</p>}
             </a>
           ))}
-          {!loading && wikiResults.length === 0 && <p className="text-sm text-parchment-500">No results found.</p>}
+          {!loading && failedTab !== activeTab && wikiResults.length === 0 && <p className="text-sm text-parchment-500">No results found.</p>}
         </div>
       )}
 
@@ -595,7 +616,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
               {item.description && <p className="text-xs text-parchment-500 mt-1">{item.description}</p>}
             </a>
           ))}
-          {!loading && perseusResults.length === 0 && <p className="text-sm text-parchment-500">No results found.</p>}
+          {!loading && failedTab !== activeTab && perseusResults.length === 0 && <p className="text-sm text-parchment-500">No results found.</p>}
         </div>
       )}
 
@@ -636,14 +657,16 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
 function WikidataTab({ query }: { query: string }) {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     if (!query) return;
     setLoading(true);
+    setFailed(false);
     fetch(`/api/research?q=${encodeURIComponent(query)}&source=wikidata&limit=8`)
-      .then(r => r.json())
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
       .then(d => { setResults(d.results || []); setLoading(false); })
-      .catch(() => setLoading(false));
+      .catch(() => { setFailed(true); setLoading(false); });
   }, [query]);
 
   return (
@@ -657,7 +680,9 @@ function WikidataTab({ query }: { query: string }) {
           {item.description && <p className="text-xs text-parchment-500 mt-1">{item.description}</p>}
         </a>
       ))}
-      {!loading && results.length === 0 && <p className="text-sm text-parchment-500">No results found.</p>}
+      {!loading && results.length === 0 && (
+        <p className="text-sm text-parchment-500">{failed ? 'Couldn\u2019t reach this service just now.' : 'No results found.'}</p>
+      )}
     </div>
   );
 }
@@ -665,14 +690,16 @@ function WikidataTab({ query }: { query: string }) {
 function SacredTextsTab({ query }: { query: string }) {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [failed, setFailed] = useState(false);
 
   useEffect(() => {
     if (!query) return;
     setLoading(true);
+    setFailed(false);
     fetch(`/api/research?q=${encodeURIComponent(query)}&source=sacredtexts`)
-      .then(r => r.json())
+      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
       .then(d => { setResults(d.results || []); setLoading(false); })
-      .catch(() => setLoading(false));
+      .catch(() => { setFailed(true); setLoading(false); });
   }, [query]);
 
   return (
@@ -689,7 +716,9 @@ function SacredTextsTab({ query }: { query: string }) {
           {item.description && <p className="text-xs text-parchment-500 mt-1">{item.description}</p>}
         </a>
       ))}
-      {!loading && results.length === 0 && <p className="text-sm text-parchment-500">No results found.</p>}
+      {!loading && results.length === 0 && (
+        <p className="text-sm text-parchment-500">{failed ? 'Couldn\u2019t reach this service just now.' : 'No results found.'}</p>
+      )}
     </div>
   );
 }

@@ -64,6 +64,14 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
     if (selectedVerse !== null && book) setBookmarked(isBookmarked(book, chapter, selectedVerse));
   }, [selectedVerse, book, chapter]);
 
+  // Escape closes the study panel
+  useEffect(() => {
+    if (!panel) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closePanel(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [panel]);
+
   // One row per verse, translations in the order the reader chose them
   const grouped = new Map<number, Verse[]>();
   for (const v of verses) grouped.set(v.verse, [...(grouped.get(v.verse) ?? []), v]);
@@ -96,17 +104,32 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
       if (!id) return token.t;
       const info = lexicon?.[id];
       return (
-        <span
+        <button
           key={i}
+          type="button"
           className="strongs-word"
           title={info ? `${info.transliteration} (${info.original}): ${info.definition}` : id}
+          aria-label={info ? `${token.t}: ${info.transliteration}, Strong's ${id}` : `${token.t}, Strong's ${id}`}
           onClick={e => { e.stopPropagation(); openWord(id); }}
         >
           {token.t}
-        </span>
+        </button>
       );
     });
   };
+
+  // Verse numbers are buttons, so keyboard and screen-reader users can open a verse's study tools
+  const verseButton = (verseNum: number, selected: boolean) => (
+    <button
+      type="button"
+      className="verse-number"
+      aria-pressed={selected}
+      aria-label={`Verse ${verseNum}: ${selected ? 'hide' : 'show'} study tools`}
+      onClick={e => { e.stopPropagation(); selectVerse(verseNum); }}
+    >
+      {verseNum}
+    </button>
+  );
 
   const panelTitle = panel === 'strongs'
     ? `Strong's ${selectedStrongs}`
@@ -128,14 +151,14 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
             >
               {list.length === 1 ? (
                 <p className="bible-text text-parchment-100">
-                  <span className="verse-number">{verseNum}</span>
+                  {verseButton(verseNum, selected)}
                   {renderText(list[0])}
                 </p>
               ) : (
                 <div className="space-y-1.5 py-1">
                   {list.map((v, i) => (
                     <p key={v.translation} className={`bible-text ${i === 0 ? 'text-parchment-100' : 'text-parchment-300'}`}>
-                      {i === 0 && <span className="verse-number">{verseNum}</span>}
+                      {i === 0 && verseButton(verseNum, selected)}
                       <span className="mr-2 align-middle text-[10px] font-sans font-semibold tracking-wider text-parchment-500">{v.translation}</span>
                       {renderText(v)}
                     </p>
@@ -177,6 +200,7 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
 
       {panel && (panel === 'strongs' ? selectedStrongs : selectedVerse !== null) && (
         <aside
+          aria-label={panelTitle}
           className="fixed inset-x-0 bottom-0 z-40 max-h-[60dvh] overflow-y-auto rounded-t-2xl border-t border-parchment-800 bg-parchment-950 p-4 shadow-2xl
             xl:static xl:z-auto xl:w-96 xl:shrink-0 xl:max-h-[calc(100vh-4rem)] xl:sticky xl:top-8 xl:self-start xl:rounded-2xl xl:border xl:shadow-none"
         >

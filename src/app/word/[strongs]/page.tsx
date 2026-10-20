@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 import { getDb } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
 import WordRelationships from '@/components/WordRelationships';
@@ -16,17 +17,7 @@ export default function WordPage({ params, searchParams }: Props) {
   
   const entry = db.prepare('SELECT * FROM strongs WHERE id = ?').get(params.strongs) as any;
   
-  if (!entry) {
-    return (
-      <>
-        <main className="flex-1 p-8">
-          <h1 className="text-2xl text-parchment-100 font-serif">Strong&apos;s {params.strongs} not found</h1>
-          <p className="text-parchment-500 mt-2">Check the number, or search the <Link href="/concordance" className="text-gold-400 hover:text-gold-300">concordance</Link>.</p>
-          <Link href="/" className="text-gold-400 mt-4 inline-block hover:text-gold-300">← Back to home</Link>
-        </main>
-      </>
-    );
-  }
+  if (!entry) notFound();
 
   const page = Math.max(parseInt(searchParams.page || '1') || 1, 1);
   const { totalWords, totalVerses, occurrences } = getOccurrences(db, params.strongs, {
