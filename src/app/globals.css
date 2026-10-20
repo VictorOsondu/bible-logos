@@ -93,8 +93,15 @@ button.verse-number {
   appearance: none;
   background: none;
   border: 0;
-  padding: 0;
   cursor: pointer;
+  /* A real line height and a little padding give a usable tap target without moving the text */
+  line-height: 1;
+  padding: 0.1em 0.25em;
+  margin: 0 0.05em 0 -0.25em;
+  border-radius: 4px;
+}
+button.verse-number:hover {
+  background-color: rgb(var(--gold-400) / 0.12);
 }
 .strongs-word {
   appearance: none;
