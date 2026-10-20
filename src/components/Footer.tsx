@@ -7,7 +7,7 @@ export default function Footer() {
           BibleLens
         </a>{' '}
         by Nicola Spieser ·{' '}
-        <a href="https://github.com/VictorOsondu/bible-logos#-data-sources" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-parchment-300">
+        <a href="https://github.com/VictorOsondu/bible-logos#data-sources" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-parchment-300">
           data sources
         </a>
       </p>

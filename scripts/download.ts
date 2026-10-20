@@ -4,7 +4,8 @@
 import path from 'path';
 import fs from 'fs';
 import crypto from 'crypto';
-import type { ChapterSource, Source } from './sources';
+import zlib from 'zlib';
+import type { ChapterSource, FileSetSource, Source } from './sources';
 
 const CACHE_DIR = path.join(process.cwd(), 'data', 'sources');
 
@@ -81,4 +82,73 @@ export async function fetchChapters({ base, name, sha256: expected, folders = {}
   };
   await Promise.all(Array.from({ length: 16 }, worker));
   return verifyAndCache(file, Buffer.from(JSON.stringify(results.flat())), expected, `${base} (assembled)`);
+}
+
+/**
+ * Returns the files of a translation published as one file per book, after checking a hash over
+ * all of them in order. The cache keeps them gzipped, as the word-aligned files are large.
+ */
+export async function fetchFileSet({ name, urls, sha256: expected }: FileSetSource): Promise<string[]> {
+  const hashOf = (texts: string[]) => texts.reduce((hash, text) => hash.update(text), crypto.createHash('sha256')).digest('hex');
+  const file = path.join(CACHE_DIR, `${expected.slice(0, 16)}-${name}.json.gz`);
+  if (fs.existsSync(file)) {
+    try {
+      const texts = JSON.parse(zlib.gunzipSync(fs.readFileSync(file)).toString('utf8')) as string[];
+      if (hashOf(texts) === expected) return texts.map(stripBom);
+    } catch { /* unreadable: download again */ }
+    console.warn(`  Cached ${path.basename(file)} is corrupt; downloading again.`);
+  }
+
+  console.log(`  Downloading ${urls.length} files for ${name}...`);
+  const texts: string[] = new Array(urls.length);
+  let next = 0;
+  const worker = async () => {
+    while (next < urls.length) {
+      const index = next++;
+      texts[index] = (await download(urls[index], 4, true)).toString('utf8');
+    }
+  };
+  await Promise.all(Array.from({ length: 8 }, worker));
+
+  const actual = hashOf(texts);
+  if (actual !== expected) throw new ChecksumError(`checksum mismatch for ${name}: expected ${expected}, got ${actual}`);
+  fs.mkdirSync(CACHE_DIR, { recursive: true });
+  fs.writeFileSync(file, zlib.gzipSync(JSON.stringify(texts)));
+  return texts.map(stripBom);
+}
+
+/** Returns the first file in a zip archive whose name matches. */
+export function unzip(archive: Buffer, match: RegExp): string {
+  // The central directory, found from the end-of-directory record, lists every file
+  const end = archive.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
+  if (end < 0) throw new Error('not a zip archive');
+  let entry = archive.readUInt32LE(end + 16);
+  for (let i = 0; i < archive.readUInt16LE(end + 10); i++) {
+    const method = archive.readUInt16LE(entry + 10);
+    const compressedSize = archive.readUInt32LE(entry + 20);
+    const nameLength = archive.readUInt16LE(entry + 28);
+    const extraLength = archive.readUInt16LE(entry + 30);
+    const commentLength = archive.readUInt16LE(entry + 32);
+    const local = archive.readUInt32LE(entry + 42);
+    const name = archive.toString('utf8', entry + 46, entry + 46 + nameLength);
+    if (match.test(name)) {
+      const start = local + 30 + archive.readUInt16LE(local + 26) + archive.readUInt16LE(local + 28);
+      const data = archive.subarray(start, start + compressedSize);
+      return stripBom((method === 8 ? zlib.inflateRawSync(data) : data).toString('utf8'));
+    }
+    entry += 46 + nameLength + extraLength + commentLength;
+  }
+  throw new Error(`no file matching ${match} in the archive`);
+}
+
+/** Like fetchSource, for a zip archive: returns the matching file inside it. */
+export async function fetchZippedSource({ url, sha256: expected }: Source, match: RegExp): Promise<string> {
+  const file = path.join(CACHE_DIR, `${expected.slice(0, 16)}-${path.basename(new URL(url).pathname)}`);
+  if (fs.existsSync(file)) {
+    const data = fs.readFileSync(file);
+    if (sha256(data) === expected) return unzip(data, match);
+  }
+  const data = await download(url);
+  verifyAndCache(file, data, expected, url);
+  return unzip(data, match);
 }

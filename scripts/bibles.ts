@@ -32,7 +32,7 @@ export const BOOK_MAP: Record<string, number> = {
 };
 
 // USFM book codes in canonical order: the code at index i is book i + 1
-const USFM_CODES = [
+export const USFM_CODES = [
   'GEN', 'EXO', 'LEV', 'NUM', 'DEU', 'JOS', 'JDG', 'RUT', '1SA', '2SA', '1KI', '2KI', '1CH', '2CH', 'EZR', 'NEH',
   'EST', 'JOB', 'PSA', 'PRO', 'ECC', 'SNG', 'ISA', 'JER', 'LAM', 'EZK', 'DAN', 'HOS', 'JOL', 'AMO', 'OBA', 'JON',
   'MIC', 'NAM', 'HAB', 'ZEP', 'HAG', 'ZEC', 'MAL', 'MAT', 'MRK', 'LUK', 'JHN', 'ACT', 'ROM', '1CO', '2CO', 'GAL',
@@ -94,13 +94,37 @@ export function parseUsfx(xml: string): FlatVerse[] {
     const book = USFM_CODES.indexOf(code) + 1;
     if (!book) continue;
     const body = bookXml.replace(/<(f|x|fe)\b[^>]*>[\s\S]*?<\/\1>/g, '');
-    for (const [, chapter, chapterXml] of body.matchAll(/<c id="(\d+)"\/>([\s\S]*?)(?=<c id=|$)/g)) {
-      for (const [, verse, text] of chapterXml.matchAll(/<v id="(\d+)[^"]*"\/>([\s\S]*?)<ve\/>/g)) {
+    for (const [, chapter, chapterXml] of body.matchAll(/<c id="(\d+)"[^>]*\/>([\s\S]*?)(?=<c id=|$)/g)) {
+      for (const [, verse, text] of chapterXml.matchAll(/<v id="(\d+)[^"]*"[^>]*\/>([\s\S]*?)<ve\s*\/>/g)) {
         result.push({ book, chapter: Number(chapter), verse: Number(verse), text: decodeXml(text) });
       }
     }
   }
   return finish(result);
+}
+
+/**
+ * One book of USFM, including unfoldingWord's word-aligned USFM. Headings, titles, footnotes,
+ * cross-references and alignment data are left out; a verse range is stored under its first verse.
+ */
+export function parseUsfm(usfm: string): FlatVerse[] {
+  const code = /\\id ([1-3A-Z]{3})/.exec(usfm)?.[1];
+  const book = code ? USFM_CODES.indexOf(code) + 1 : 0;
+  if (!book) return [];
+  const text = usfm
+    .replace(/\\(f|fe|x)\s[\s\S]*?\\\1\*/g, '')
+    .replace(/\\(zaln|k)-s[^*]*\\\*|\\(zaln|k)-e\\\*|\\ts\\\*/g, '')
+    .replace(/\\\+?w ([^|\\]*)(\|[^\\]*)?\\\+?w\*/g, '$1')
+    .replace(/^\\(id|ide|usfm|h|toc\d|mt\d?|ms\d?|mr|s\d?|sr|r|cl|rem|sp)\b.*$/gm, '')
+    // A psalm title inside verse 1 ends at the first line of poetry; mark the break with a full stop
+    .replace(/\\d\s+([^\\]*?)\s*(?=\\(?:q\d?|p|m)\b)/g, (_, title: string) => (/[.:;!?]$/.test(title) ? `${title} ` : `${title}. `));
+  const result: FlatVerse[] = [];
+  for (const [, chapter, chapterText] of text.matchAll(/\\c (\d+)([\s\S]*?)(?=\\c \d|$)/g)) {
+    for (const [, verse, verseText] of chapterText.matchAll(/\\v (\d+)(?:-\d+)?\s([\s\S]*?)(?=\\v \d|$)/g)) {
+      result.push({ book, chapter: Number(chapter), verse: Number(verse), text: verseText.replace(/\\\+?[a-z]+\d*\*?/g, ' ') });
+    }
+  }
+  return finish(result.map(v => ({ ...v, text: v.text.replace(/\s+([,.;:!?’”)])/g, '$1').replace(/([‘“(])\s+/g, '$1') })));
 }
 
 /** The assembled chapter files from wldeh/bible-api: [book, chapter, verse, text] rows. */

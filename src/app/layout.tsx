@@ -13,7 +13,7 @@ const reading = Literata({ subsets: ['latin', 'greek'], variable: '--font-readin
 
 export const metadata: Metadata = {
   title: 'Bible Logos — Personal Bible Study & Research',
-  description: "Read the Bible in 15 openly licensed translations with every KJV word linked to its Hebrew or Greek original, Strong's concordance and cross-references.",
+  description: "Read the Bible in 18 openly licensed translations with every KJV word linked to its Hebrew or Greek original, Strong's concordance and cross-references.",
   keywords: ['Bible', 'study', "Strong's concordance", 'cross-references', 'KJV', 'BSB', 'WEB', 'LSV', 'Hebrew', 'Greek'],
   openGraph: {
     title: 'Bible Logos — Personal Bible Study & Research',

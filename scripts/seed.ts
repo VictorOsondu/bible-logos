@@ -3,9 +3,9 @@ import path from 'path';
 import fs from 'fs';
 import { parseLexicon, parseKjvOsis, tokensToText, TaggedVerse } from './kjv-strongs';
 import { SOURCES, TRANSLATION_SOURCES, type TranslationSource } from './sources';
-import { fetchChapters, fetchSource } from './download';
+import { fetchChapters, fetchFileSet, fetchSource, fetchZippedSource } from './download';
 import {
-  BOOK_MAP, parseChapterBundle, parseScrollmapper, parseUsfx, parseVersificationMappings, parseZefania, toEnglishVersification,
+  BOOK_MAP, parseChapterBundle, parseScrollmapper, parseUsfm, parseUsfx, parseVersificationMappings, parseZefania, toEnglishVersification,
   type FlatVerse,
 } from './bibles';
 import { plainText } from '../src/lib/strongs';
@@ -20,6 +20,8 @@ let hebrewMappings: ReturnType<typeof parseVersificationMappings> | null = null;
 
 async function loadTranslation(t: TranslationSource): Promise<FlatVerse[]> {
   if (t.format === 'chapters') return parseChapterBundle(await fetchChapters(t.source, BIBLE_BOOKS));
+  if (t.format === 'usfm-books') return (await fetchFileSet(t.source)).flatMap(parseUsfm);
+  if (t.format === 'zipped-usfx') return parseUsfx(await fetchZippedSource(t.source, /usfx\.xml$/));
   const text = await fetchSource(t.source);
   const verses = t.format === 'zefania' ? parseZefania(text) : t.format === 'usfx' ? parseUsfx(text) : parseScrollmapper(text);
   if (!t.hebrewVerses) return verses;
@@ -123,7 +125,15 @@ async function main() {
 
   for (const id of TRANSLATION_IDS.filter(id => id !== 'KJV')) {
     console.log(`Loading ${id}...`);
-    const verses = await loadTranslation(TRANSLATION_SOURCES[id]);
+    const source = TRANSLATION_SOURCES[id];
+    let verses: FlatVerse[];
+    try {
+      verses = await loadTranslation(source);
+    } catch (error) {
+      if (!('optional' in source)) throw error;
+      console.warn(`  ⚠️  Skipping ${id}: ${error instanceof Error ? error.message : error}`);
+      continue;
+    }
     insertBible(verses, id);
     console.log(`  ${id}: ${verses.length} verses`);
   }

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import VerseDisplay from '@/components/VerseDisplay';
 import KeyboardNav from '@/components/KeyboardNav';
 import { getBookBySlug, BIBLE_BOOKS } from '@/lib/bible-books';
-import { getDb } from '@/lib/db';
+import { getAvailableTranslations, getDb } from '@/lib/db';
 import { getChapterTokens } from '@/lib/strongs';
 import { Check, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { byTranslationOrder, getTranslation } from '@/lib/translations';
@@ -46,9 +46,7 @@ export default async function ReaderPage(props: Props) {
   // KJV alone by default: it is the translation with every word linked to the original languages.
   const requested = (searchParams.translations || 'KJV').split(',').filter(Boolean);
   const db = getDb();
-  const available = (db.prepare('SELECT DISTINCT translation FROM verses').all() as { translation: string }[])
-    .map(t => t.translation)
-    .sort(byTranslationOrder);
+  const available = getAvailableTranslations().sort(byTranslationOrder);
   const selectedTranslations = requested.filter(t => available.includes(t));
   if (selectedTranslations.length === 0) selectedTranslations.push('KJV');
 

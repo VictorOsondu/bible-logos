@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  cleanText, parseChapterBundle, parseScrollmapper, parseUsfx, parseVersificationMappings, parseZefania, toEnglishVersification,
+  cleanText, parseChapterBundle, parseScrollmapper, parseUsfm, parseUsfx, parseVersificationMappings, parseZefania, toEnglishVersification,
 } from '../../scripts/bibles';
 
 describe('Bible text parsers', () => {
@@ -23,12 +23,32 @@ describe('Bible text parsers', () => {
     const xml = '<book id="GEN"><c id="1"/><p><v id="1"/>In the beginning, God<f caller="+">The Hebrew word is “Elohim”.</f> created<x caller="-">Jn 1:1</x> the heavens.\n<ve/></p></book>' +
       '<book id="TOB"><c id="1"/><v id="1"/>Skipped.<ve/></book>';
     expect(parseUsfx(xml)).toEqual([{ book: 1, chapter: 1, verse: 1, text: 'In the beginning, God created the heavens.' }]);
+    // eBible.org's own files add attributes and spaces before the closing slash
+    expect(parseUsfx('<book id="JHN"><c id="11" /><p><v id="35" bcv="JHN.11.35" /><w s="G2424">Yeshua</w> wept.\n<ve /></p></book>'))
+      .toEqual([{ book: 43, chapter: 11, verse: 35, text: 'Yeshua wept.' }]);
   });
 
   it('reads an assembled chapter bundle and joins poetry lines', () => {
     expect(parseChapterBundle(JSON.stringify([[19, 23, 1, 'YHWH [is] my shepherd, || I do not lack,']])))
       .toEqual([{ book: 19, chapter: 23, verse: 1, text: 'YHWH [is] my shepherd, I do not lack,' }]);
     expect(cleanText('  a\n  b || c ')).toBe('a b c');
+  });
+});
+
+describe('USFM', () => {
+  it('reads word-aligned USFM, leaving out titles, headings, footnotes and alignment', () => {
+    const usfm = [
+      '\\id PSA EN_ULT', '\\h Psalms', '\\c 23', '\\d A psalm of David.', '\\q1',
+      '\\c 24', '\\v 1 \\d A psalm of David', '\\q1 \\w The|x-occurrence="1"\\w* \\w earth|x-occurrence="1"\\w*.',
+      '\\c 23', '\\v 1 \\zaln-s |x-strong="H3068"\\*\\w Yahweh|x-occurrence="1"\\w*\\zaln-e\\* \\w is|x-occurrence="1"\\w*',
+      '\\w my|x-occurrence="1"\\w* \\w shepherd|x-occurrence="1"\\w*\\f + \\ft A note.\\f*;',
+      '\\s1 A heading', '\\v 2-3 \\w He|x-occurrence="1"\\w* \\add makes\\add* \\w me|x-occurrence="1"\\w* \\w lie|x-occurrence="1"\\w* \\w down|x-occurrence="1"\\w*.',
+    ].join('\n');
+    expect(parseUsfm(usfm)).toEqual([
+      { book: 19, chapter: 24, verse: 1, text: 'A psalm of David. The earth.' },
+      { book: 19, chapter: 23, verse: 1, text: 'Yahweh is my shepherd;' },
+      { book: 19, chapter: 23, verse: 2, text: 'He makes me lie down.' },
+    ]);
   });
 });
 

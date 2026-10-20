@@ -1,3 +1,5 @@
+import { USFM_CODES } from './bibles';
+
 // Every file the seed script downloads, pinned to an exact commit and checked against a SHA-256
 // hash, so a change upstream can never silently alter (or break) the database.
 //
@@ -24,14 +26,41 @@ export interface ChapterSource {
   folders?: Record<string, string>;
 }
 
+/** A translation published as one file per book; the hash covers all the files in order. */
+export interface FileSetSource {
+  name: string;
+  urls: string[];
+  sha256: string;
+}
+
 const source = (url: string, sha256: string): Source => ({ url, sha256 });
 const chapters = (name: string, sha256: string, folders?: Record<string, string>): ChapterSource =>
   ({ base: `${BIBLE_API}/${name}`, name, sha256, folders });
 
-/** How each translation (other than the KJV) is downloaded and read. */
+/**
+ * How each translation (other than the KJV) is downloaded and read. An optional source is skipped
+ * with a warning if it cannot be fetched or has changed, rather than stopping the seed.
+ */
 export type TranslationSource =
   | { format: 'scrollmapper' | 'zefania' | 'usfx'; source: Source; hebrewVerses?: boolean }
-  | { format: 'chapters'; source: ChapterSource };
+  | { format: 'zipped-usfx'; source: Source; optional: true }
+  | { format: 'chapters'; source: ChapterSource }
+  | { format: 'usfm-books'; source: FileSetSource };
+
+// Books unfoldingWord has not yet released in the ULT and UST
+const UNFOLDINGWORD_UNRELEASED = ['NUM', '1CH', '2CH', 'ECC', 'ISA', 'JER', 'EZK'];
+
+/** An unfoldingWord text at a release tag on Door43; files are numbered 01–39 and 41–67. */
+const unfoldingWord = (repo: string, tag: string, sha256: string): TranslationSource => ({
+  format: 'usfm-books',
+  source: {
+    name: `${repo}-${tag}`,
+    sha256,
+    urls: USFM_CODES.flatMap((code, i) => UNFOLDINGWORD_UNRELEASED.includes(code) ? [] : [
+      `https://git.door43.org/unfoldingWord/${repo}/raw/tag/${tag}/${String(i < 39 ? i + 1 : i + 2).padStart(2, '0')}-${code}.usfm`,
+    ]),
+  },
+});
 
 const scrollmapper = (file: string, sha256: string, hebrewVerses = false): TranslationSource =>
   ({ format: 'scrollmapper', source: source(`${SCROLLMAPPER}/json/${file}`, sha256), hebrewVerses });
@@ -72,6 +101,11 @@ export const TRANSLATION_SOURCES: Record<string, TranslationSource> = {
   UKJV: scrollmapper('UKJV.json', 'bdfd7bbc03786a1c077ff292595f8768d201582a87b236d2466c603fdc9cc01b'),
   BBE: scrollmapper('BBE.json', '2396c027cfd1c47c9bb325c5c1ed1b1c125b95ef4c5382ddba4f8e50651f8068'),
   OEB: scrollmapper('OEB.json', '7b1552b1d39027f909f23e5b0dc25116fb1dd6c785cac5aac4c2e56dd1082c89'),
+  ULT: unfoldingWord('en_ult', 'v91', '204f8678f378cf4c7191b7c23d3e6a040870b61cf4471935f4ee56c709ed9964'),
+  UST: unfoldingWord('en_ust', 'v91', 'd73e140d103517bf1ea31f454262b8c27581f4d776bab87949572f310495c88f'),
+  // eBible.org does not version its files, so when it publishes an update the seed skips the WMB
+  // until this hash is refreshed
+  WMB: { format: 'zipped-usfx', source: source('https://ebible.org/Scriptures/engwmb_usfx.zip', '98f05b0e1dd1c0e37656b4f862c1e9affc4112d7b9d745d54c7d04a7b2cd63cb'), optional: true },
   JPS: scrollmapper('JPS.json', 'cb698cfbf2e97843dd4357b725c96ac6e9b2f3f23c5e3e3f6a3cdb5912ca183a', true),
   CPDV: scrollmapper('CPDV.json', 'f91a5dc9556d77a441a18adff5a272f8f4b1fea1745e01d0c3c2a93aa7929a38'),
   WYC: scrollmapper('Wycliffe.json', '61a5d8486068d3b9d66fa2bb3664ecd9db3d3d81a3dbe5267300663336854edf'),
