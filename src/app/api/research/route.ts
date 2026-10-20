@@ -104,7 +104,7 @@ export async function GET(request: NextRequest) {
     try {
       const url = `https://api.crossref.org/works?query=${encodeURIComponent(query)}&rows=${limit}&select=DOI,title,author,published-print,container-title,abstract,URL`;
       const res = await fetch(url, {
-        headers: { 'User-Agent': 'BibleLens/1.0 (biblelens@research)' },
+        headers: { 'User-Agent': 'BibleLogos/1.0 (+https://github.com/VictorOsondu/bible-logos)' },
         next: { revalidate: 3600 },
       });
 
@@ -138,7 +138,7 @@ export async function GET(request: NextRequest) {
     try {
       const url = `https://api.openalex.org/works?search=${encodeURIComponent(query)}&per_page=${limit}&select=id,doi,title,authorships,publication_year,cited_by_count,primary_location,abstract_inverted_index`;
       const res = await fetch(url, {
-        headers: { 'User-Agent': 'BibleLens/1.0 (biblelens@research)', 'Accept': 'application/json' },
+        headers: { 'User-Agent': 'BibleLogos/1.0 (+https://github.com/VictorOsondu/bible-logos)', 'Accept': 'application/json' },
         next: { revalidate: 3600 },
       });
 
@@ -448,7 +448,7 @@ export async function GET(request: NextRequest) {
     try {
       const url = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=${limit}&format=json&srprop=snippet|titlesnippet|timestamp|wordcount|size`;
       const res = await fetch(url, {
-        headers: { 'Accept': 'application/json', 'User-Agent': 'BibleLens/1.0' },
+        headers: { 'Accept': 'application/json', 'User-Agent': 'BibleLogos/1.0 (+https://github.com/VictorOsondu/bible-logos)' },
         next: { revalidate: 3600 },
       });
 
@@ -481,7 +481,7 @@ export async function GET(request: NextRequest) {
       // Perseus Digital Library — search Greek/Latin texts and lexicon entries
       const url = `https://www.perseus.tufts.edu/hopper/searchresults?q=${encodeURIComponent(query)}&target=en&collections=Perseus:collection:Greco-Roman&collections=Perseus:collection:Arabic&collections=Perseus:collection:Germanic&collections=Perseus:collection:cwar&collections=Perseus:collection:Renaissance`;
       const res = await fetch(url, {
-        headers: { 'Accept': 'text/html', 'User-Agent': 'BibleLens/1.0' },
+        headers: { 'Accept': 'text/html', 'User-Agent': 'BibleLogos/1.0 (+https://github.com/VictorOsondu/bible-logos)' },
         next: { revalidate: 3600 },
       });
 

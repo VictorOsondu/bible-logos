@@ -16,7 +16,7 @@ interface StudyNote {
   updatedAt: number;
 }
 
-const STORAGE_KEY = 'biblelens-study-notes';
+const STORAGE_KEY = 'biblelogos-study-notes';
 
 function loadNotes(): StudyNote[] {
   if (typeof window === 'undefined') return [];
@@ -117,7 +117,7 @@ export default function StudyNotesPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `biblelens-study-notes-${new Date().toISOString().split('T')[0]}.md`;
+    a.download = `biblelogos-study-notes-${new Date().toISOString().split('T')[0]}.md`;
     a.click();
     URL.revokeObjectURL(url);
   };

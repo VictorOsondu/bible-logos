@@ -1,275 +1,95 @@
 <div align="center">
 
-# 📖 BibleLens
+# 📖 Bible Logos
 
-### An open-source, analytical Bible research platform.
+### A simple but powerful tool for personal Bible study and research.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-blue)](https://typescriptlang.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://typescriptlang.org)
 
-**Multi-translation comparison · Cross-references · Strong's concordance · Data science analytics · Academic research integration · Historical context · Manuscript sources**
-
-[Getting Started](#-getting-started) · [Features](#-features) · [Architecture](#-architecture) · [Data Sources](#-data-sources) · [Roadmap](#-roadmap) · [Contributing](#-contributing)
-
----
+Based on [BibleLens](https://github.com/quantumnic/biblelens) by Nicola Spieser.
 
 </div>
 
-## 🔭 Why BibleLens?
+---
 
-The Bible is the most studied text in human history — yet most digital tools treat it like a static book. BibleLens treats it like what it is: **a living dataset of 31,102 verses, 783,137 words, spanning 1,500+ years of authorship**, connected by 340,000+ cross-references, with millennia of scholarship behind every line.
+Bible Logos runs on your own computer. It downloads public-domain Bible texts and reference data once, stores them in a local SQLite database, and gives you a fast, private study environment in the browser.
 
-BibleLens brings **data science, academic research, and textual analysis** to Bible study. It's not a devotional app. It's an **analytical research platform** — built for scholars, students, linguists, historians, and anyone who believes the text deserves rigorous investigation.
+## ✨ What it does
 
-**What makes it different:**
+### 📖 Reader with the original languages one click away
 
-- 🔬 **Data science layer** — word frequency analysis, sentiment tracking, authorship statistics, network graphs
-- 🎓 **Academic integration** — queries to Semantic Scholar, PubMed, OpenLibrary and more
-- 📜 **Manuscript awareness** — which ancient codices attest each passage, textual variants between manuscripts
-- 🗺️ **Historical context** — interactive timelines, geographic mapping, archaeological evidence
-- 🤖 **AI research links** — one-click queries to Perplexity, ChatGPT, Claude for deeper analysis
-- ⚖️ **Multi-translation comparison** — translations side-by-side with diff highlighting
-- 🔗 **340,000+ cross-references** — bidirectional verse connections with categories
-- 📖 **Strong's concordance** — click any word for Hebrew/Greek originals, definitions, all occurrences
+- Read any chapter in the **King James Version, American Standard Version, Bible in Basic English, Young's Literal Translation and the Latin Vulgate**, alone or side by side.
+- **Every word of the KJV is linked to its Hebrew or Greek original.** Click a word to see the original script, transliteration, pronunciation, Strong's definition, derivation and every other place it occurs.
+- Words the KJV translators added are shown in *italics*, as in printed editions.
 
-## ✨ Features
+### 🔤 Strong's concordance
 
-### 📖 Multi-Translation Reader
+- The **complete** Strong's lexicon: 8,674 Hebrew and 5,523 Greek entries.
+- Search by number (`H2617`, `G26`), by transliteration as you would naturally spell it (`chesed`, `agape`, `shalom`), by original script, or by English meaning (`mercy`, `grace`).
+- For each word, see how the KJV translates it (e.g. *chesed*: mercy 125×, kindness 35×, lovingkindness 21×) and browse every verse it appears in.
 
-Read any chapter with multiple translations displayed simultaneously. Navigate the full Bible — Genesis to Revelation — with an intuitive book/chapter sidebar.
+### 🔗 Cross-references and search
 
-- **5 translations**: KJV, ASV, BBE, YLT, Latin Vulgate — loaded from public domain sources
-- **31,102 verses** fully indexed and searchable
-- Verse-by-verse parallel display
-- Responsive: works on mobile and desktop
+- **430,000+ cross-references** from the OpenBible.info dataset, ranked by relevance.
+- Full-text search across all translations.
+- Side-by-side translation comparison.
 
-### ⚖️ Translation Comparison
+### 📝 Personal study
 
-Place translations side-by-side for any verse. Words that differ between translations are **highlighted in gold**, making textual divergence immediately visible.
+- Bookmarks, study notes and reading plans, saved in your browser.
+- Topical pages (parables, miracles, prophecies, covenants, names of God and more).
+- Research links for any verse, with live results from Semantic Scholar, PubMed and Open Library.
 
-### 🔗 Cross-References
+## 🚀 Getting started
 
-Click any verse to reveal its web of connections — **340,000+ cross-references** from the OpenBible dataset:
-
-- **Bidirectional**: finds references both FROM and TO the selected verse
-- **Ranked by votes**: community-validated relevance scoring
-- Categories: Direct quotes, Thematic connections, Prophecy/Fulfillment
-
-### 📖 Strong's Concordance
-
-Click highlighted words to access the original Hebrew (H####) or Greek (G####):
-
-- Original script (אֱלֹהִים, θεός)
-- Transliteration and pronunciation
-- Full definition and semantic range
-- Every occurrence across the Bible
-- 50 key terms seeded (expandable)
-
-### 🔬 Data Science & Analytics
-
-> *"Apply the tools of modern data science to ancient texts."*
-
-- **Word Frequency Analysis** — most common words per book, per author, per testament (interactive charts)
-- **Sentiment Analysis** — positive/negative/neutral scoring per chapter using lexicon-based analysis
-- **Authorship Statistics** — vocabulary richness, average sentence length, hapax legomena per author
-- **Writing Style Comparison** — compare Paul's letters vs. Johannine writings vs. Synoptic Gospels
-- **Book Timeline** — when each book was written, with historical events overlay
-- **Network Graph** — connections between books, people, places, and themes
-
-### 🎓 Academic Research Integration
-
-Every verse and topic has a **"Research" button** that queries live academic databases:
-
-- **Semantic Scholar** — free API, no key required. Returns papers with titles, abstracts, citation counts
-- **PubMed** — archaeological, medical, and historical studies related to biblical passages
-- **Google Scholar** — deep links for broader academic search
-- **JSTOR** — links to humanities and theology journals
-
-Search for: archaeology, textual criticism, historical analysis, linguistic studies, manuscript evidence.
-
-### 🤖 AI Research Assistant
-
-One-click AI queries for any verse:
-
-- *"Find archaeological evidence for this passage"*
-- *"What do scholars say about this verse?"*
-- *"Historical context of this period"*
-- *"Linguistic analysis of key terms"*
-
-Opens pre-filled queries in:
-- [Perplexity.ai](https://perplexity.ai) — AI-powered research
-- [ChatGPT](https://chat.openai.com) — conversational analysis
-- [Claude.ai](https://claude.ai) — nuanced reasoning
-
-### 📜 Manuscript Sources
-
-See which ancient manuscripts attest each passage:
-
-- **Codex Sinaiticus** (א, 4th century)
-- **Codex Vaticanus** (B, 4th century)
-- **Codex Alexandrinus** (A, 5th century)
-- **Dead Sea Scrolls** (3rd century BCE – 1st century CE)
-- **Textus Receptus** and critical text variants
-
-Direct links to digital manuscript collections:
-- [CSNTM](https://csntm.org) — Center for the Study of New Testament Manuscripts
-- [Codex Sinaiticus Project](https://codexsinaiticus.org)
-- [Leon Levy Dead Sea Scrolls Digital Library](https://deadseascrolls.org.il)
-
-### 🗺️ Historical Context
-
-- **Interactive timeline** alongside each passage — what was happening in world history
-- **Geographic context** — where events took place, powered by Leaflet.js maps
-- **Archaeological evidence** — discoveries that illuminate the text
-- **Cultural background** — customs, laws, and social structures of the ancient world
-
-### 🔍 Full-Text Search
-
-Search across all translations with:
-- Instant full-text search (FTS5)
-- Filter by book, testament, translation
-- Results with surrounding context
-- Highlighted matches
-
-## 🏗️ Architecture
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    BibleLens Web App                     │
-│                   Next.js 14 (App Router)                │
-├────────────┬────────────┬───────────┬───────────────────┤
-│   Reader   │  Compare   │  Search   │    Analytics      │
-│   Page     │  Page      │  Page     │    Dashboard      │
-├────────────┴────────────┴───────────┴───────────────────┤
-│                    React Components                      │
-│  Sidebar · VerseDisplay · CrossRefs · StrongsPanel      │
-│  CompareView · SearchResults · Charts · Maps · Timeline │
-├─────────────────────────────────────────────────────────┤
-│                     API Routes                           │
-│  /api/verses · /api/search · /api/crossrefs · /api/word │
-│  /api/analytics · /api/research                         │
-├─────────────────────────────────────────────────────────┤
-│                  Data Layer (SQLite)                     │
-│  better-sqlite3 · FTS5 · 120,000+ verses                │
-│  340,000+ cross-refs · Strong's concordance             │
-├─────────────────────────────────────────────────────────┤
-│               External Integrations                      │
-│  Semantic Scholar API · PubMed · Google Scholar          │
-│  Perplexity · ChatGPT · Claude · JSTOR                  │
-│  Leaflet.js Maps · Recharts Visualizations              │
-└─────────────────────────────────────────────────────────┘
-```
-
-## 📊 Data Sources
-
-| Source | Content | Records |
-|--------|---------|---------|
-| [scrollmapper/bible_databases](https://github.com/scrollmapper/bible_databases) | KJV, ASV, BBE, YLT verse texts | ~124,000 verses |
-| [OpenBible.info](https://www.openbible.info/labs/cross-references/) | Cross-reference dataset | 340,000+ refs |
-| Strong's Concordance | Hebrew/Greek lexicon | 50 key entries (demo) |
-| [Semantic Scholar](https://api.semanticscholar.org/) | Academic papers API | Live queries |
-| [PubMed](https://pubmed.ncbi.nlm.nih.gov/) | Medical/archaeological studies | Live queries |
-| Manuscript metadata | Codex coverage data | Curated dataset |
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- **Node.js** 18+ (recommended: 20+)
-- **npm** or **pnpm**
-
-### Installation
+You need [Node.js](https://nodejs.org) 18 or later.
 
 ```bash
-# Clone the repository
-git clone https://github.com/quantumnic/biblelens.git
-cd biblelens
-
-# Install dependencies
+git clone https://github.com/VictorOsondu/bible-logos.git
+cd bible-logos
 npm install
-
-# Seed the database (downloads Bible texts + cross-references)
-npm run seed
-
-# Start development server
-npm run dev
+npm run seed   # downloads the texts and builds data/bible.db (about 120 MB, under a minute)
+npm run dev    # then open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) — you're in.
+Run `npm run seed` again at any time to rebuild the database from scratch.
 
-### Production Build
+Other commands:
 
-```bash
-npm run build
-npm start
-```
+| Command | Purpose |
+|---|---|
+| `npm test` | Run the test suite (Vitest) |
+| `npm run build && npm start` | Production build |
 
-The app uses `output: 'standalone'` for easy deployment to Docker, Vercel, or any Node.js host.
+## 📊 Data sources
 
-### Database
+The seed script downloads everything below; none of it is stored in this repository.
 
-BibleLens uses **SQLite** via `better-sqlite3` — no external database server needed. The seed script downloads all data from public sources and builds the database locally (~50MB).
+| Source | Used for | Licence |
+|---|---|---|
+| [CrossWire Bible Society KJV module](https://gitlab.com/crosswire-bible-society/kjv) | KJV text with Strong's numbers and Greek morphology | Text public domain; module markup GPL |
+| [Open Scriptures Strong's dictionaries](https://github.com/openscriptures/strongs) | Hebrew and Greek lexicon | CC BY-SA |
+| [scrollmapper/bible_databases](https://github.com/scrollmapper/bible_databases) | ASV, BBE, YLT and Vulgate texts | Public domain |
+| [OpenBible.info](https://www.openbible.info/labs/cross-references/) (via scrollmapper) | Cross-references | CC BY |
+| [Semantic Scholar](https://www.semanticscholar.org/), [PubMed](https://pubmed.ncbi.nlm.nih.gov/), [Open Library](https://openlibrary.org/) | Live research results | Queried on demand |
 
-```bash
-# Re-seed (drops and recreates)
-npm run seed
+## 🏗️ How it is built
 
-# Database location
-data/bible.db
-```
+- **Next.js 14** (App Router) with **TypeScript** and **Tailwind CSS**
+- **SQLite** via `better-sqlite3`, with an FTS5 full-text index
+- `scripts/seed.ts` builds the database; `scripts/kjv-strongs.ts` parses the Strong's lexicon and the tagged KJV
+- `src/lib/strongs.ts` holds the Strong's queries shared by the pages and API
 
-## 🗺️ Roadmap
+## 🙏 Credits
 
-- [x] Multi-translation reader (KJV, ASV, BBE, YLT)
-- [x] Cross-reference explorer (340k+ refs)
-- [x] Strong's concordance (50 demo entries)
-- [x] Full-text search with FTS5
-- [x] Translation comparison with diff highlighting
-- [x] Academic research integration (Semantic Scholar, PubMed)
-- [x] AI research assistant links
-- [x] Manuscript source panel
-- [x] Data analytics dashboard
-- [x] Historical context timeline
-- [ ] Complete Strong's concordance (8,674 Hebrew + 5,624 Greek entries)
-- [ ] Interlinear Hebrew/Greek text
-- [ ] Morphological parsing (verb tenses, noun cases)
-- [ ] Full Leaflet.js map integration with biblical locations
-- [ ] User annotations and bookmarks
-- [ ] Collaborative study groups
-- [ ] Audio Bible playback
-- [ ] Original language text (BHS, NA28)
-- [ ] Textual apparatus with full manuscript variants
-- [ ] Citation export (BibTeX, RIS, Chicago)
-- [ ] API for third-party integrations
-- [ ] Plugin system for custom analyses
-- [ ] Offline PWA support
+Bible Logos began as a fork of **[BibleLens](https://github.com/quantumnic/biblelens)** by Nicola Spieser, released under the MIT licence. Thank you for the foundation.
 
-## 🤝 Contributing
+Strong's data: James Strong (1890/1894); JSON edition by Open Scriptures. Tagged KJV: CrossWire Bible Society, with Old Testament Strong's numbers from The Bible Foundation and New Testament data from the KJV2003 Project.
 
-BibleLens is open source and contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+## 📄 Licence
 
-**Areas where help is needed:**
+MIT. See [LICENSE](LICENSE).
 
-- 📖 **Data**: Expanding Strong's concordance to full coverage
-- 🗺️ **Maps**: Biblical geography dataset and Leaflet integration
-- 📊 **Analytics**: More sophisticated NLP and text analysis
-- 🎨 **Design**: UI/UX improvements and accessibility
-- 📜 **Manuscripts**: Expanding textual variant database
-- 🌍 **Translations**: Adding more Bible translations (public domain)
-- 📝 **Documentation**: Tutorials, API docs, examples
-
-## 📄 License
-
-MIT — free to use, modify, and distribute. See [LICENSE](LICENSE) for details.
-
----
-
-<div align="center">
-
-**Built with conviction that ancient texts deserve modern tools.**
-
-*BibleLens is a research tool, not a theological statement. It presents data and lets you draw conclusions.*
-
-</div>
+*Bible Logos presents the text and its sources; the conclusions are yours.*

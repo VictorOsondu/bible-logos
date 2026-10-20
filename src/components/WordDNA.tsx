@@ -74,7 +74,7 @@ export default function WordDNA({ word, provenance, chain }: Props) {
             className="text-xs text-gold-400 hover:text-gold-300 font-semibold"
             onClick={(e) => e.stopPropagation()}
           >
-            Vollständiges Wort-Profil →
+            Full word profile →
           </Link>
 
           {/* Arrow */}

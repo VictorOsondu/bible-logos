@@ -48,15 +48,15 @@ export default function BookmarksPage() {
   const [addVerse, setAddVerse] = useState('');
 
   useEffect(() => {
-    const stored = localStorage.getItem('biblelens-bookmarks');
+    const stored = localStorage.getItem('biblelogos-bookmarks');
     if (stored) setBookmarks(JSON.parse(stored));
-    const hist = localStorage.getItem('biblelens-history');
+    const hist = localStorage.getItem('biblelogos-history');
     if (hist) setHistory(JSON.parse(hist));
   }, []);
 
   const saveBookmarks = (bms: Bookmark[]) => {
     setBookmarks(bms);
-    localStorage.setItem('biblelens-bookmarks', JSON.stringify(bms));
+    localStorage.setItem('biblelogos-bookmarks', JSON.stringify(bms));
   };
 
   const addBookmark = () => {
@@ -81,7 +81,7 @@ export default function BookmarksPage() {
 
   const clearHistory = () => {
     setHistory([]);
-    localStorage.removeItem('biblelens-history');
+    localStorage.removeItem('biblelogos-history');
   };
 
   const selectedBookChapters = BIBLE_BOOKS.find(b => b.id === addBook)?.chapters || 1;

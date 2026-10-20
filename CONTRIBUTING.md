@@ -1,42 +1,25 @@
-# Contributing to BibleLens
+# Contributing to Bible Logos
 
-Thank you for your interest in contributing to BibleLens! This project aims to be the most powerful open-source Bible research platform, and we welcome contributions of all kinds.
+Bible Logos is a personal study and research tool, but suggestions and fixes are welcome.
 
-## Getting Started
+## Setting up
 
-1. Fork the repository
-2. Clone your fork: `git clone https://github.com/YOUR-USERNAME/biblelens.git`
-3. Install dependencies: `npm install`
-4. Seed the database: `npm run seed`
-5. Start dev server: `npm run dev`
+1. Clone the repository: `git clone https://github.com/VictorOsondu/bible-logos.git`
+2. Install dependencies: `npm install`
+3. Build the database: `npm run seed`
+4. Start the dev server: `npm run dev`
 
-## Development
+## Working on the code
 
-- **Tech stack**: Next.js 14 (App Router), TypeScript, Tailwind CSS, SQLite (better-sqlite3)
-- **Code style**: TypeScript strict mode, functional components, Tailwind for styling
-- **Testing**: We welcome test contributions! Vitest + React Testing Library (`npm test`).
+- **Stack**: Next.js 14 (App Router), TypeScript, Tailwind CSS, SQLite (better-sqlite3)
+- **Tests**: Vitest (`npm test`). Please add tests for new behaviour, especially anything that parses or queries data.
+- **Data**: reference data is downloaded by `scripts/seed.ts`, not committed. Prefer complete, openly licensed datasets over hand-typed lists, and credit the source in the README.
+- **Spelling**: UK English in the interface and documentation.
 
-## Areas Where Help Is Needed
+## Pull requests
 
-- **📖 Data**: Expanding Strong's concordance to full coverage (8,674 Hebrew + 5,624 Greek entries)
-- **🗺️ Maps**: Biblical geography dataset and Leaflet.js integration
-- **📊 Analytics**: More NLP and text analysis features
-- **🎨 Design**: UI/UX improvements and accessibility (WCAG 2.1 AA)
-- **📜 Manuscripts**: Expanding the textual variant database
-- **🌍 Translations**: Adding more public domain Bible translations
-- **📝 Documentation**: Tutorials, API documentation, examples
+1. Create a branch from `main`.
+2. Make sure `npm test` and `npm run build` pass.
+3. Describe what changed and why.
 
-## Pull Request Process
-
-1. Create a feature branch from `main`
-2. Make your changes with clear commit messages
-3. Ensure `npm run build` passes
-4. Submit a PR with a clear description of what changed and why
-
-## Code of Conduct
-
-Be respectful, constructive, and kind. BibleLens is a research tool — we welcome contributors of all backgrounds and beliefs.
-
-## License
-
-By contributing, you agree that your contributions will be licensed under the MIT License.
+By contributing, you agree that your contributions are licensed under the MIT licence.

@@ -105,7 +105,7 @@ const PLANS: ReadingPlan[] = [
   },
 ];
 
-const PROGRESS_KEY = 'biblelens-reading-plans';
+const PROGRESS_KEY = 'biblelogos-reading-plans';
 
 function loadProgress(): Record<string, boolean[]> {
   if (typeof window === 'undefined') return {};

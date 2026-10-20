@@ -27,7 +27,7 @@ export default function Home() {
         <Sidebar />
         <main className="flex-1 p-4 lg:p-8 max-w-5xl">
           <div className="text-center py-16">
-            <h1 className="text-4xl font-bold font-serif text-parchment-100 mb-4">📖 BibleLens</h1>
+            <h1 className="text-4xl font-bold font-serif text-parchment-100 mb-4">📖 Bible Logos</h1>
             <p className="text-parchment-400 mb-6">Database not found. Run <code className="bg-parchment-800 px-2 py-1 rounded text-gold-400">npm run seed</code> to populate the database.</p>
           </div>
         </main>

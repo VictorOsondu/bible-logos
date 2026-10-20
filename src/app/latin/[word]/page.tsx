@@ -29,9 +29,9 @@ function langEmoji(lang: string) {
 }
 
 function langLabel(lang: string) {
-  if (lang === 'hebrew') return 'Hebräisch (Masoretischer Text)';
-  if (lang === 'greek') return 'Griechisch (Septuaginta/NT)';
-  if (lang === 'latin') return 'Lateinisch (Vulgata, Hieronymus ~405 n.Chr.)';
+  if (lang === 'hebrew') return 'Hebrew (Masoretic Text)';
+  if (lang === 'greek') return 'Greek (Septuagint/NT)';
+  if (lang === 'latin') return 'Latin (Vulgate, Jerome c. AD 405)';
   return lang;
 }
 
@@ -118,7 +118,7 @@ export default function LatinWordPage({ params }: Props) {
 
         {/* Etymology Chain - Visual */}
         <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6 mb-8">
-          <h2 className="text-xl font-semibold text-parchment-200 mb-4">🔗 Vollständige Etymologie-Kette</h2>
+          <h2 className="text-xl font-semibold text-parchment-200 mb-4">🔗 Full Etymology Chain</h2>
           <div className="space-y-3">
             {[...chain].reverse().map((node, i) => {
               const isLast = i === chain.length - 1;
@@ -138,10 +138,10 @@ export default function LatinWordPage({ params }: Props) {
                     </div>
                     <p className="text-sm text-parchment-300 mt-1">{node.definition}</p>
                     {node.proto_root && (
-                      <p className="text-xs text-parchment-500 mt-1">🌿 Ursprung: {node.proto_root}</p>
+                      <p className="text-xs text-parchment-500 mt-1">🌿 Origin: {node.proto_root}</p>
                     )}
                     {i < chain.length - 1 && (
-                      <p className="text-xs text-gold-500 mt-1">↓ übersetzt als...</p>
+                      <p className="text-xs text-gold-500 mt-1">↓ translated as…</p>
                     )}
                   </div>
                 </div>
@@ -152,16 +152,16 @@ export default function LatinWordPage({ params }: Props) {
 
         {/* Proto-Root & Etymology */}
         <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6 mb-8">
-          <h2 className="text-xl font-semibold text-parchment-200 mb-3">📚 Etymologie</h2>
+          <h2 className="text-xl font-semibold text-parchment-200 mb-3">📚 Etymology</h2>
           <p className="text-parchment-300 leading-relaxed">{entry.etymology}</p>
           {entry.proto_root && (
             <p className="text-sm text-parchment-400 mt-3">
-              <span className="font-semibold text-gold-400">Ur-Wurzel:</span> {entry.proto_root}
+              <span className="font-semibold text-gold-400">Proto-root:</span> {entry.proto_root}
             </p>
           )}
           {entry.first_occurrence && (
             <p className="text-sm text-parchment-400 mt-1">
-              <span className="font-semibold text-gold-400">Erste Verwendung:</span> {entry.first_occurrence}
+              <span className="font-semibold text-gold-400">First occurrence:</span> {entry.first_occurrence}
             </p>
           )}
         </div>
@@ -169,7 +169,7 @@ export default function LatinWordPage({ params }: Props) {
         {/* Manuscript Sources */}
         {manuscriptSources.length > 0 && (
           <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6 mb-8">
-            <h2 className="text-xl font-semibold text-parchment-200 mb-3">📜 Manuskript-Quellen</h2>
+            <h2 className="text-xl font-semibold text-parchment-200 mb-3">📜 Manuscript Sources</h2>
             <div className="flex flex-wrap gap-2 mb-4">
               {manuscriptSources.map((ms: string, i: number) => (
                 <span key={i} className="text-sm px-3 py-1 rounded-full bg-parchment-800 text-parchment-300 border border-parchment-700">
@@ -193,7 +193,7 @@ export default function LatinWordPage({ params }: Props) {
         {/* Academic References */}
         {Object.keys(academicRefs).length > 0 && (
           <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6 mb-8">
-            <h2 className="text-xl font-semibold text-parchment-200 mb-3">🎓 Akademische Referenzen</h2>
+            <h2 className="text-xl font-semibold text-parchment-200 mb-3">🎓 Academic References</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {Object.entries(academicRefs).map(([key, val]) => (
                 <div key={key} className="flex gap-2 p-2 rounded bg-parchment-800">
@@ -223,7 +223,7 @@ export default function LatinWordPage({ params }: Props) {
         {allOccurrences.length > 0 && (
           <div className="mb-8">
             <h2 className="text-xl font-semibold text-parchment-200 mb-4">
-              📖 Vorkommen in der Vulgata ({allOccurrences.length}{allOccurrences.length >= 50 ? '+' : ''})
+              📖 Occurrences in the Vulgate ({allOccurrences.length}{allOccurrences.length >= 50 ? '+' : ''})
             </h2>
             <div className="space-y-3">
               {allOccurrences.slice(0, 30).map((o: any) => {
@@ -269,7 +269,7 @@ export default function LatinWordPage({ params }: Props) {
 
         {/* Browse all Latin words */}
         <div>
-          <h2 className="text-xl font-semibold text-parchment-200 mb-4">📚 Alle lateinischen Wörter</h2>
+          <h2 className="text-xl font-semibold text-parchment-200 mb-4">📚 All Latin words</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {allLatinWords.map((w: any) => (
               <Link

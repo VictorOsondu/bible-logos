@@ -6,11 +6,11 @@ import ReadingProgress from '@/components/ReadingProgress';
 import SearchModal from '@/components/SearchModal';
 
 export const metadata: Metadata = {
-  title: 'BibleLens — Analytical Bible Study Tool',
+  title: 'Bible Logos — Personal Bible Study & Research',
   description: 'Multi-translation comparison, cross-references, Strong\'s concordance, word-level etymology, manuscript evidence, and scholarly research tools for deep Bible study.',
   keywords: ['Bible', 'study', 'Strong\'s concordance', 'cross-references', 'KJV', 'ASV', 'Vulgate', 'Hebrew', 'Greek', 'Latin'],
   openGraph: {
-    title: 'BibleLens — Analytical Bible Study Tool',
+    title: 'Bible Logos — Personal Bible Study & Research',
     description: 'Deep Bible study with multi-translation comparison, word analysis, and scholarly research.',
     type: 'website',
   },

@@ -136,9 +136,9 @@ export default function Sidebar() {
         <div className="p-4 border-b border-parchment-800">
           <Link href="/" className="flex items-center gap-2">
             <span className="text-2xl">📖</span>
-            <h1 className="text-xl font-bold text-gold-400 font-serif">BibleLens</h1>
+            <h1 className="text-xl font-bold text-gold-400 font-serif">Bible Logos</h1>
           </Link>
-          <p className="text-xs text-parchment-500 mt-1">Analytical Bible Study</p>
+          <p className="text-xs text-parchment-500 mt-1">Personal Bible study &amp; research</p>
         </div>
 
         <nav className="p-2">

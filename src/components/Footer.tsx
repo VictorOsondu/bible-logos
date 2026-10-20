@@ -62,14 +62,14 @@ export default function Footer() {
           </div>
         </div>
         <div className="flex flex-wrap justify-center gap-4 mb-6 text-xs">
-          <a href="https://github.com/quantumnic/biblelens" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 bg-parchment-900 border border-parchment-800 rounded-full text-parchment-400 hover:text-gold-400 hover:border-gold-500/30 transition-all">
+          <a href="https://github.com/VictorOsondu/bible-logos" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 px-3 py-1.5 bg-parchment-900 border border-parchment-800 rounded-full text-parchment-400 hover:text-gold-400 hover:border-gold-500/30 transition-all">
             ⭐ GitHub
           </a>
           <span className="flex items-center gap-1.5 px-3 py-1.5 bg-parchment-900 border border-parchment-800 rounded-full text-parchment-500">
             📜 Open Source (MIT)
           </span>
           <span className="flex items-center gap-1.5 px-3 py-1.5 bg-parchment-900 border border-parchment-800 rounded-full text-parchment-500">
-            🌐 KJV · ASV · WEB · VUL
+            🌐 KJV · ASV · BBE · YLT · VUL
           </span>
           <span className="flex items-center gap-1.5 px-3 py-1.5 bg-parchment-900 border border-parchment-800 rounded-full text-parchment-500">
             🔬 19 Research Sources
@@ -78,12 +78,17 @@ export default function Footer() {
         <div className="text-center text-xs text-parchment-600 pt-5 border-t border-parchment-800/50">
           <p className="flex items-center justify-center gap-2">
             <span>📖</span>
-            <span className="font-semibold text-parchment-500">BibleLens</span>
+            <span className="font-semibold text-parchment-500">Bible Logos</span>
             <span>—</span>
-            <span>Analytical Bible Study Platform</span>
+            <span>Personal Bible study &amp; research</span>
           </p>
           <p className="mt-1.5 text-parchment-700">
             Built with Next.js &amp; SQLite • Data from public domain translations • Strong&apos;s concordance &amp; cross-references
+          </p>
+          <p className="mt-1.5 text-parchment-700">
+            Based on{' '}
+            <a href="https://github.com/quantumnic/biblelens" target="_blank" rel="noopener noreferrer" className="hover:text-gold-400 transition-colors">BibleLens</a>
+            {' '}by Nicola Spieser (MIT)
           </p>
         </div>
       </div>

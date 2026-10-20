@@ -64,7 +64,7 @@ export default function WordProvenancePage({ lemma, language }: Props) {
 
         {/* Etymology Chain */}
         <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6 mb-8">
-          <h2 className="text-xl font-semibold text-parchment-200 mb-4">🔗 Übersetzungskette</h2>
+          <h2 className="text-xl font-semibold text-parchment-200 mb-4">🔗 Translation Chain</h2>
           <div className="space-y-3">
             {[...chain].reverse().map((node, i) => {
               const isCurrentEntry = node.id === entry.id;
@@ -100,7 +100,7 @@ export default function WordProvenancePage({ lemma, language }: Props) {
           {/* Children */}
           {children.length > 0 && (
             <div className="mt-4 pt-4 border-t border-parchment-800">
-              <h3 className="text-sm font-semibold text-parchment-400 mb-2">↓ Übersetzt als:</h3>
+              <h3 className="text-sm font-semibold text-parchment-400 mb-2">↓ Translated as:</h3>
               <div className="flex flex-wrap gap-2">
                 {children.map((child: any) => (
                   <Link
@@ -118,16 +118,16 @@ export default function WordProvenancePage({ lemma, language }: Props) {
 
         {/* Etymology */}
         <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6 mb-8">
-          <h2 className="text-xl font-semibold text-parchment-200 mb-3">📚 Etymologie</h2>
+          <h2 className="text-xl font-semibold text-parchment-200 mb-3">📚 Etymology</h2>
           <p className="text-parchment-300 leading-relaxed">{entry.etymology}</p>
           {entry.proto_root && (
             <p className="text-sm text-parchment-400 mt-3">
-              <span className="font-semibold text-gold-400">Ur-Wurzel:</span> {entry.proto_root}
+              <span className="font-semibold text-gold-400">Proto-root:</span> {entry.proto_root}
             </p>
           )}
           {entry.first_occurrence && (
             <p className="text-sm text-parchment-400 mt-1">
-              <span className="font-semibold text-gold-400">Erste Verwendung:</span> {entry.first_occurrence}
+              <span className="font-semibold text-gold-400">First occurrence:</span> {entry.first_occurrence}
             </p>
           )}
         </div>
@@ -135,7 +135,7 @@ export default function WordProvenancePage({ lemma, language }: Props) {
         {/* Manuscripts */}
         {manuscriptSources.length > 0 && (
           <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6 mb-8">
-            <h2 className="text-xl font-semibold text-parchment-200 mb-3">📜 Manuskript-Quellen</h2>
+            <h2 className="text-xl font-semibold text-parchment-200 mb-3">📜 Manuscript Sources</h2>
             <div className="flex flex-wrap gap-2 mb-4">
               {manuscriptSources.map((ms: string, i: number) => (
                 <span key={i} className="text-sm px-3 py-1 rounded-full bg-parchment-800 text-parchment-300 border border-parchment-700">
@@ -159,7 +159,7 @@ export default function WordProvenancePage({ lemma, language }: Props) {
         {/* Academic References */}
         {Object.keys(academicRefs).length > 0 && (
           <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-6 mb-8">
-            <h2 className="text-xl font-semibold text-parchment-200 mb-3">🎓 Akademische Referenzen</h2>
+            <h2 className="text-xl font-semibold text-parchment-200 mb-3">🎓 Academic References</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               {Object.entries(academicRefs).map(([key, val]) => (
                 <div key={key} className="flex gap-2 p-2 rounded bg-parchment-800">
@@ -184,7 +184,7 @@ export default function WordProvenancePage({ lemma, language }: Props) {
         {/* Browse */}
         <div>
           <h2 className="text-xl font-semibold text-parchment-200 mb-4">
-            {langEmoji(language)} Alle {language === 'hebrew' ? 'hebräischen' : language === 'greek' ? 'griechischen' : 'lateinischen'} Wörter
+            {langEmoji(language)} All {language === 'hebrew' ? 'Hebrew' : language === 'greek' ? 'Greek' : 'Latin'} words
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {allWords.map((w: any) => (

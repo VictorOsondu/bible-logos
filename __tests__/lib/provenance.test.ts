@@ -47,9 +47,9 @@ describe('provenance utilities', () => {
 
   describe('langLabel', () => {
     it('returns correct label for each language', () => {
-      expect(langLabel('hebrew')).toContain('Hebräisch');
-      expect(langLabel('greek')).toContain('Griechisch');
-      expect(langLabel('latin')).toContain('Lateinisch');
+      expect(langLabel('hebrew')).toContain('Hebrew');
+      expect(langLabel('greek')).toContain('Greek');
+      expect(langLabel('latin')).toContain('Latin');
       expect(langLabel('aramaic')).toBe('aramaic');
     });
   });

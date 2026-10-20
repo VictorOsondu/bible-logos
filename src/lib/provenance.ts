@@ -31,9 +31,9 @@ export function langEmoji(lang: string) {
 }
 
 export function langLabel(lang: string) {
-  if (lang === 'hebrew') return 'Hebräisch (MT/OT)';
-  if (lang === 'greek') return 'Griechisch (LXX/NT)';
-  if (lang === 'latin') return 'Lateinisch (Vulgata)';
+  if (lang === 'hebrew') return 'Hebrew (MT/OT)';
+  if (lang === 'greek') return 'Greek (LXX/NT)';
+  if (lang === 'latin') return 'Latin (Vulgate)';
   return lang;
 }
 
