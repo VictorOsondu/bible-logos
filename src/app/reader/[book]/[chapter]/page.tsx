@@ -68,7 +68,7 @@ export default async function ReaderPage(props: Props) {
   `).all(bookInfo.id, chapter, ...selectedTranslations) as Verse[];
 
   // Strong's-tagged KJV text for this chapter
-  const { tokens: kjvTokens, lexicon } = getChapterTokens(db, bookInfo.id, chapter);
+  const kjvTokens = getChapterTokens(db, bookInfo.id, chapter);
 
   const verseCount = new Set(verses.map(v => v.verse)).size;
   const words = verses.filter(v => v.translation === selectedTranslations[0]).reduce((n, v) => n + v.text.split(/\s+/).length, 0);
@@ -138,10 +138,10 @@ export default async function ReaderPage(props: Props) {
       </header>
 
       <VerseDisplay
-        verses={verses}
+        // The tagged tokens already carry the KJV text; don't send it twice
+        verses={verses.map(v => (v.translation === 'KJV' && kjvTokens[v.verse] ? { ...v, text: '' } : v))}
         translations={selectedTranslations}
         kjvTokens={kjvTokens}
-        lexicon={lexicon}
       />
 
       <nav className="max-w-2xl mx-auto mt-12 grid grid-cols-2 gap-3" aria-label="Chapter navigation">

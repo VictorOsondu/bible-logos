@@ -1,7 +1,5 @@
 import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
-
 interface Miracle {
   title: string;
   reference: string;

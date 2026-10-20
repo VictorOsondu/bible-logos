@@ -135,18 +135,21 @@ export function getKjvRenderings(db: Database.Database, id: string, limit = 15) 
     .slice(0, limit);
 }
 
-/** Tagged KJV tokens for a chapter plus a summary of every Strong's number they use. */
+export const tokensToText = (tokens: VerseToken[]) =>
+  tokens.map(t => (typeof t === 'string' ? t : t.t)).join('');
+
+/**
+ * Tagged KJV tokens for a chapter, keyed by verse, with only what the reader displays
+ * (the stored morphology codes are left out to keep pages small).
+ */
 export function getChapterTokens(db: Database.Database, book: number, chapter: number) {
   const rows = db.prepare('SELECT verse, tokens FROM verse_tokens WHERE book = ? AND chapter = ?')
     .all(book, chapter) as { verse: number; tokens: string }[];
   const tokens: Record<number, VerseToken[]> = {};
-  for (const r of rows) tokens[r.verse] = JSON.parse(r.tokens);
-
-  const lexicon: Record<string, StrongsSummary> = {};
-  const entries = db.prepare(`
-    SELECT id, original, transliteration, definition, language FROM strongs
-    WHERE id IN (SELECT DISTINCT strongs_id FROM word_strongs WHERE book = ? AND chapter = ?)
-  `).all(book, chapter) as StrongsSummary[];
-  for (const e of entries) lexicon[e.id] = e;
-  return { tokens, lexicon };
+  for (const r of rows) {
+    tokens[r.verse] = (JSON.parse(r.tokens) as VerseToken[]).map(t =>
+      typeof t === 'string' ? t : t.a ? { t: t.t, a: 1 } : t.s ? { t: t.t, s: t.s } : t.t
+    );
+  }
+  return tokens;
 }

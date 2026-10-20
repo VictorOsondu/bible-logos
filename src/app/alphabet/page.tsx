@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic';
-
 const HEBREW_LETTERS = [
   { letter: 'א', name: 'Aleph', translit: 'ʾ', value: 1, meaning: 'Ox, leader' },
   { letter: 'ב', name: 'Bet', translit: 'b/v', value: 2, meaning: 'House, family' },

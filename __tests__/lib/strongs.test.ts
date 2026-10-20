@@ -99,9 +99,8 @@ describe('Strong\'s queries', () => {
     expect(getKjvRenderings(db, 'H430')).toEqual([{ word: 'god', count: 1 }]);
   });
 
-  it('returns tagged tokens and the lexicon entries they use', () => {
-    const { tokens, lexicon } = getChapterTokens(db, 1, 1);
+  it('returns tagged tokens for a chapter', () => {
+    const tokens = getChapterTokens(db, 1, 1);
     expect(tokens[1][1]).toEqual({ t: 'God', s: ['H430'] });
-    expect(Object.keys(lexicon).sort()).toEqual(['H1254', 'H430']);
   });
 });

@@ -2,8 +2,6 @@ import Link from 'next/link';
 import { getDb, isDatabaseAvailable } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
 
-export const dynamic = 'force-dynamic';
-
 const PARALLEL_PASSAGES: { label: string; refs: [number, number, number, number][] }[] = [
   { label: 'Birth of Jesus', refs: [[40,1,18,25],[42,2,1,20]] },
   { label: 'Baptism of Jesus', refs: [[40,3,13,17],[41,1,9,11],[42,3,21,22]] },

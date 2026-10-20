@@ -1,9 +1,9 @@
 // Parsers for the full Strong's lexicon (Open Scriptures) and the
 // Strong's-tagged KJV (CrossWire Bible Society OSIS module).
 
-import type { VerseToken } from '../src/lib/strongs';
+import { tokensToText, type VerseToken } from '../src/lib/strongs';
 
-export type { VerseToken };
+export { tokensToText, type VerseToken };
 
 // OSIS book IDs in canonical order; index + 1 is the app's book number.
 export const OSIS_BOOKS = [
@@ -151,6 +151,3 @@ export function parseKjvOsis(xml: string): TaggedVerse[] {
   }
   return verses;
 }
-
-export const tokensToText = (tokens: VerseToken[]) =>
-  tokens.map(t => (typeof t === 'string' ? t : t.t)).join('');

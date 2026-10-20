@@ -10,7 +10,7 @@ import StrongsPanel from './StrongsPanel';
 import ResearchPanel from './ResearchPanel';
 import IntertextualPanel from './IntertextualPanel';
 import CopyButton from './CopyButton';
-import { primaryStrongs, type StrongsSummary, type VerseToken } from '@/lib/strongs';
+import { primaryStrongs, tokensToText, type VerseToken } from '@/lib/strongs';
 
 interface Verse {
   book: number;
@@ -24,7 +24,6 @@ interface Props {
   verses: Verse[];
   translations: string[];
   kjvTokens?: Record<number, VerseToken[]>; // Strong's-tagged KJV, keyed by verse
-  lexicon?: Record<string, StrongsSummary>;
 }
 
 type Panel = 'crossref' | 'strongs' | 'research' | 'intertextual';
@@ -47,7 +46,7 @@ const subscribeToHash = (onChange: () => void) => {
 };
 const useHash = () => useSyncExternalStore(subscribeToHash, () => window.location.hash, () => '');
 
-export default function VerseDisplay({ verses, translations, kjvTokens, lexicon }: Props) {
+export default function VerseDisplay({ verses, translations, kjvTokens }: Props) {
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null);
   const [panel, setPanel] = useState<Panel | null>(null);
   const [selectedStrongs, setSelectedStrongs] = useState<string | null>(null);
@@ -102,15 +101,20 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
     setPanel('strongs');
   };
 
+  const tokensFor = (v: Verse) => (v.translation === 'KJV' ? kjvTokens?.[v.verse] : undefined);
+  const plainText = (v: Verse) => {
+    const tokens = tokensFor(v);
+    return tokens ? tokensToText(tokens) : v.text;
+  };
+
   const renderText = (v: Verse) => {
-    const tokens = v.translation === 'KJV' ? kjvTokens?.[v.verse] : undefined;
+    const tokens = tokensFor(v);
     if (!tokens) return v.text;
     return tokens.map((token, i) => {
       if (typeof token === 'string') return token;
       if (token.a) return <em key={i} className="text-parchment-300">{token.t}</em>;
       const id = token.s && primaryStrongs(token.s);
       if (!id) return token.t;
-      const info = lexicon?.[id];
       return (
         // A span rather than a <button> so multi-word phrases can wrap across lines like the rest of the text
         <span
@@ -118,8 +122,6 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
           role="button"
           tabIndex={0}
           className="strongs-word"
-          title={info ? `${info.transliteration} (${info.original}): ${info.definition}` : id}
-          aria-label={info ? `${token.t}: ${info.transliteration}, Strong's ${id}` : `${token.t}, Strong's ${id}`}
           onClick={e => { e.stopPropagation(); openWord(id); }}
           onKeyDown={e => {
             if (e.key !== 'Enter' && e.key !== ' ') return;
@@ -205,7 +207,7 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
                   </button>
                   <CopyButton
                     className={chip}
-                    text={`"${list[0].text}" — ${bookName} ${chapter}:${verseNum} (${list[0].translation})`}
+                    text={`"${plainText(list[0])}" — ${bookName} ${chapter}:${verseNum} (${list[0].translation})`}
                   />
                 </div>
               )}

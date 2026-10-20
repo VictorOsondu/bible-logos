@@ -1,7 +1,5 @@
 import Link from 'next/link';
 
-export const dynamic = 'force-dynamic';
-
 interface TimelineEra {
   era: string;
   period: string;

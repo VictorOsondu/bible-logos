@@ -4,7 +4,8 @@ import { getBookById } from '@/lib/bible-books';
 import { NAV_SECTIONS } from '@/lib/navigation';
 import ContinueReading from '@/components/ContinueReading';
 
-export const dynamic = 'force-dynamic';
+// The verse of the day changes daily; rebuild the page at most once an hour.
+export const revalidate = 3600;
 
 // Curated notable verses (subset for VOTD)
 const NOTABLE_VERSES: [number, number, number][] = [

@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test.describe('reader', () => {
   test('tapping a word opens its Strong\'s entry', async ({ page }) => {
     await page.goto('/reader/john/3');
-    await page.locator('#v16').getByRole('button', { name: /^loved:/ }).click();
+    await page.locator('#v16').getByRole('button', { name: 'loved', exact: true }).click();
     const panel = page.getByRole('complementary', { name: "Strong's G25" });
     await expect(panel).toBeVisible();
     await expect(panel.getByText('agapáō')).toBeVisible();
@@ -12,7 +12,7 @@ test.describe('reader', () => {
   test('works by keyboard: word study and verse tools', async ({ page, isMobile }) => {
     test.skip(isMobile, 'keyboard test runs on desktop');
     await page.goto('/reader/john/3');
-    const word = page.locator('#v16').getByRole('button', { name: /^loved:/ });
+    const word = page.locator('#v16').getByRole('button', { name: 'loved', exact: true });
     await word.focus();
     await page.keyboard.press('Enter');
     await expect(page.getByRole('complementary', { name: "Strong's G25" })).toBeVisible();

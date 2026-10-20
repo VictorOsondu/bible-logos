@@ -1,7 +1,5 @@
 import ThemeExplorer from '@/components/ThemeExplorer';
 
-export const dynamic = 'force-dynamic';
-
 export default function ThemesPage() {
   return (
     <>

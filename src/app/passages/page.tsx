@@ -2,8 +2,6 @@ import Link from 'next/link';
 import { getDb, isDatabaseAvailable } from '@/lib/db';
 import { getBookByName } from '@/lib/bible-books';
 
-export const dynamic = 'force-dynamic';
-
 interface Passage {
   title: string;
   reference: string;

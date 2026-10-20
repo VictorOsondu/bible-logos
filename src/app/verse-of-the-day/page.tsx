@@ -2,7 +2,8 @@ import Link from 'next/link';
 import { getDb } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
 
-export const dynamic = 'force-dynamic';
+// The verse of the day changes daily; rebuild the page at most once an hour.
+export const revalidate = 3600;
 
 // Same curated list as the API
 const NOTABLE_VERSES: [number, number, number][] = [
