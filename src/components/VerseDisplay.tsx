@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Bookmark, Columns2, Dna, GraduationCap, Link as LinkIcon, X } from 'lucide-react';
 import { getBookById } from '@/lib/bible-books';
+import { isBookmarked, toggleBookmark } from '@/lib/reading';
 import CrossRefPanel from './CrossRefPanel';
 import StrongsPanel from './StrongsPanel';
 import ResearchPanel from './ResearchPanel';
@@ -25,11 +27,29 @@ interface Props {
   lexicon?: Record<string, StrongsSummary>;
 }
 
+type Panel = 'crossref' | 'strongs' | 'research' | 'intertextual';
+
+const PANELS: { id: Exclude<Panel, 'strongs'>; label: string; icon: typeof LinkIcon }[] = [
+  { id: 'crossref', label: 'Cross-references', icon: LinkIcon },
+  { id: 'intertextual', label: 'Shared words', icon: Dna },
+  { id: 'research', label: 'Research', icon: GraduationCap },
+];
+
+const chip = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-parchment-800 text-xs text-parchment-400 hover:text-parchment-100 hover:border-parchment-700 transition-colors';
+
+// Below this width the study panel is a bottom sheet over the text rather than a side column.
+const SHEET_BREAKPOINT = 1280;
+
 export default function VerseDisplay({ verses, translations, kjvTokens, lexicon }: Props) {
-  const [selectedVerse, setSelectedVerse] = useState<{ book: number; chapter: number; verse: number } | null>(null);
-  const [showPanel, setShowPanel] = useState<'crossref' | 'strongs' | 'research' | 'intertextual' | null>(null);
+  const [selectedVerse, setSelectedVerse] = useState<number | null>(null);
+  const [panel, setPanel] = useState<Panel | null>(null);
   const [selectedStrongs, setSelectedStrongs] = useState<string | null>(null);
   const [targetVerse, setTargetVerse] = useState<number | null>(null);
+  const [bookmarked, setBookmarked] = useState(false);
+
+  const book = verses[0]?.book;
+  const chapter = verses[0]?.chapter;
+  const bookName = book ? getBookById(book)?.name ?? '' : '';
 
   // Scroll to a linked verse (#v16). Browsers do this on a full page load, but not after
   // client-side navigation, where the verses render after the router has tried to scroll.
@@ -40,32 +60,35 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
     document.getElementById(`v${match[1]}`)?.scrollIntoView();
   }, [verses]);
 
-  // Group by verse number
-  const grouped: Record<number, Verse[]> = {};
-  for (const v of verses) {
-    if (!grouped[v.verse]) grouped[v.verse] = [];
-    grouped[v.verse].push(v);
-  }
+  useEffect(() => {
+    if (selectedVerse !== null && book) setBookmarked(isBookmarked(book, chapter, selectedVerse));
+  }, [selectedVerse, book, chapter]);
 
-  const handleVerseClick = (book: number, chapter: number, verse: number) => {
-    if (selectedVerse?.book === book && selectedVerse?.chapter === chapter && selectedVerse?.verse === verse && showPanel === 'crossref') {
-      setShowPanel(null);
-      setSelectedVerse(null);
-    } else {
-      setSelectedVerse({ book, chapter, verse });
-      setShowPanel('crossref');
+  // One row per verse, translations in the order the reader chose them
+  const grouped = new Map<number, Verse[]>();
+  for (const v of verses) grouped.set(v.verse, [...(grouped.get(v.verse) ?? []), v]);
+  for (const list of grouped.values()) list.sort((a, b) => translations.indexOf(a.translation) - translations.indexOf(b.translation));
+
+  const closePanel = () => { setPanel(null); setSelectedVerse(null); setSelectedStrongs(null); };
+
+  const selectVerse = (verse: number) => {
+    if (selectedVerse === verse) return closePanel();
+    setSelectedVerse(verse);
+    setPanel(p => (p && p !== 'strongs' ? p : 'crossref'));
+    // Keep the verse visible above the bottom sheet on smaller screens
+    if (window.innerWidth < SHEET_BREAKPOINT) {
+      requestAnimationFrame(() => document.getElementById(`v${verse}`)?.scrollIntoView({ block: 'start', behavior: 'smooth' }));
     }
   };
 
-  const handleWordClick = (strongsId: string) => {
-    setSelectedStrongs(strongsId);
-    setShowPanel('strongs');
+  const openWord = (id: string) => {
+    setSelectedStrongs(id);
+    setPanel('strongs');
   };
 
-  const renderVerseText = (v: Verse) => {
+  const renderText = (v: Verse) => {
     const tokens = v.translation === 'KJV' ? kjvTokens?.[v.verse] : undefined;
     if (!tokens) return v.text;
-
     return tokens.map((token, i) => {
       if (typeof token === 'string') return token;
       if (token.a) return <em key={i} className="text-parchment-300">{token.t}</em>;
@@ -76,11 +99,8 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
         <span
           key={i}
           className="strongs-word"
-          title={info ? `${id}: ${info.transliteration} (${info.original}) — ${info.definition}` : id}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleWordClick(id);
-          }}
+          title={info ? `${info.transliteration} (${info.original}): ${info.definition}` : id}
+          onClick={e => { e.stopPropagation(); openWord(id); }}
         >
           {token.t}
         </span>
@@ -88,142 +108,90 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
     });
   };
 
-  const bookInfo = verses[0] ? getBookById(verses[0].book) : null;
-  const verseRef = selectedVerse 
-    ? `${getBookById(selectedVerse.book)?.name || ''} ${selectedVerse.chapter}:${selectedVerse.verse}` 
-    : '';
+  const panelTitle = panel === 'strongs'
+    ? `Strong's ${selectedStrongs}`
+    : selectedVerse !== null ? `${bookName} ${chapter}:${selectedVerse}` : '';
 
   return (
-    <div className="flex gap-4 flex-col xl:flex-row">
-      <div className="flex-1 min-w-0">
-        {Object.entries(grouped)
-          .sort(([a], [b]) => parseInt(a) - parseInt(b))
-          .map(([verseNum, verseTranslations]) => (
+    <div className="xl:flex xl:gap-8 xl:justify-center">
+      <div className="max-w-2xl mx-auto xl:mx-0 w-full">
+        {[...grouped.entries()].map(([verseNum, list]) => {
+          const selected = selectedVerse === verseNum;
+          return (
             <div
               key={verseNum}
               id={`v${verseNum}`}
-              className={`py-2 px-4 rounded-lg mb-1 cursor-pointer transition-colors scroll-mt-4 ${
-                selectedVerse?.verse === parseInt(verseNum)
-                  ? 'bg-parchment-800/80 ring-1 ring-gold-500/30'
-                  : targetVerse === parseInt(verseNum)
-                    ? 'ring-1 ring-gold-500/50 hover:bg-parchment-900/50'
-                    : 'hover:bg-parchment-900/50'
+              onClick={() => selectVerse(verseNum)}
+              className={`-mx-3 px-3 py-1.5 rounded-lg cursor-pointer scroll-mt-20 transition-colors ${
+                selected ? 'bg-parchment-900' : targetVerse === verseNum ? 'bg-gold-400/10' : 'hover:bg-parchment-900/50'
               }`}
-              onClick={() => {
-                const v = verseTranslations[0];
-                handleVerseClick(v.book, v.chapter, v.verse);
-              }}
             >
-              <div className="flex items-start gap-3">
-                <span className="verse-number mt-1 select-none min-w-[2rem] text-right">
-                  {verseNum}
-                </span>
-                <div className="flex-1 space-y-1">
-                  {translations.length === 1 ? (
-                    <p className="bible-text text-parchment-100">
-                      {renderVerseText(verseTranslations[0])}
+              {list.length === 1 ? (
+                <p className="bible-text text-parchment-100">
+                  <span className="verse-number">{verseNum}</span>
+                  {renderText(list[0])}
+                </p>
+              ) : (
+                <div className="space-y-1.5 py-1">
+                  {list.map((v, i) => (
+                    <p key={v.translation} className={`bible-text ${i === 0 ? 'text-parchment-100' : 'text-parchment-300'}`}>
+                      {i === 0 && <span className="verse-number">{verseNum}</span>}
+                      <span className="mr-2 align-middle text-[10px] font-sans font-semibold tracking-wider text-parchment-500">{v.translation}</span>
+                      {renderText(v)}
                     </p>
-                  ) : (
-                    verseTranslations.map(v => (
-                      <div key={v.translation} className="flex gap-2 items-start">
-                        <span className="text-xs font-mono text-gold-500 mt-1 min-w-[2.5rem] font-semibold">
-                          {v.translation}
-                        </span>
-                        <p className="bible-text text-parchment-100 flex-1">
-                          {renderVerseText(v)}
-                        </p>
-                      </div>
-                    ))
-                  )}
+                  ))}
                 </div>
-              </div>
-              
-              {/* Action buttons for the selected verse */}
-              {selectedVerse?.verse === parseInt(verseNum) && (
-              <div className="flex flex-wrap gap-2 mt-2 ml-12">
-                <button
-                  onClick={(e) => { e.stopPropagation(); handleVerseClick(verseTranslations[0].book, verseTranslations[0].chapter, parseInt(verseNum)); }}
-                  className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:text-gold-400 hover:bg-parchment-700 transition-colors"
-                >
-                  🔗 Cross-Refs
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedVerse({ book: verseTranslations[0].book, chapter: verseTranslations[0].chapter, verse: parseInt(verseNum) });
-                    setShowPanel('research');
-                  }}
-                  className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:text-gold-400 hover:bg-parchment-700 transition-colors"
-                >
-                  🎓 Research
-                </button>
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSelectedVerse({ book: verseTranslations[0].book, chapter: verseTranslations[0].chapter, verse: parseInt(verseNum) });
-                    setShowPanel('intertextual');
-                  }}
-                  className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:text-gold-400 hover:bg-parchment-700 transition-colors"
-                >
-                  🧬 Shared words
-                </button>
-                <Link
-                  href={`/compare?book=${verseTranslations[0].book}&chapter=${verseTranslations[0].chapter}&verse=${verseNum}`}
-                  onClick={(e) => e.stopPropagation()}
-                  className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:text-gold-400 hover:bg-parchment-700 transition-colors"
-                >
-                  ⚖️ Compare
-                </Link>
-                <CopyButton
-                  text={`"${verseTranslations[0].text}" — ${bookInfo?.name || ''} ${verseTranslations[0].chapter}:${verseNum} (${verseTranslations[0].translation})`}
-                  label="Copy verse with reference"
-                />
-              </div>
+              )}
+
+              {selected && (
+                <div className="flex flex-wrap gap-1.5 mt-2 mb-1" onClick={e => e.stopPropagation()}>
+                  {PANELS.map(p => (
+                    <button
+                      key={p.id}
+                      onClick={() => setPanel(p.id)}
+                      className={`${chip} ${panel === p.id ? 'bg-parchment-800 text-parchment-100 border-parchment-700' : ''}`}
+                    >
+                      <p.icon size={13} /> {p.label}
+                    </button>
+                  ))}
+                  <Link href={`/compare?book=${book}&chapter=${chapter}&verse=${verseNum}`} className={chip}>
+                    <Columns2 size={13} /> Compare
+                  </Link>
+                  <button
+                    onClick={() => setBookmarked(toggleBookmark(book, chapter, verseNum))}
+                    className={`${chip} ${bookmarked ? 'text-gold-400 border-gold-400/40' : ''}`}
+                    aria-pressed={bookmarked}
+                  >
+                    <Bookmark size={13} fill={bookmarked ? 'currentColor' : 'none'} /> {bookmarked ? 'Saved' : 'Bookmark'}
+                  </button>
+                  <CopyButton
+                    className={chip}
+                    text={`"${list[0].text}" — ${bookName} ${chapter}:${verseNum} (${list[0].translation})`}
+                  />
+                </div>
               )}
             </div>
-          ))}
+          );
+        })}
       </div>
 
-      {/* Side Panel */}
-      {showPanel && selectedVerse && (
-        <div className="xl:w-96 w-full xl:sticky xl:top-4 xl:self-start bg-parchment-900 border border-parchment-700 rounded-xl p-4 shadow-xl">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-sm font-semibold text-gold-400">{verseRef}</h3>
-            <div className="flex gap-1">
-              {(['crossref', 'research', 'intertextual'] as const).map(panel => (
-                <button
-                  key={panel}
-                  onClick={() => setShowPanel(panel)}
-                  className={`text-xs px-2 py-1 rounded transition-colors ${showPanel === panel ? 'bg-gold-600 text-parchment-950' : 'bg-parchment-800 text-parchment-400 hover:text-gold-400'}`}
-                >
-                  {panel === 'crossref' ? '🔗' : panel === 'research' ? '🎓' : '🧬'}
-                </button>
-              ))}
-              <button
-                onClick={() => { setShowPanel(null); setSelectedVerse(null); }}
-                className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-500 hover:text-parchment-200"
-              >
-                ✕
-              </button>
-            </div>
+      {panel && (panel === 'strongs' ? selectedStrongs : selectedVerse !== null) && (
+        <aside
+          className="fixed inset-x-0 bottom-0 z-40 max-h-[60dvh] overflow-y-auto rounded-t-2xl border-t border-parchment-800 bg-parchment-950 p-4 shadow-2xl
+            xl:static xl:z-auto xl:w-96 xl:shrink-0 xl:max-h-[calc(100vh-4rem)] xl:sticky xl:top-8 xl:self-start xl:rounded-2xl xl:border xl:shadow-none"
+        >
+          <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-parchment-800 xl:hidden" />
+          <div className="flex items-center justify-between gap-2 mb-3">
+            <h3 className="text-sm font-semibold text-parchment-100">{panelTitle}</h3>
+            <button onClick={closePanel} className="p-1.5 rounded-full text-parchment-500 hover:text-parchment-100 hover:bg-parchment-800" aria-label="Close panel">
+              <X size={16} />
+            </button>
           </div>
-          
-          {showPanel === 'crossref' && <CrossRefPanel {...selectedVerse} />}
-          {showPanel === 'strongs' && selectedStrongs && <StrongsPanel strongsId={selectedStrongs} />}
-          {showPanel === 'research' && <ResearchPanel {...selectedVerse} />}
-          {showPanel === 'intertextual' && <IntertextualPanel {...selectedVerse} />}
-        </div>
-      )}
-
-      {/* Strong's popup */}
-      {showPanel === 'strongs' && selectedStrongs && !selectedVerse && (
-        <div className="xl:w-96 w-full bg-parchment-900 border border-parchment-700 rounded-xl p-4 shadow-xl">
-          <div className="flex justify-between items-center mb-3">
-            <h3 className="text-sm font-semibold text-gold-400">Strong&apos;s {selectedStrongs}</h3>
-            <button onClick={() => { setShowPanel(null); setSelectedStrongs(null); }} className="text-parchment-500 hover:text-parchment-200">✕</button>
-          </div>
-          <StrongsPanel strongsId={selectedStrongs} />
-        </div>
+          {panel === 'strongs' && selectedStrongs && <StrongsPanel strongsId={selectedStrongs} />}
+          {panel === 'crossref' && selectedVerse !== null && <CrossRefPanel book={book} chapter={chapter} verse={selectedVerse} />}
+          {panel === 'intertextual' && selectedVerse !== null && <IntertextualPanel book={book} chapter={chapter} verse={selectedVerse} />}
+          {panel === 'research' && selectedVerse !== null && <ResearchPanel book={book} chapter={chapter} verse={selectedVerse} />}
+        </aside>
       )}
     </div>
   );

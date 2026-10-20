@@ -3,12 +3,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { BIBLE_BOOKS } from '@/lib/bible-books';
+import { BookMarked, BookOpen, Languages, LayoutGrid, Search, type LucideIcon } from 'lucide-react';
 import { NAV_SECTIONS } from '@/lib/navigation';
+
+const TYPE_ICONS: Record<string, LucideIcon> = { page: LayoutGrid, book: BookOpen, verse: BookMarked, strongs: Languages, search: Search };
 
 export default function SearchModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<{ type: string; label: string; href: string; icon: string }[]>([]);
+  const [results, setResults] = useState<{ type: string; label: string; href: string }[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -24,8 +27,13 @@ export default function SearchModal() {
         setIsOpen(false);
       }
     };
+    const open = () => setIsOpen(true);
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('open-search', open);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('open-search', open);
+    };
   }, []);
 
   useEffect(() => {
@@ -37,8 +45,7 @@ export default function SearchModal() {
     }
   }, [isOpen]);
 
-  const PAGES = NAV_SECTIONS.flatMap(section => section.links)
-    .map(({ label, href, icon }) => ({ label, href, icon }));
+  const PAGES = NAV_SECTIONS.flatMap(section => section.links).map(({ label, href }) => ({ label, href }));
 
   const computeResults = useCallback((q: string) => {
     if (!q.trim()) {
@@ -46,7 +53,7 @@ export default function SearchModal() {
       return;
     }
     const lower = q.toLowerCase();
-    const matched: { type: string; label: string; href: string; icon: string }[] = [];
+    const matched: { type: string; label: string; href: string }[] = [];
 
     // Search pages
     for (const p of PAGES) {
@@ -62,7 +69,6 @@ export default function SearchModal() {
           type: 'book',
           label: book.name,
           href: `/reader/${book.name.toLowerCase().replace(/ /g, '-')}/1`,
-          icon: book.testament === 'OT' ? '🕎' : '✝️',
         });
       }
     }
@@ -83,7 +89,6 @@ export default function SearchModal() {
           type: 'verse',
           label: `${book.name} ${ch}${vs ? ':' + vs : ''}`,
           href,
-          icon: '📖',
         });
       }
     }
@@ -94,7 +99,6 @@ export default function SearchModal() {
         type: 'strongs',
         label: `Strong's ${q.toUpperCase()}`,
         href: `/word/${q.toUpperCase()}`,
-        icon: '📖',
       });
     }
 
@@ -103,7 +107,6 @@ export default function SearchModal() {
       type: 'search',
       label: `Search for "${q}"`,
       href: `/search?q=${encodeURIComponent(q)}`,
-      icon: '🔍',
     });
 
     setResults(matched.slice(0, 12));
@@ -131,35 +134,24 @@ export default function SearchModal() {
     }
   };
 
-  if (!isOpen) {
-    return (
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 bg-parchment-800 border border-parchment-700 text-parchment-400 px-3 py-1.5 rounded-lg text-xs hover:border-gold-500/50 hover:text-gold-400 transition-colors shadow-lg flex items-center gap-2"
-        title="Quick search (⌘K)"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span>⌘K</span>
-      </button>
-    );
-  }
+  if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-[15vh]" onClick={() => setIsOpen(false)}>
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+    <div className="fixed inset-0 z-[60] flex items-start justify-center px-4 pt-[12vh]" onClick={() => setIsOpen(false)}>
+      <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
       <div
-        className="relative w-full max-w-lg bg-parchment-900 border border-parchment-700 rounded-2xl shadow-2xl overflow-hidden"
+        className="relative w-full max-w-lg bg-parchment-950 border border-parchment-800 rounded-2xl shadow-2xl overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center gap-3 px-4 py-3 border-b border-parchment-800">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-parchment-500"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <Search size={18} className="text-parchment-500" />
           <input
             ref={inputRef}
             type="text"
             value={query}
             onChange={e => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search pages, books, verses, Strong's..."
+            placeholder="Go to John 3:16, a book, a page or G26…"
             className="flex-1 bg-transparent text-parchment-100 placeholder-parchment-600 text-sm focus:outline-none"
           />
           <kbd className="text-[10px] text-parchment-600 border border-parchment-700 rounded px-1.5 py-0.5">ESC</kbd>
@@ -173,11 +165,11 @@ export default function SearchModal() {
                 onClick={() => navigate(r.href)}
                 className={`w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
                   i === selectedIndex
-                    ? 'bg-gold-600/20 text-gold-400'
+                    ? 'bg-parchment-800 text-parchment-50'
                     : 'text-parchment-300 hover:bg-parchment-800'
                 }`}
               >
-                <span className="text-base">{r.icon}</span>
+                {(() => { const Icon = TYPE_ICONS[r.type] ?? LayoutGrid; return <Icon size={16} className="shrink-0 opacity-70" />; })()}
                 <span className="flex-1">{r.label}</span>
                 <span className="text-[10px] text-parchment-600 uppercase">{r.type}</span>
               </button>

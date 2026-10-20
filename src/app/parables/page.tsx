@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 interface Parable {
@@ -46,10 +45,9 @@ const THEMES = [...new Set(PARABLES.map(p => p.theme))].sort();
 export default function ParablesPage() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">🌾 Parables of Jesus</h1>
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Parables of Jesus</h1>
           <p className="text-parchment-400">
             {PARABLES.length} parables cataloged across the four Gospels with synoptic cross-references.
           </p>
@@ -60,7 +58,7 @@ export default function ParablesPage() {
           {THEMES.map(theme => {
             const count = PARABLES.filter(p => p.theme === theme).length;
             return (
-              <span key={theme} className="px-3 py-1.5 bg-parchment-900 border border-parchment-700 rounded-full text-xs text-parchment-300">
+              <span key={theme} className="px-3 py-1.5 bg-parchment-900/70 rounded-full text-xs text-parchment-300">
                 {theme} <span className="text-gold-400 font-semibold ml-1">{count}</span>
               </span>
             );
@@ -71,7 +69,7 @@ export default function ParablesPage() {
         <div className="space-y-4">
           {PARABLES.map((p, i) => (
             <Link key={i} href={p.link} className="block group">
-              <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-5 hover:border-gold-500/30 transition-all">
+              <div className="bg-parchment-900/70 rounded-xl p-5 hover:bg-parchment-900 transition-all">
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
@@ -117,19 +115,19 @@ export default function ParablesPage() {
 
         {/* Stats */}
         <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
+          <div className="bg-parchment-900/70 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gold-400">{PARABLES.length}</div>
             <div className="text-xs text-parchment-500 mt-1">Total Parables</div>
           </div>
-          <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
+          <div className="bg-parchment-900/70 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gold-400">{PARABLES.filter(p => p.matthew).length}</div>
             <div className="text-xs text-parchment-500 mt-1">In Matthew</div>
           </div>
-          <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
+          <div className="bg-parchment-900/70 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gold-400">{PARABLES.filter(p => p.luke).length}</div>
             <div className="text-xs text-parchment-500 mt-1">In Luke</div>
           </div>
-          <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
+          <div className="bg-parchment-900/70 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gold-400">{THEMES.length}</div>
             <div className="text-xs text-parchment-500 mt-1">Themes</div>
           </div>

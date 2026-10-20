@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -14,7 +13,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'Patriarchal Era',
     period: '~2000–1400 BC',
-    color: 'from-amber-700/30 to-amber-900/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: 'Genesis', slug: 'genesis', date: '~1450–1410 BC', desc: 'Creation, Fall, Flood, Patriarchs (Abraham, Isaac, Jacob, Joseph)' },
       { name: 'Job', slug: 'job', date: '~2000–1800 BC', desc: 'Suffering and divine sovereignty — possibly the oldest biblical text' },
@@ -23,7 +22,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'Exodus & Law',
     period: '~1400–1380 BC',
-    color: 'from-orange-700/30 to-orange-900/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: 'Exodus', slug: 'exodus', date: '~1446 BC', desc: 'Deliverance from Egypt, Sinai covenant, Tabernacle' },
       { name: 'Leviticus', slug: 'leviticus', date: '~1445 BC', desc: 'Holiness code, sacrificial system, priesthood' },
@@ -34,7 +33,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'Conquest & Judges',
     period: '~1400–1050 BC',
-    color: 'from-red-700/30 to-red-900/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: 'Joshua', slug: 'joshua', date: '~1400 BC', desc: 'Conquest of Canaan, land allotment' },
       { name: 'Judges', slug: 'judges', date: '~1380–1050 BC', desc: 'Cycles of sin, oppression, deliverance' },
@@ -44,7 +43,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'United Monarchy',
     period: '~1050–930 BC',
-    color: 'from-yellow-700/30 to-yellow-900/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: '1 Samuel', slug: '1-samuel', date: '~1050–1010 BC', desc: "Samuel, Saul, David's rise" },
       { name: '2 Samuel', slug: '2-samuel', date: '~1010–970 BC', desc: "David's reign, Davidic covenant" },
@@ -58,7 +57,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'Divided Kingdom & Prophets',
     period: '~930–586 BC',
-    color: 'from-emerald-700/30 to-emerald-900/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: '1 Kings 12–22', slug: '1-kings', date: '~930–850 BC', desc: 'Kingdom splits, Elijah, apostasy' },
       { name: '2 Kings', slug: '2-kings', date: '~850–586 BC', desc: 'Elisha, fall of Samaria & Jerusalem' },
@@ -75,7 +74,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'Exile',
     period: '~605–538 BC',
-    color: 'from-blue-700/30 to-blue-900/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: 'Lamentations', slug: 'lamentations', date: '~586 BC', desc: "Grief over Jerusalem's destruction" },
       { name: 'Ezekiel', slug: 'ezekiel', date: '~593–571 BC', desc: 'Visions, valley of dry bones, new temple' },
@@ -86,7 +85,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'Return & Restoration',
     period: '~538–400 BC',
-    color: 'from-indigo-700/30 to-indigo-900/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: 'Ezra', slug: 'ezra', date: '~538–458 BC', desc: 'Return from exile, Temple rebuilding' },
       { name: 'Nehemiah', slug: 'nehemiah', date: '~445–432 BC', desc: 'Wall rebuilding, covenant renewal' },
@@ -100,7 +99,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'Gospels & Life of Christ',
     period: '~6 BC – 30 AD',
-    color: 'from-amber-500/30 to-amber-700/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: 'Matthew', slug: 'matthew', date: '~50–70 AD', desc: 'Jesus as Jewish Messiah-King' },
       { name: 'Mark', slug: 'mark', date: '~55–65 AD', desc: 'Jesus the Servant — action-oriented Gospel' },
@@ -111,7 +110,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'Early Church & Epistles',
     period: '~30–68 AD',
-    color: 'from-purple-700/30 to-purple-900/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: 'Acts', slug: 'acts', date: '~62–64 AD', desc: "Birth of the church, Paul's missionary journeys" },
       { name: 'Romans', slug: 'romans', date: '~57 AD', desc: 'Systematic theology of salvation by grace' },
@@ -131,7 +130,7 @@ const TIMELINE: TimelineEra[] = [
   {
     era: 'Apocalyptic',
     period: '~95 AD',
-    color: 'from-rose-700/30 to-rose-900/10',
+    color: 'from-parchment-900/80 to-parchment-900/20',
     books: [
       { name: 'Revelation', slug: 'revelation', date: '~95 AD', desc: "Visions of the end, Christ's ultimate victory, New Jerusalem" },
     ],
@@ -141,14 +140,8 @@ const TIMELINE: TimelineEra[] = [
 export default function TimelinePage() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Timeline</span>
-        </div>
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">📅 Biblical Timeline</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Biblical Timeline</h1>
         <p className="text-parchment-400 mb-8">The books of the Bible arranged by historical era and approximate date of writing or events described.</p>
 
         <div className="relative">
@@ -172,7 +165,7 @@ export default function TimelinePage() {
                         <Link
                           key={`${book.name}-${i}`}
                           href={`/reader/${book.slug}/1`}
-                          className="flex items-start gap-3 p-3 rounded-xl bg-parchment-950/50 hover:bg-parchment-900 border border-parchment-800/50 hover:border-gold-500/30 transition-all group"
+                          className="flex items-start gap-3 p-3 rounded-xl bg-parchment-950/50 hover:bg-parchment-900/70 hover:bg-parchment-900 transition-all group"
                         >
                           <div className="mt-0.5 w-2 h-2 rounded-full bg-gold-500/60 flex-shrink-0 group-hover:bg-gold-400" />
                           <div className="min-w-0">

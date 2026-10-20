@@ -47,9 +47,6 @@ export default function CrossRefPanel({ book, chapter, verse }: { book: number; 
       >
         <div className="flex justify-between items-center mb-1">
           <span className="text-xs font-semibold text-gold-400 group-hover:text-gold-300">{label}</span>
-          {ref.votes > 0 && (
-            <span className="text-xs text-parchment-600">⬆ {ref.votes}</span>
-          )}
         </div>
         {ref.text && (
           <p className="text-xs text-parchment-400 line-clamp-2 font-serif">{ref.text}</p>

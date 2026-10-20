@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { getDb, isDatabaseAvailable } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
@@ -35,7 +34,6 @@ export default function ParallelsPage() {
   if (!isDatabaseAvailable()) {
     return (
       <>
-        <Sidebar />
         <main className="flex-1 p-4 lg:p-8 max-w-5xl">
           <p className="text-parchment-400">Database not found. Run <code>npm run seed</code>.</p>
         </main>
@@ -47,9 +45,8 @@ export default function ParallelsPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">🔀 Parallel Passages</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Parallel Passages</h1>
         <p className="text-sm text-parchment-400 mb-6">
           Side-by-side comparison of synoptic gospels and thematically linked passages
         </p>
@@ -66,7 +63,7 @@ export default function ParallelsPage() {
             });
 
             return (
-              <div key={gi} className="bg-parchment-900 border border-parchment-800 rounded-2xl p-5">
+              <div key={gi} className="bg-parchment-900/70 rounded-2xl p-5">
                 <h2 className="text-lg font-semibold text-gold-400 mb-3 font-serif">{group.label}</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   {previews.map((p, pi) => {

@@ -1,9 +1,7 @@
-import Sidebar from '@/components/Sidebar';
 
 export default function ReaderLoading() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-6xl">
         <div className="mb-6">
           <div className="h-4 w-48 bg-parchment-800 rounded animate-pulse mb-4" />

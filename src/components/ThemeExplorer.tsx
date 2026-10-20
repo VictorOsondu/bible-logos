@@ -5,7 +5,6 @@ import Link from 'next/link';
 
 interface ThemeCategory {
   name: string;
-  icon: string;
   description: string;
   themes: ThemeEntry[];
 }
@@ -22,7 +21,6 @@ interface ThemeEntry {
 const THEME_CATEGORIES: ThemeCategory[] = [
   {
     name: 'Salvation & Redemption',
-    icon: '✝️',
     description: 'The central narrative of rescue, atonement, and new life',
     themes: [
       {
@@ -61,7 +59,6 @@ const THEME_CATEGORIES: ThemeCategory[] = [
   },
   {
     name: 'God\'s Character',
-    icon: '👑',
     description: 'The attributes and nature of the divine',
     themes: [
       {
@@ -101,7 +98,6 @@ const THEME_CATEGORIES: ThemeCategory[] = [
   },
   {
     name: 'Human Condition',
-    icon: '🫀',
     description: 'Sin, suffering, and the human predicament',
     themes: [
       {
@@ -130,7 +126,6 @@ const THEME_CATEGORIES: ThemeCategory[] = [
   },
   {
     name: 'Eschatology',
-    icon: '🌅',
     description: 'Last things — prophecy, return, and eternal hope',
     themes: [
       {
@@ -169,7 +164,6 @@ export default function ThemeExplorer() {
             onClick={() => setExpandedCategory(expandedCategory === cat.name ? null : cat.name)}
             className="w-full text-left p-4 flex items-center gap-3 hover:bg-parchment-800/50 transition-colors"
           >
-            <span className="text-xl">{cat.icon}</span>
             <div className="flex-1">
               <span className="text-parchment-200 font-semibold">{cat.name}</span>
               <span className="text-parchment-500 text-xs block">{cat.description}</span>

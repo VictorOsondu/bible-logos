@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import { getDb } from '@/lib/db';
 import { getBookById, BIBLE_BOOKS } from '@/lib/bible-books';
 import Link from 'next/link';
@@ -34,13 +33,13 @@ export default function ComparePage({ searchParams }: Props) {
   
   const db = getDb();
   const allTranslations = db.prepare(
-    'SELECT DISTINCT translation FROM verses ORDER BY translation'
+    "SELECT DISTINCT translation FROM verses ORDER BY CASE translation WHEN 'KJV' THEN 1 WHEN 'ASV' THEN 2 WHEN 'YLT' THEN 3 WHEN 'BBE' THEN 4 ELSE 5 END"
   ).all() as { translation: string }[];
   
   const verses = db.prepare(`
     SELECT translation, text FROM verses
     WHERE book = ? AND chapter = ? AND verse = ?
-    ORDER BY translation
+    ORDER BY CASE translation WHEN 'KJV' THEN 1 WHEN 'ASV' THEN 2 WHEN 'YLT' THEN 3 WHEN 'BBE' THEN 4 ELSE 5 END
   `).all(bookId, chapter, verse) as { translation: string; text: string }[];
   
   const texts = verses.map(v => v.text);
@@ -53,21 +52,15 @@ export default function ComparePage({ searchParams }: Props) {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-6xl">
         <div className="mb-6">
-          <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-            <Link href="/" className="hover:text-gold-400">Home</Link>
-            <span>/</span>
-            <span className="text-gold-400">Translation Comparison</span>
-          </div>
-          <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-4">
-            ⚖️ Compare Translations
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-4">
+            Compare Translations
           </h1>
         </div>
 
         {/* Verse Selector */}
-        <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 mb-6">
+        <div className="bg-parchment-900/70 rounded-xl p-4 mb-6">
           <form className="flex flex-wrap gap-3 items-end">
             <div>
               <label className="text-xs text-parchment-500 block mb-1">Book</label>
@@ -105,9 +98,9 @@ export default function ComparePage({ searchParams }: Props) {
         {/* Comparison Grid */}
         <div className="space-y-4">
           {verses.map((v, i) => (
-            <div key={v.translation} className="bg-parchment-900 border border-parchment-800 rounded-xl p-5">
+            <div key={v.translation} className="bg-parchment-900/70 rounded-xl p-5">
               <div className="flex items-center gap-3 mb-3">
-                <span className="text-xs font-mono font-bold px-2 py-1 rounded bg-gold-600 text-parchment-950">
+                <span className="text-[11px] font-semibold tracking-wider text-parchment-500">
                   {v.translation}
                 </span>
               </div>

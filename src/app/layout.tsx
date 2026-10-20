@@ -1,17 +1,23 @@
 import type { Metadata, Viewport } from 'next';
+import { Inter, Literata } from 'next/font/google';
 import './globals.css';
+import Sidebar from '@/components/Sidebar';
 import ScrollToTop from '@/components/ScrollToTop';
 import Footer from '@/components/Footer';
 import ReadingProgress from '@/components/ReadingProgress';
 import SearchModal from '@/components/SearchModal';
+import { themeScript } from '@/components/ThemeToggle';
+
+const ui = Inter({ subsets: ['latin', 'greek'], variable: '--font-ui', display: 'swap' });
+const reading = Literata({ subsets: ['latin', 'greek'], variable: '--font-reading', display: 'swap', style: ['normal', 'italic'] });
 
 export const metadata: Metadata = {
   title: 'Bible Logos — Personal Bible Study & Research',
-  description: 'Multi-translation comparison, cross-references, Strong\'s concordance, word-level etymology, manuscript evidence, and scholarly research tools for deep Bible study.',
-  keywords: ['Bible', 'study', 'Strong\'s concordance', 'cross-references', 'KJV', 'ASV', 'Vulgate', 'Hebrew', 'Greek', 'Latin'],
+  description: "Read the Bible in several translations with every KJV word linked to its Hebrew or Greek original, Strong's concordance and cross-references.",
+  keywords: ['Bible', 'study', "Strong's concordance", 'cross-references', 'KJV', 'ASV', 'Vulgate', 'Hebrew', 'Greek'],
   openGraph: {
     title: 'Bible Logos — Personal Bible Study & Research',
-    description: 'Deep Bible study with multi-translation comparison, word analysis, and scholarly research.',
+    description: "Personal Bible study with Strong's concordance, cross-references and translation comparison.",
     type: 'website',
   },
 };
@@ -19,7 +25,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#1a1208',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#fbf9f5' },
+    { media: '(prefers-color-scheme: dark)', color: '#141210' },
+  ],
 };
 
 export default function RootLayout({
@@ -28,13 +37,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
-      <body className="min-h-screen bg-parchment-950">
+    <html lang="en-GB" className={`${ui.variable} ${reading.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body className="min-h-screen bg-parchment-950 text-parchment-100">
         <ReadingProgress />
-        <div className="flex min-h-screen">
-          {children}
+        <div className="lg:flex">
+          <Sidebar />
+          <div className="flex-1 min-w-0 flex flex-col min-h-[calc(100dvh-3.5rem)] lg:min-h-screen">
+            <div className="flex-1 [&>main]:w-full [&>main]:mx-auto">{children}</div>
+            <Footer />
+          </div>
         </div>
-        <Footer />
         <ScrollToTop />
         <SearchModal />
       </body>

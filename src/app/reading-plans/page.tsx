@@ -2,14 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Sidebar from '@/components/Sidebar';
 import { BIBLE_BOOKS } from '@/lib/bible-books';
 
 interface ReadingPlan {
   id: string;
   name: string;
   description: string;
-  icon: string;
   days: { book: number; chapter: number; title: string }[];
 }
 
@@ -18,7 +16,6 @@ const PLANS: ReadingPlan[] = [
     id: 'gospels-30',
     name: '30 Days Through the Gospels',
     description: 'Read all four Gospels in one month with key chapters daily.',
-    icon: '✝️',
     days: [
       { book: 40, chapter: 1, title: 'Birth of Jesus — Matthew 1' },
       { book: 40, chapter: 5, title: 'Sermon on the Mount — Matthew 5' },
@@ -56,7 +53,6 @@ const PLANS: ReadingPlan[] = [
     id: 'wisdom-21',
     name: '21 Days of Wisdom',
     description: 'Journey through Proverbs, Ecclesiastes, and Psalms of wisdom.',
-    icon: '🦉',
     days: [
       { book: 20, chapter: 1, title: 'Beginning of Knowledge — Proverbs 1' },
       { book: 20, chapter: 2, title: 'Seeking Wisdom — Proverbs 2' },
@@ -85,7 +81,6 @@ const PLANS: ReadingPlan[] = [
     id: 'romans-14',
     name: '14 Days in Romans',
     description: 'Deep dive into Paul\'s theology of salvation, grace, and new life.',
-    icon: '⚖️',
     days: [
       { book: 45, chapter: 1, title: 'Gospel Power & Human Sin — Romans 1' },
       { book: 45, chapter: 2, title: 'God\'s Righteous Judgment — Romans 2' },
@@ -142,15 +137,9 @@ export default function ReadingPlansPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Reading Plans</span>
-        </div>
 
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">📅 Reading Plans</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Reading Plans</h1>
         <p className="text-parchment-400 mb-8">Structured Bible reading plans to guide your study. Progress is saved in your browser.</p>
 
         {!activePlan ? (
@@ -161,9 +150,8 @@ export default function ReadingPlansPage() {
                 <button
                   key={plan.id}
                   onClick={() => setActivePlan(plan.id)}
-                  className="text-left bg-parchment-900 border border-parchment-800 rounded-2xl p-5 hover:border-gold-500/30 transition-all group"
+                  className="text-left bg-parchment-900/70 rounded-2xl p-5 hover:bg-parchment-900 transition-all group"
                 >
-                  <div className="text-3xl mb-3">{plan.icon}</div>
                   <h2 className="text-lg font-semibold text-parchment-200 group-hover:text-gold-400 transition-colors">{plan.name}</h2>
                   <p className="text-sm text-parchment-500 mt-1 mb-4">{plan.description}</p>
                   <div className="relative h-2 bg-parchment-800 rounded-full overflow-hidden">
@@ -184,7 +172,6 @@ export default function ReadingPlansPage() {
               <div>
                 <button onClick={() => setActivePlan(null)} className="text-sm text-gold-400 hover:text-gold-300 mb-4 transition-colors">← Back to Plans</button>
                 <div className="flex items-center gap-3 mb-2">
-                  <span className="text-3xl">{plan.icon}</span>
                   <div>
                     <h2 className="text-2xl font-bold font-serif text-parchment-100">{plan.name}</h2>
                     <p className="text-sm text-parchment-500">{plan.description}</p>
@@ -203,7 +190,7 @@ export default function ReadingPlansPage() {
                     return (
                       <div key={idx} className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${completed ? 'bg-gold-600/10 border-gold-500/30' : 'bg-parchment-900 border-parchment-800'}`}>
                         <button onClick={() => toggleDay(plan.id, idx)} className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${completed ? 'bg-gold-600 border-gold-600 text-parchment-950' : 'border-parchment-600 hover:border-gold-500'}`}>
-                          {completed && <span className="text-xs">✓</span>}
+                          {completed && <span className="text-xs"></span>}
                         </button>
                         <div className="flex-1 min-w-0">
                           <p className={`text-sm font-medium ${completed ? 'text-parchment-400 line-through' : 'text-parchment-200'}`}>

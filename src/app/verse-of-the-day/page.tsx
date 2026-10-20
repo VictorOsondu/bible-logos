@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { getDb, isDatabaseAvailable } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
@@ -59,21 +58,15 @@ export default function VerseOfTheDayPage() {
        OR (to_book = ? AND to_chapter = ? AND to_verse_start <= ? AND to_verse_end >= ?)
   `).get(book, chapter, verse, verse, book, chapter, verse, verse) as any)?.c || 0;
 
-  const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const dateStr = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-4xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-6">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Verse of the Day</span>
-        </div>
 
         <div className="text-center mb-8">
           <p className="text-sm text-parchment-500 mb-2">{dateStr}</p>
-          <h1 className="text-4xl font-bold font-serif text-gold-400 mb-2">✨ Verse of the Day</h1>
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Verse of the Day</h1>
         </div>
 
         {/* Main verse card */}
@@ -93,7 +86,7 @@ export default function VerseOfTheDayPage() {
         <div className="space-y-3 mb-8">
           <h3 className="text-sm font-semibold text-parchment-400 uppercase tracking-wider">Other Translations</h3>
           {texts.slice(1).map(t => (
-            <div key={t.translation} className="bg-parchment-900 border border-parchment-800 rounded-xl p-4">
+            <div key={t.translation} className="bg-parchment-900/70 rounded-xl p-4">
               <span className="text-xs font-mono font-bold text-gold-400 mr-2">{t.translation}</span>
               <p className="text-sm text-parchment-300 font-serif mt-1 leading-relaxed">{t.text}</p>
             </div>
@@ -103,18 +96,18 @@ export default function VerseOfTheDayPage() {
         {/* Quick actions */}
         <div className="grid grid-cols-3 gap-3">
           <Link href={`/reader/${slug}/${chapter}#v${verse}`}
-            className="p-3 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 text-center transition-all">
-            <span className="text-lg">📖</span>
+            className="p-3 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 text-center transition-all">
+            <span className="text-lg"></span>
             <p className="text-xs text-parchment-400 mt-1">Read in Context</p>
           </Link>
           <Link href={`/compare?book=${book}&chapter=${chapter}&verse=${verse}`}
-            className="p-3 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 text-center transition-all">
-            <span className="text-lg">⚖️</span>
+            className="p-3 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 text-center transition-all">
+            <span className="text-lg"></span>
             <p className="text-xs text-parchment-400 mt-1">Compare All</p>
           </Link>
           <Link href={`/reader/${slug}/${chapter}#v${verse}`}
-            className="p-3 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 text-center transition-all">
-            <span className="text-lg">🔗</span>
+            className="p-3 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 text-center transition-all">
+            <span className="text-lg"></span>
             <p className="text-xs text-parchment-400 mt-1">{xrefCount} Cross-Refs</p>
           </Link>
         </div>

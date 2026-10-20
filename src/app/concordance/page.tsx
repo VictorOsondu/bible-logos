@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { getDb, isDatabaseAvailable } from '@/lib/db';
 import { searchStrongs } from '@/lib/strongs';
@@ -15,7 +14,6 @@ export default function ConcordancePage({ searchParams }: Props) {
   if (!isDatabaseAvailable()) {
     return (
       <>
-        <Sidebar />
         <main className="flex-1 p-4 lg:p-8 max-w-5xl">
           <p className="text-parchment-400">Database not available. Run <code>npm run seed</code>.</p>
         </main>
@@ -46,17 +44,16 @@ export default function ConcordancePage({ searchParams }: Props) {
 
   const tabs = [
     { value: '', label: 'All' },
-    { value: 'hebrew', label: '🕎 Hebrew' },
-    { value: 'greek', label: '✝️ Greek' },
+    { value: 'hebrew', label: 'Hebrew' },
+    { value: 'greek', label: 'Greek' },
   ];
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">
-            📖 Strong&apos;s Concordance
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">
+            Strong&apos;s Concordance
           </h1>
           <p className="text-parchment-400 text-sm">
             Search every Hebrew and Greek word in Strong&apos;s lexicon by number (e.g. G26), transliteration
@@ -70,7 +67,7 @@ export default function ConcordancePage({ searchParams }: Props) {
             name="q"
             defaultValue={q}
             placeholder="Search Strong's: love, H2617, logos…"
-            className="flex-1 px-4 py-2 rounded-lg bg-parchment-900 border border-parchment-800 text-parchment-100 placeholder-parchment-600 focus:outline-none focus:border-gold-500/50"
+            className="flex-1 px-4 py-2 rounded-lg bg-parchment-900/70 text-parchment-100 placeholder-parchment-600 focus:outline-none focus:border-gold-500/50"
           />
           {language && <input type="hidden" name="language" value={language} />}
           <button type="submit" className="px-4 py-2 rounded-lg bg-gold-600/20 border border-gold-500/40 text-gold-400 hover:bg-gold-600/30">
@@ -103,7 +100,7 @@ export default function ConcordancePage({ searchParams }: Props) {
               <Link
                 key={entry.id}
                 href={`/word/${entry.id}`}
-                className="block p-3 rounded-lg bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all"
+                className="block p-3 rounded-lg bg-parchment-900/70 hover:bg-parchment-900 transition-all"
               >
                 <div className="flex items-start justify-between gap-2">
                   <div className="flex-1 min-w-0">

@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -29,7 +28,7 @@ const COVENANTS: Covenant[] = [
   {
     name: 'Noahic Covenant',
     parties: 'God → Noah & all living creatures',
-    sign: 'Rainbow 🌈',
+    sign: 'Rainbow ',
     promise: 'Never again destroy earth by flood',
     references: [
       { ref: 'Genesis 9:9-17', slug: 'genesis', ch: 9, v: 9 },
@@ -96,10 +95,9 @@ const COVENANTS: Covenant[] = [
 export default function CovenantsPage() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">📜 Biblical Covenants</h1>
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Biblical Covenants</h1>
           <p className="text-parchment-400">The progressive revelation of God&apos;s binding promises — from creation to the New Covenant in Christ.</p>
         </div>
 
@@ -114,7 +112,7 @@ export default function CovenantsPage() {
                   <span className="text-[8px] text-parchment-950 font-bold">{i + 1}</span>
                 </div>
 
-                <div className="bg-parchment-900 border border-parchment-800 rounded-2xl p-5 hover:border-gold-500/30 transition-all">
+                <div className="bg-parchment-900/70 rounded-2xl p-5 hover:bg-parchment-900 transition-all">
                   <div className="flex flex-wrap items-center gap-2 mb-2">
                     <h2 className="text-lg font-semibold text-gold-400 font-serif">{c.name}</h2>
                     {c.hebrew && <span className="text-sm text-parchment-500 font-serif" dir="rtl">{c.hebrew}</span>}
@@ -153,15 +151,15 @@ export default function CovenantsPage() {
         </div>
 
         {/* Covenant Comparison */}
-        <section className="bg-parchment-900 border border-parchment-800 rounded-2xl p-5 mb-6">
-          <h2 className="text-xl font-semibold text-parchment-200 mb-3 font-serif">🔗 Covenant Connections</h2>
+        <section className="bg-parchment-900/70 rounded-2xl p-5 mb-6">
+          <h2 className="text-xl font-semibold text-parchment-200 mb-3 font-serif">Covenant Connections</h2>
           <div className="space-y-3 text-sm text-parchment-300">
             <div className="bg-parchment-800/30 rounded-lg p-3">
               <p className="text-gold-400 font-semibold mb-1">Conditional vs. Unconditional</p>
               <p>The Mosaic covenant is bilateral (conditional on obedience), while the Abrahamic, Davidic, and New Covenants are unilateral — God binds Himself regardless of human faithfulness.</p>
             </div>
             <div className="bg-parchment-800/30 rounded-lg p-3">
-              <p className="text-gold-400 font-semibold mb-1">Progressive Fulfillment</p>
+              <p className="text-gold-400 font-semibold mb-1">Progressive Fulfilment</p>
               <p>Each covenant builds on prior ones. The New Covenant doesn&apos;t cancel Abraham&apos;s promise but fulfills it (Galatians 3:14) — extending blessing to all nations through faith in Christ.</p>
             </div>
             <div className="bg-parchment-800/30 rounded-lg p-3">

@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 interface TypePair {
@@ -40,12 +39,11 @@ const CATEGORIES = [...new Set(TYPOLOGY_DATA.map(t => t.category))].sort();
 export default function TypologyPage() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">🔗 Biblical Typology</h1>
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Biblical Typology</h1>
           <p className="text-parchment-400">
-            Old Testament types and their New Testament fulfillments — {TYPOLOGY_DATA.length} connections mapped.
+            Old Testament types and their New Testament fulfilments — {TYPOLOGY_DATA.length} connections mapped.
           </p>
           <p className="text-sm text-parchment-500 mt-2 italic">
             Typology reveals how earlier events, persons, and institutions foreshadow later realities in God&apos;s redemptive plan.
@@ -56,10 +54,10 @@ export default function TypologyPage() {
         <div className="flex flex-wrap gap-2 mb-8">
           {CATEGORIES.map(cat => {
             const count = TYPOLOGY_DATA.filter(t => t.category === cat).length;
-            const icons: Record<string, string> = { Persons: '👤', Events: '⚡', Sacrifices: '🐑', Structures: '🏛️' };
+            const icons: Record<string, string> = { Persons: '', Events: '', Sacrifices: '', Structures: '' };
             return (
-              <span key={cat} className="px-3 py-1.5 bg-parchment-900 border border-parchment-700 rounded-full text-xs text-parchment-300">
-                {icons[cat] || '📌'} {cat} <span className="text-gold-400 font-semibold ml-1">{count}</span>
+              <span key={cat} className="px-3 py-1.5 bg-parchment-900/70 rounded-full text-xs text-parchment-300">
+                {icons[cat] || ''} {cat} <span className="text-gold-400 font-semibold ml-1">{count}</span>
               </span>
             );
           })}
@@ -68,7 +66,7 @@ export default function TypologyPage() {
         {/* Type pairs */}
         <div className="space-y-4">
           {TYPOLOGY_DATA.map((t, i) => (
-            <div key={i} className="bg-parchment-900 border border-parchment-800 rounded-xl p-5 hover:border-gold-500/20 transition-all">
+            <div key={i} className="bg-parchment-900/70 rounded-xl p-5 hover:bg-parchment-900 transition-all">
               <div className="flex items-center gap-2 mb-3">
                 <span className="px-2 py-0.5 bg-gold-600/15 text-gold-500 text-xs rounded-full font-medium">
                   {t.category}
@@ -77,15 +75,15 @@ export default function TypologyPage() {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
                 {/* OT Type */}
-                <Link href={t.otLink} className="group block p-3 rounded-lg bg-parchment-950/50 border border-parchment-800 hover:border-gold-500/30 transition-all">
-                  <p className="text-xs text-parchment-500 uppercase tracking-wider mb-1">🕎 Old Testament Type</p>
+                <Link href={t.otLink} className="group block p-3 rounded-lg bg-parchment-950/50 border border-parchment-800 hover:bg-parchment-900 transition-all">
+                  <p className="text-xs text-parchment-500 uppercase tracking-wider mb-1">Old Testament Type</p>
                   <p className="text-parchment-100 font-semibold font-serif group-hover:text-gold-400 transition-colors">{t.type}</p>
                   <p className="text-xs text-gold-500 mt-1">{t.otRef}</p>
                 </Link>
 
                 {/* NT Antitype */}
-                <Link href={t.ntLink} className="group block p-3 rounded-lg bg-parchment-950/50 border border-parchment-800 hover:border-gold-500/30 transition-all">
-                  <p className="text-xs text-parchment-500 uppercase tracking-wider mb-1">✝️ New Testament Fulfillment</p>
+                <Link href={t.ntLink} className="group block p-3 rounded-lg bg-parchment-950/50 border border-parchment-800 hover:bg-parchment-900 transition-all">
+                  <p className="text-xs text-parchment-500 uppercase tracking-wider mb-1">New Testament Fulfilment</p>
                   <p className="text-parchment-100 font-semibold font-serif group-hover:text-gold-400 transition-colors">{t.antitype}</p>
                   <p className="text-xs text-gold-500 mt-1">{t.ntRef}</p>
                 </Link>

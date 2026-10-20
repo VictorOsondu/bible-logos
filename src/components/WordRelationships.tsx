@@ -30,7 +30,7 @@ export default function WordRelationships({ strongsId }: Props) {
 
   if (loading) {
     return (
-      <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-5 animate-pulse">
+      <div className="bg-parchment-900/70 rounded-xl p-5 animate-pulse">
         <div className="h-4 bg-parchment-800 rounded w-40 mb-4" />
         <div className="space-y-2">
           {[1, 2, 3].map(i => <div key={i} className="h-10 bg-parchment-800 rounded" />)}
@@ -49,13 +49,13 @@ export default function WordRelationships({ strongsId }: Props) {
     <div className="space-y-6">
       {/* Testament Distribution */}
       {total > 0 && (
-        <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-5">
-          <h3 className="text-lg font-semibold text-parchment-200 mb-3 font-serif">📊 Testament Distribution</h3>
+        <div className="bg-parchment-900/70 rounded-xl p-5">
+          <h3 className="text-lg font-semibold text-parchment-200 mb-3 font-serif">Testament Distribution</h3>
           <div className="flex items-center gap-3 mb-2">
             <div className="flex-1 h-6 bg-parchment-800 rounded-full overflow-hidden flex">
               {otPct > 0 && (
                 <div
-                  className="h-full bg-amber-500/70 flex items-center justify-center text-[10px] font-bold text-parchment-950"
+                  className="h-full bg-gold-500/70 flex items-center justify-center text-[10px] font-bold text-parchment-950"
                   style={{ width: `${otPct}%` }}
                 >
                   {otPct > 15 ? `OT ${otPct}%` : ''}
@@ -63,7 +63,7 @@ export default function WordRelationships({ strongsId }: Props) {
               )}
               {ntPct > 0 && (
                 <div
-                  className="h-full bg-blue-500/70 flex items-center justify-center text-[10px] font-bold text-parchment-950"
+                  className="h-full bg-parchment-500/70 flex items-center justify-center text-[10px] font-bold text-parchment-950"
                   style={{ width: `${ntPct}%` }}
                 >
                   {ntPct > 15 ? `NT ${ntPct}%` : ''}
@@ -72,16 +72,16 @@ export default function WordRelationships({ strongsId }: Props) {
             </div>
           </div>
           <div className="flex justify-between text-xs text-parchment-500">
-            <span>🕎 Old Testament: {data.distribution.oldTestament} verses</span>
-            <span>✝️ New Testament: {data.distribution.newTestament} verses</span>
+            <span>Old Testament: {data.distribution.oldTestament} verses</span>
+            <span>New Testament: {data.distribution.newTestament} verses</span>
           </div>
         </div>
       )}
 
       {/* Co-occurring Words */}
       {data.coOccurrences?.length > 0 && (
-        <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-5">
-          <h3 className="text-lg font-semibold text-parchment-200 mb-2 font-serif">🔗 Co-occurring Words</h3>
+        <div className="bg-parchment-900/70 rounded-xl p-5">
+          <h3 className="text-lg font-semibold text-parchment-200 mb-2 font-serif">Co-occurring Words</h3>
           <p className="text-xs text-parchment-500 mb-4">Words that frequently appear alongside this term in the same verses.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
             {data.coOccurrences.slice(0, 10).map(co => (

@@ -1,10 +1,8 @@
 import Link from 'next/link';
-import Sidebar from '@/components/Sidebar';
 
 export default function NotFound() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-4xl">
         <div className="text-center py-16">
           <h1 className="text-6xl font-bold font-serif text-gold-400 mb-4">404</h1>
@@ -17,7 +15,7 @@ export default function NotFound() {
               ← Home
             </Link>
             <Link href="/search" className="px-6 py-3 bg-parchment-800 text-parchment-200 rounded-xl font-semibold hover:bg-parchment-700 transition-colors">
-              🔍 Search
+              Search
             </Link>
           </div>
         </div>

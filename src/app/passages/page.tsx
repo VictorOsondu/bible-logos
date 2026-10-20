@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { getDb, isDatabaseAvailable } from '@/lib/db';
 import { getBookByName } from '@/lib/bible-books';
@@ -66,10 +65,9 @@ export default function PassagesPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">📌 Key Passages</h1>
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Key Passages</h1>
           <p className="text-parchment-400 text-sm">
             Well-known passages, songs and prayers. Each opens in the reader, where every word links to its Hebrew or
             Greek original and every verse to its cross-references.
@@ -87,7 +85,7 @@ export default function PassagesPage() {
                   <Link
                     key={p.reference}
                     href={`/reader/${slug}/${p.chapter}#v${p.verse}`}
-                    className="block p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all"
+                    className="block p-4 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 transition-all"
                   >
                     <div className="flex items-baseline justify-between gap-2 mb-1">
                       <h3 className="font-semibold text-parchment-100">{p.title}</h3>

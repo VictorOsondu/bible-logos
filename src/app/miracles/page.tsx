@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -54,21 +53,12 @@ const MIRACLES: Miracle[] = [
 ];
 
 const CATEGORY_COLORS: Record<string, string> = {
-  nature: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
-  healing: 'bg-green-500/20 text-green-300 border-green-500/30',
-  resurrection: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-  provision: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-  judgment: 'bg-red-500/20 text-red-300 border-red-500/30',
+  nature: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
+  healing: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
+  resurrection: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
+  provision: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
+  judgment: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
   other: 'bg-parchment-700/40 text-parchment-300 border-parchment-600/30',
-};
-
-const CATEGORY_ICONS: Record<string, string> = {
-  nature: '\u{1F30A}',
-  healing: '\u{1F49A}',
-  resurrection: '\u271D\uFE0F',
-  provision: '\u{1F35E}',
-  judgment: '\u26A1',
-  other: '\u2728',
 };
 
 export default function MiraclesPage() {
@@ -85,11 +75,11 @@ export default function MiraclesPage() {
     <Link
       key={idx}
       href={`/reader/${m.book}/${m.chapter}#v${m.verse}`}
-      className="block bg-parchment-900 border border-parchment-700 rounded-xl p-4 hover:border-gold-500/40 transition-all group"
+      className="block bg-parchment-900/70 rounded-xl p-4 hover:bg-parchment-900 transition-all group"
     >
       <div className="flex items-start justify-between gap-3 mb-2">
         <h3 className="font-serif font-semibold text-parchment-100 group-hover:text-gold-400 transition-colors">
-          {CATEGORY_ICONS[m.category]} {m.title}
+          {m.title}
         </h3>
         <span className={`text-xs px-2 py-0.5 rounded-full border whitespace-nowrap ${CATEGORY_COLORS[m.category]}`}>
           {m.category}
@@ -106,15 +96,9 @@ export default function MiraclesPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Miracles</span>
-        </div>
 
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">{'\u2728'} Miracles of the Bible</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Miracles of the Bible</h1>
         <p className="text-parchment-400 mb-8">
           A catalog of {MIRACLES.length} supernatural acts across both testaments — from Creation to the early Church.
         </p>
@@ -123,12 +107,12 @@ export default function MiraclesPage() {
           {categoryCounts.map(c => (
             <div key={c.name} className={`rounded-xl border p-3 text-center ${CATEGORY_COLORS[c.name]}`}>
               <div className="text-xl font-bold">{c.count}</div>
-              <div className="text-xs capitalize">{CATEGORY_ICONS[c.name]} {c.name}</div>
+              <div className="text-xs capitalize">{c.name}</div>
             </div>
           ))}
         </div>
 
-        <div className="bg-parchment-900 border border-parchment-700 rounded-xl p-5 mb-8">
+        <div className="bg-parchment-900/70 rounded-xl p-5 mb-8">
           <h2 className="text-lg font-serif text-parchment-100 mb-3">By Performer</h2>
           <div className="flex flex-wrap gap-3">
             {performerCounts.map(p => (
@@ -140,12 +124,12 @@ export default function MiraclesPage() {
           </div>
         </div>
 
-        <h2 className="text-2xl font-serif text-parchment-100 mb-4">{'\u{1F4DC}'} Old Testament ({otMiracles.length})</h2>
+        <h2 className="text-2xl font-serif text-parchment-100 mb-4">Old Testament ({otMiracles.length})</h2>
         <div className="grid gap-3 mb-10">
           {otMiracles.map((m, i) => renderMiracle(m, i))}
         </div>
 
-        <h2 className="text-2xl font-serif text-parchment-100 mb-4">{'\u271D\uFE0F'} New Testament ({ntMiracles.length})</h2>
+        <h2 className="text-2xl font-serif text-parchment-100 mb-4">New Testament ({ntMiracles.length})</h2>
         <div className="grid gap-3 mb-10">
           {ntMiracles.map((m, i) => renderMiracle(m, i + 100))}
         </div>

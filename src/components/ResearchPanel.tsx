@@ -200,57 +200,57 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
 
   // AI research queries
   const aiQueries = [
-    { label: '🏛️ Archaeological evidence', query: `Find archaeological evidence and discoveries related to ${ref} in the Bible` },
-    { label: '📚 Scholarly analysis', query: `What do biblical scholars say about ${ref}? Include different perspectives and interpretations` },
-    { label: '🏺 Historical context', query: `What is the historical context of ${ref}? What was happening in the ancient Near East at this time?` },
-    { label: '🔤 Linguistic analysis', query: `Linguistic analysis of key terms in ${ref} including original Hebrew or Greek meanings` },
-    { label: '📜 Textual criticism', query: `What are the textual variants and manuscript differences for ${ref}?` },
-    { label: '🗺️ Geography', query: `Where did the events of ${ref} take place? Describe the geographical and archaeological setting` },
-    { label: '⛪ Patristic commentary', query: `What did early Church Fathers say about ${ref}? Include commentaries from Augustine, Chrysostom, Jerome, and others` },
-    { label: '🔄 Intertextuality', query: `How does ${ref} connect to other passages in the Bible? Show thematic and literary connections` },
+    { label: 'Archaeological evidence', query: `Find archaeological evidence and discoveries related to ${ref} in the Bible` },
+    { label: 'Scholarly analysis', query: `What do biblical scholars say about ${ref}? Include different perspectives and interpretations` },
+    { label: 'Historical context', query: `What is the historical context of ${ref}? What was happening in the ancient Near East at this time?` },
+    { label: 'Linguistic analysis', query: `Linguistic analysis of key terms in ${ref} including original Hebrew or Greek meanings` },
+    { label: 'Textual criticism', query: `What are the textual variants and manuscript differences for ${ref}?` },
+    { label: 'Geography', query: `Where did the events of ${ref} take place? Describe the geographical and archaeological setting` },
+    { label: 'Patristic commentary', query: `What did early Church Fathers say about ${ref}? Include commentaries from Augustine, Chrysostom, Jerome, and others` },
+    { label: 'Intertextuality', query: `How does ${ref} connect to other passages in the Bible? Show thematic and literary connections` },
   ];
 
   const aiLinks = (query: string) => [
-    { name: 'Perplexity', url: `https://www.perplexity.ai/search?q=${encodeURIComponent(query)}`, icon: '🔍' },
-    { name: 'ChatGPT', url: `https://chat.openai.com/?q=${encodeURIComponent(query)}`, icon: '🤖' },
-    { name: 'Claude', url: `https://claude.ai/new?q=${encodeURIComponent(query)}`, icon: '🧠' },
-    { name: 'Google Scholar', url: `https://scholar.google.com/scholar?q=${encodeURIComponent(query)}`, icon: '🎓' },
-    { name: 'JSTOR', url: `https://www.jstor.org/action/doBasicSearch?Query=${encodeURIComponent(query)}`, icon: '📖' },
+    { name: 'Perplexity', url: `https://www.perplexity.ai/search?q=${encodeURIComponent(query)}` },
+    { name: 'ChatGPT', url: `https://chat.openai.com/?q=${encodeURIComponent(query)}` },
+    { name: 'Claude', url: `https://claude.ai/new?q=${encodeURIComponent(query)}` },
+    { name: 'Google Scholar', url: `https://scholar.google.com/scholar?q=${encodeURIComponent(query)}` },
+    { name: 'JSTOR', url: `https://www.jstor.org/action/doBasicSearch?Query=${encodeURIComponent(query)}` },
   ];
 
   // External resource links
   const resourceLinks = [
-    { name: 'OpenAlex', url: `https://openalex.org/works?search=${encodeURIComponent(searchQuery + ' biblical')}`, icon: '📊', desc: 'Open scholarly metadata' },
-    { name: 'CrossRef', url: `https://search.crossref.org/?q=${encodeURIComponent(searchQuery + ' biblical')}&from_ui=yes`, icon: '🔗', desc: 'DOI-linked articles' },
-    { name: 'Bible Hub', url: `https://biblehub.com/${bookName?.toLowerCase().replace(/ /g, '_')}/${chapter}-${verse}.htm`, icon: '📖', desc: 'Commentaries & lexicon' },
-    { name: 'Blue Letter Bible', url: `https://www.blueletterbible.org/search/search.cfm?Criteria=${encodeURIComponent(ref)}&t=KJV`, icon: '🔵', desc: 'Interlinear & word study' },
-    { name: 'NET Bible', url: `https://netbible.org/bible/${bookName?.replace(/ /g, '+')}+${chapter}`, icon: '🌐', desc: 'Translation notes' },
-    { name: 'STEP Bible', url: `https://www.stepbible.org/?q=reference=${encodeURIComponent(ref)}|version=ESV`, icon: '📚', desc: 'Multi-resource lookup' },
-    { name: 'Mechon Mamre', url: 'https://www.mechon-mamre.org/', icon: '🕎', desc: 'Hebrew Bible (Tanakh)' },
-    { name: 'Perseus Digital Library', url: `https://www.perseus.tufts.edu/hopper/searchresults?q=${encodeURIComponent(bookName || '')}`, icon: '🏛️', desc: 'Greek & Latin texts' },
-    { name: 'INTF (NT Manuscripts)', url: 'https://ntvmr.uni-muenster.de/home', icon: '📜', desc: 'NT manuscript transcripts' },
-    { name: 'Logeion', url: `https://logeion.uchicago.edu/`, icon: '📕', desc: 'Greek & Latin lexicon' },
-    { name: 'Internet Archive', url: `https://archive.org/search?query=${encodeURIComponent(searchQuery + ' biblical commentary')}`, icon: '📚', desc: 'Historical commentaries (free)' },
-    { name: 'Dead Sea Scrolls', url: `https://www.deadseascrolls.org.il/explore-the-archive`, icon: '🏺', desc: 'DSS digital archive' },
-    { name: 'Tyndale House', url: `https://tyndalehouselibrary.com/`, icon: '🏠', desc: 'Cambridge biblical research' },
-    { name: 'ORCID (scholars)', url: `https://orcid.org/orcid-search/search?searchQuery=${encodeURIComponent('biblical ' + (bookName || ''))}`, icon: '👤', desc: 'Find biblical scholars' },
-    { name: 'Aleppo Codex', url: 'https://www.aleppocodex.org/', icon: '📖', desc: 'Oldest complete Hebrew Bible' },
-    { name: 'Early Church Texts', url: 'https://www.earlychurchtexts.com/', icon: '⛪', desc: 'Patristic writings' },
-    { name: 'Sefaria', url: `https://www.sefaria.org/search?q=${encodeURIComponent(bookName + ' ' + chapter + ':' + verse)}&tab=text`, icon: '📗', desc: 'Jewish texts & commentaries (Rashi, Rambam)' },
-    { name: 'ETCBC (BHSA)', url: 'https://shebanq.ancient-data.org/hebrew/query', icon: '🔬', desc: 'Hebrew syntax database (Eep Talstra Centre)' },
-    { name: 'Codex Sinaiticus', url: 'https://codexsinaiticus.org/en/', icon: '📜', desc: '4th-century Greek manuscript (complete NT)' },
-    { name: 'Textus Receptus', url: `https://www.textusreceptusbibles.com/`, icon: '📖', desc: 'Greek NT underlying the KJV' },
-    { name: 'Bible Odyssey', url: `https://www.bibleodyssey.org/en/tools/search-results?q=${encodeURIComponent(bookName || '')}`, icon: '🗺️', desc: 'Society of Biblical Literature resources' },
-    { name: 'ATLA Religion DB', url: `https://www.atla.com/research-tool/?searchText=${encodeURIComponent(searchQuery + ' biblical')}`, icon: '📖', desc: 'Premier religion & theology index' },
-    { name: 'Bible Gateway', url: `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=KJV,NIV,ESV`, icon: '🚪', desc: 'Multi-version comparison' },
-    { name: 'Kata Biblon', url: `https://en.katabiblon.com/us/index.php?text=LXX&book=${bookName?.replace(/ /g, '+')}`, icon: '📗', desc: 'Greek-English Septuagint (LXX)' },
+    { name: 'OpenAlex', url: `https://openalex.org/works?search=${encodeURIComponent(searchQuery + ' biblical')}`, desc: 'Open scholarly metadata' },
+    { name: 'CrossRef', url: `https://search.crossref.org/?q=${encodeURIComponent(searchQuery + ' biblical')}&from_ui=yes`, desc: 'DOI-linked articles' },
+    { name: 'Bible Hub', url: `https://biblehub.com/${bookName?.toLowerCase().replace(/ /g, '_')}/${chapter}-${verse}.htm`, desc: 'Commentaries & lexicon' },
+    { name: 'Blue Letter Bible', url: `https://www.blueletterbible.org/search/search.cfm?Criteria=${encodeURIComponent(ref)}&t=KJV`, desc: 'Interlinear & word study' },
+    { name: 'NET Bible', url: `https://netbible.org/bible/${bookName?.replace(/ /g, '+')}+${chapter}`, desc: 'Translation notes' },
+    { name: 'STEP Bible', url: `https://www.stepbible.org/?q=reference=${encodeURIComponent(ref)}|version=ESV`, desc: 'Multi-resource lookup' },
+    { name: 'Mechon Mamre', url: 'https://www.mechon-mamre.org/', desc: 'Hebrew Bible (Tanakh)' },
+    { name: 'Perseus Digital Library', url: `https://www.perseus.tufts.edu/hopper/searchresults?q=${encodeURIComponent(bookName || '')}`, desc: 'Greek & Latin texts' },
+    { name: 'INTF (NT Manuscripts)', url: 'https://ntvmr.uni-muenster.de/home', desc: 'NT manuscript transcripts' },
+    { name: 'Logeion', url: `https://logeion.uchicago.edu/`, desc: 'Greek & Latin lexicon' },
+    { name: 'Internet Archive', url: `https://archive.org/search?query=${encodeURIComponent(searchQuery + ' biblical commentary')}`, desc: 'Historical commentaries (free)' },
+    { name: 'Dead Sea Scrolls', url: `https://www.deadseascrolls.org.il/explore-the-archive`, desc: 'DSS digital archive' },
+    { name: 'Tyndale House', url: `https://tyndalehouselibrary.com/`, desc: 'Cambridge biblical research' },
+    { name: 'ORCID (scholars)', url: `https://orcid.org/orcid-search/search?searchQuery=${encodeURIComponent('biblical ' + (bookName || ''))}`, desc: 'Find biblical scholars' },
+    { name: 'Aleppo Codex', url: 'https://www.aleppocodex.org/', desc: 'Oldest complete Hebrew Bible' },
+    { name: 'Early Church Texts', url: 'https://www.earlychurchtexts.com/', desc: 'Patristic writings' },
+    { name: 'Sefaria', url: `https://www.sefaria.org/search?q=${encodeURIComponent(bookName + ' ' + chapter + ':' + verse)}&tab=text`, desc: 'Jewish texts & commentaries (Rashi, Rambam)' },
+    { name: 'ETCBC (BHSA)', url: 'https://shebanq.ancient-data.org/hebrew/query', desc: 'Hebrew syntax database (Eep Talstra Centre)' },
+    { name: 'Codex Sinaiticus', url: 'https://codexsinaiticus.org/en/', desc: '4th-century Greek manuscript (complete NT)' },
+    { name: 'Textus Receptus', url: `https://www.textusreceptusbibles.com/`, desc: 'Greek NT underlying the KJV' },
+    { name: 'Bible Odyssey', url: `https://www.bibleodyssey.org/en/tools/search-results?q=${encodeURIComponent(bookName || '')}`, desc: 'Society of Biblical Literature resources' },
+    { name: 'ATLA Religion DB', url: `https://www.atla.com/research-tool/?searchText=${encodeURIComponent(searchQuery + ' biblical')}`, desc: 'Premier religion & theology index' },
+    { name: 'Bible Gateway', url: `https://www.biblegateway.com/passage/?search=${encodeURIComponent(ref)}&version=KJV,NIV,ESV`, desc: 'Multi-version comparison' },
+    { name: 'Kata Biblon', url: `https://en.katabiblon.com/us/index.php?text=LXX&book=${bookName?.replace(/ /g, '+')}`, desc: 'Greek-English Septuagint (LXX)' },
   ];
 
   return (
     <div className="space-y-3">
       {/* Tab bar */}
       <div className="flex gap-1 bg-parchment-800 rounded-lg p-1 overflow-x-auto">
-        {([['ai', '🤖 AI'], ['scholar', '🎓 Scholar'], ['pubmed', '🏥 PubMed'], ['books', '📚 Books'], ['googlebooks', '📖 Google'], ['crossref', '🔗 CrossRef'], ['openalex', '📊 OpenAlex'], ['archive', '🏛️ Archive'], ['europepmc', '🇪🇺 EuroPMC'], ['core', '🔬 CORE'], ['wiki', '📘 Wiki'], ['perseus', '🏛️ Perseus'], ['wikidata', '🔗 Wikidata'], ['sacredtexts', '📜 Sacred'], ['resources', '📌 Links']] as const).map(([key, label]) => (
+        {([['ai', 'AI'], ['scholar', 'Scholar'], ['pubmed', 'PubMed'], ['books', 'Books'], ['googlebooks', 'Google'], ['crossref', 'CrossRef'], ['openalex', 'OpenAlex'], ['archive', 'Archive'], ['europepmc', 'EuroPMC'], ['core', 'CORE'], ['wiki', 'Wiki'], ['perseus', 'Perseus'], ['wikidata', 'Wikidata'], ['sacredtexts', 'Sacred'], ['resources', 'Links']] as const).map(([key, label]) => (
           <button
             key={key}
             onClick={() => setActiveTab(key)}
@@ -277,7 +277,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
                     rel="noopener noreferrer"
                     className="text-xs px-2 py-1 rounded bg-parchment-700 text-parchment-300 hover:bg-gold-600 hover:text-parchment-950 transition-colors"
                   >
-                    {link.icon} {link.name}
+                    {link.name}
                   </a>
                 ))}
               </div>
@@ -301,8 +301,8 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
             >
               <h4 className="text-sm text-parchment-100 font-medium leading-tight">{p.title}</h4>
               <div className="flex gap-3 mt-1 text-xs text-parchment-500">
-                {p.year && <span>📅 {p.year}</span>}
-                {p.citationCount !== undefined && <span>📄 {p.citationCount} citations</span>}
+                {p.year && <span>{p.year}</span>}
+                {p.citationCount !== undefined && <span>{p.citationCount} citations</span>}
               </div>
               {p.authors && p.authors.length > 0 && (
                 <p className="text-xs text-parchment-500 mt-1">{p.authors.slice(0, 3).map(a => a.name).join(', ')}{p.authors.length > 3 ? ' et al.' : ''}</p>
@@ -330,8 +330,8 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
             >
               <h4 className="text-sm text-parchment-100 font-medium leading-tight">{p.title}</h4>
               <div className="flex gap-3 mt-1 text-xs text-parchment-500">
-                {p.year && <span>📅 {p.year}</span>}
-                {p.journal && <span>📰 {p.journal}</span>}
+                {p.year && <span>{p.year}</span>}
+                {p.journal && <span>{p.journal}</span>}
               </div>
               {p.authors.length > 0 && (
                 <p className="text-xs text-parchment-500 mt-1">{p.authors.slice(0, 3).join(', ')}{p.authors.length > 3 ? ' et al.' : ''}</p>
@@ -356,9 +356,9 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
             >
               <h4 className="text-sm text-parchment-100 font-medium leading-tight">{b.title}</h4>
               <div className="flex gap-3 mt-1 text-xs text-parchment-500">
-                {b.year && <span>📅 {b.year}</span>}
-                {b.publisher && <span>🏢 {b.publisher}</span>}
-                {b.pages && <span>📄 {b.pages}p</span>}
+                {b.year && <span>{b.year}</span>}
+                {b.publisher && <span>{b.publisher}</span>}
+                {b.pages && <span>{b.pages}p</span>}
               </div>
               {b.authors.length > 0 && (
                 <p className="text-xs text-parchment-500 mt-1">{b.authors.slice(0, 3).join(', ')}{b.authors.length > 3 ? ' et al.' : ''}</p>
@@ -390,8 +390,8 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
             >
               <h4 className="text-sm text-parchment-100 font-medium leading-tight">{c.title}</h4>
               <div className="flex gap-3 mt-1 text-xs text-parchment-500">
-                {c.year && <span>📅 {c.year}</span>}
-                {c.journal && <span>📰 {c.journal}</span>}
+                {c.year && <span>{c.year}</span>}
+                {c.journal && <span>{c.journal}</span>}
               </div>
               {c.authors.length > 0 && (
                 <p className="text-xs text-parchment-500 mt-1">{c.authors.slice(0, 3).join(', ')}{c.authors.length > 3 ? ' et al.' : ''}</p>
@@ -422,9 +422,9 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
             >
               <h4 className="text-sm text-parchment-100 font-medium leading-tight">{item.title}</h4>
               <div className="flex gap-3 mt-1 text-xs text-parchment-500">
-                {item.year && <span>📅 {item.year}</span>}
-                {item.citationCount > 0 && <span>📄 {item.citationCount} citations</span>}
-                {item.journal && <span>📰 {item.journal}</span>}
+                {item.year && <span>{item.year}</span>}
+                {item.citationCount > 0 && <span>{item.citationCount} citations</span>}
+                {item.journal && <span>{item.journal}</span>}
               </div>
               {item.authors?.length > 0 && (
                 <p className="text-xs text-parchment-500 mt-1">{item.authors.slice(0, 3).join(', ')}{item.authors.length > 3 ? ' et al.' : ''}</p>
@@ -452,8 +452,8 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
             >
               <h4 className="text-sm text-parchment-100 font-medium leading-tight">{item.title}</h4>
               <div className="flex gap-3 mt-1 text-xs text-parchment-500">
-                {item.year && <span>📅 {item.year}</span>}
-                {item.mediatype && <span>📦 {item.mediatype}</span>}
+                {item.year && <span>{item.year}</span>}
+                {item.mediatype && <span>{item.mediatype}</span>}
               </div>
               {item.authors?.length > 0 && (
                 <p className="text-xs text-parchment-500 mt-1">{item.authors.slice(0, 3).join(', ')}</p>
@@ -488,9 +488,9 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
             >
               <h4 className="text-sm text-parchment-100 font-medium leading-tight">{item.title}</h4>
               <div className="flex gap-3 mt-1 text-xs text-parchment-500">
-                {item.year && <span>📅 {item.year}</span>}
-                {item.citationCount > 0 && <span>📄 {item.citationCount} citations</span>}
-                {item.journal && <span>📰 {item.journal}</span>}
+                {item.year && <span>{item.year}</span>}
+                {item.citationCount > 0 && <span>{item.citationCount} citations</span>}
+                {item.journal && <span>{item.journal}</span>}
               </div>
               {item.authors?.length > 0 && (
                 <p className="text-xs text-parchment-500 mt-1">{item.authors.slice(0, 3).join(', ')}{item.authors.length > 3 ? ' et al.' : ''}</p>
@@ -523,9 +523,9 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm text-parchment-100 font-medium leading-tight">{item.title}</h4>
                   <div className="flex gap-3 mt-1 text-xs text-parchment-500">
-                    {item.year && <span>📅 {item.year}</span>}
-                    {item.pages && <span>📄 {item.pages}pp</span>}
-                    {item.averageRating && <span>⭐ {item.averageRating}</span>}
+                    {item.year && <span>{item.year}</span>}
+                    {item.pages && <span>{item.pages}pp</span>}
+                    {item.averageRating && <span>{item.averageRating}</span>}
                   </div>
                   {item.authors?.length > 0 && (
                     <p className="text-xs text-parchment-500 mt-1">{item.authors.slice(0, 3).join(', ')}</p>
@@ -621,7 +621,6 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
               rel="noopener noreferrer"
               className="flex items-center gap-3 p-3 rounded-lg bg-parchment-800 hover:bg-parchment-700 transition-colors"
             >
-              <span className="text-lg flex-shrink-0">{link.icon}</span>
               <div>
                 <h4 className="text-sm text-parchment-200 font-medium">{link.name}</h4>
                 <p className="text-xs text-parchment-500">{link.desc}</p>

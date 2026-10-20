@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { getBookById, BIBLE_BOOKS } from '@/lib/bible-books';
 
@@ -61,17 +60,16 @@ export default async function SearchPage({ searchParams }: Props) {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-4">🔍 Search</h1>
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-4">Search</h1>
           
           <form className="flex flex-wrap gap-3 items-end">
             <div className="flex-1 min-w-[200px]">
               <input
                 type="text" name="q" defaultValue={q}
                 placeholder="Search the Bible…"
-                className="w-full px-4 py-3 rounded-xl bg-parchment-900 border border-parchment-700 text-parchment-100 placeholder-parchment-600 focus:outline-none focus:ring-2 focus:ring-gold-500/50 font-serif"
+                className="w-full px-4 py-3 rounded-xl bg-parchment-900/70 text-parchment-100 placeholder-parchment-600 focus:outline-none focus:ring-2 focus:ring-gold-500/50 font-serif"
               />
             </div>
             <div>
@@ -111,7 +109,7 @@ export default async function SearchPage({ searchParams }: Props) {
               <Link
                 key={i}
                 href={`/reader/${slug}/${v.chapter}#v${v.verse}`}
-                className="block p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all"
+                className="block p-4 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 transition-all"
               >
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-sm font-semibold text-gold-400">{bookInfo?.name} {v.chapter}:{v.verse}</span>

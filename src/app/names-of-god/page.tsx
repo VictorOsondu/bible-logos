@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -157,15 +156,9 @@ export default function NamesOfGodPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Names of God</span>
-        </div>
 
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">✡️ Names of God</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Names of God</h1>
         <p className="text-parchment-400 mb-8 max-w-2xl">
           In the biblical world, a name reveals character and nature. Each divine name unveils a different facet of who God is
           and how he relates to his creation.
@@ -179,7 +172,7 @@ export default function NamesOfGodPage() {
             <h2 className="text-xl font-semibold text-gold-500 font-serif mb-4">{section.title}</h2>
             <div className="space-y-4">
               {section.names.map(n => (
-                <div key={n.name} className="bg-parchment-900 border border-parchment-800 rounded-xl p-5 hover:border-gold-500/20 transition-colors">
+                <div key={n.name} className="bg-parchment-900/70 rounded-xl p-5 hover:bg-parchment-900 transition-colors">
                   <div className="flex items-start justify-between flex-wrap gap-2 mb-2">
                     <div>
                       <h3 className="text-lg font-bold text-parchment-100 font-serif">{n.name}</h3>
@@ -195,7 +188,7 @@ export default function NamesOfGodPage() {
                     href={`/reader/${n.firstRef.slug}/${n.firstRef.chapter}#v${n.firstRef.verse}`}
                     className="text-xs text-gold-400 hover:text-gold-300 transition-colors"
                   >
-                    📖 First occurrence: {n.firstRef.ref} →
+                    First occurrence: {n.firstRef.ref} →
                   </Link>
                 </div>
               ))}

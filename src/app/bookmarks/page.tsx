@@ -1,33 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import Sidebar from '@/components/Sidebar';
+import { Plus, Trash2, X } from 'lucide-react';
 import { BIBLE_BOOKS } from '@/lib/bible-books';
-
-interface Bookmark {
-  id: string;
-  book: number;
-  chapter: number;
-  verse?: number;
-  note: string;
-  color: string;
-  createdAt: string;
-}
-
-interface ReadingHistory {
-  book: number;
-  chapter: number;
-  timestamp: string;
-}
-
-const COLORS = [
-  { name: 'Gold', value: 'bg-gold-500/20 border-gold-500/40' },
-  { name: 'Blue', value: 'bg-blue-500/20 border-blue-500/40' },
-  { name: 'Green', value: 'bg-emerald-500/20 border-emerald-500/40' },
-  { name: 'Red', value: 'bg-red-500/20 border-red-500/40' },
-  { name: 'Purple', value: 'bg-purple-500/20 border-purple-500/40' },
-];
+import {
+  BOOKMARKS_KEY, HISTORY_KEY, getBookmarks, getHistory, type Bookmark, type ReadingHistory,
+} from '@/lib/reading';
 
 function getBookName(id: number): string {
   return BIBLE_BOOKS.find(b => b.id === id)?.name || `Book ${id}`;
@@ -36,227 +15,152 @@ function getBookSlug(id: number): string {
   return (BIBLE_BOOKS.find(b => b.id === id)?.name || '').toLowerCase().replace(/ /g, '-');
 }
 
+const field = 'w-full bg-parchment-950 text-parchment-100 rounded-lg px-3 py-2 text-sm border border-parchment-800 focus:outline-none focus:border-gold-500/50';
+
 export default function BookmarksPage() {
   const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
   const [history, setHistory] = useState<ReadingHistory[]>([]);
   const [activeTab, setActiveTab] = useState<'bookmarks' | 'history'>('bookmarks');
-  const [newNote, setNewNote] = useState('');
-  const [newColor, setNewColor] = useState(COLORS[0].value);
   const [showAdd, setShowAdd] = useState(false);
   const [addBook, setAddBook] = useState(1);
   const [addChapter, setAddChapter] = useState(1);
   const [addVerse, setAddVerse] = useState('');
+  const [newNote, setNewNote] = useState('');
 
   useEffect(() => {
-    const stored = localStorage.getItem('biblelogos-bookmarks');
-    if (stored) setBookmarks(JSON.parse(stored));
-    const hist = localStorage.getItem('biblelogos-history');
-    if (hist) setHistory(JSON.parse(hist));
+    setBookmarks(getBookmarks());
+    setHistory(getHistory());
   }, []);
 
   const saveBookmarks = (bms: Bookmark[]) => {
     setBookmarks(bms);
-    localStorage.setItem('biblelogos-bookmarks', JSON.stringify(bms));
+    try { localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bms)); } catch { /* storage unavailable */ }
   };
 
   const addBookmark = () => {
-    const bm: Bookmark = {
+    saveBookmarks([{
       id: Date.now().toString(36),
       book: addBook,
       chapter: addChapter,
       verse: addVerse ? parseInt(addVerse) : undefined,
       note: newNote,
-      color: newColor,
+      color: '',
       createdAt: new Date().toISOString(),
-    };
-    saveBookmarks([bm, ...bookmarks]);
+    }, ...bookmarks]);
     setNewNote('');
     setAddVerse('');
     setShowAdd(false);
   };
 
-  const removeBookmark = (id: string) => {
-    saveBookmarks(bookmarks.filter(b => b.id !== id));
-  };
-
   const clearHistory = () => {
     setHistory([]);
-    localStorage.removeItem('biblelogos-history');
+    try { localStorage.removeItem(HISTORY_KEY); } catch { /* storage unavailable */ }
   };
 
-  const selectedBookChapters = BIBLE_BOOKS.find(b => b.id === addBook)?.chapters || 1;
+  const chapters = BIBLE_BOOKS.find(b => b.id === addBook)?.chapters || 1;
+  const tab = (id: typeof activeTab, label: string, count: number) => (
+    <button
+      onClick={() => setActiveTab(id)}
+      className={`flex-1 sm:flex-none px-4 py-1.5 rounded-md text-sm transition-colors ${
+        activeTab === id ? 'bg-parchment-950 text-parchment-100 shadow-sm' : 'text-parchment-500 hover:text-parchment-300'
+      }`}
+    >
+      {label} <span className="text-parchment-500">{count}</span>
+    </button>
+  );
 
   return (
-    <>
-      <Sidebar />
-      <main className="flex-1 p-4 lg:p-8 max-w-4xl">
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">📑 Bookmarks & History</h1>
-        <p className="text-sm text-parchment-400 mb-6">Your saved passages and reading history (stored locally)</p>
+    <main className="flex-1 px-4 py-8 lg:px-8 lg:py-10 max-w-3xl">
+      <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-1">Bookmarks</h1>
+      <p className="text-sm text-parchment-500 mb-6">
+        Saved in this browser. To bookmark a verse, tap it in the reader and choose Bookmark.
+      </p>
 
-        {/* Tabs */}
-        <div className="flex gap-2 mb-6">
-          <button
-            onClick={() => setActiveTab('bookmarks')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
-              activeTab === 'bookmarks' ? 'bg-gold-600 text-parchment-950' : 'bg-parchment-900 text-parchment-400 hover:text-parchment-200'
-            }`}
-          >
-            📌 Bookmarks ({bookmarks.length})
-          </button>
-          <button
-            onClick={() => setActiveTab('history')}
-            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
-              activeTab === 'history' ? 'bg-gold-600 text-parchment-950' : 'bg-parchment-900 text-parchment-400 hover:text-parchment-200'
-            }`}
-          >
-            📖 History ({history.length})
-          </button>
+      <div className="flex items-center justify-between gap-3 mb-6">
+        <div className="flex gap-1 p-1 rounded-lg bg-parchment-900 w-full sm:w-auto">
+          {tab('bookmarks', 'Bookmarks', bookmarks.length)}
+          {tab('history', 'History', history.length)}
         </div>
-
-        {/* Bookmarks Tab */}
         {activeTab === 'bookmarks' && (
-          <div className="space-y-4">
-            <button
-              onClick={() => setShowAdd(!showAdd)}
-              className="px-4 py-2 bg-gold-600 text-parchment-950 rounded-lg text-sm font-semibold hover:bg-gold-500 transition-colors"
-            >
-              {showAdd ? '✕ Cancel' : '+ Add Bookmark'}
-            </button>
-
-            {showAdd && (
-              <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 space-y-3 animate-fade-in">
-                <div className="grid grid-cols-3 gap-3">
-                  <div>
-                    <label className="text-xs text-parchment-500 block mb-1">Book</label>
-                    <select
-                      value={addBook}
-                      onChange={e => { setAddBook(parseInt(e.target.value)); setAddChapter(1); }}
-                      className="w-full bg-parchment-800 text-parchment-200 rounded px-2 py-1.5 text-sm border border-parchment-700"
-                    >
-                      {BIBLE_BOOKS.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs text-parchment-500 block mb-1">Chapter</label>
-                    <select
-                      value={addChapter}
-                      onChange={e => setAddChapter(parseInt(e.target.value))}
-                      className="w-full bg-parchment-800 text-parchment-200 rounded px-2 py-1.5 text-sm border border-parchment-700"
-                    >
-                      {Array.from({ length: selectedBookChapters }, (_, i) => i + 1).map(c =>
-                        <option key={c} value={c}>{c}</option>
-                      )}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="text-xs text-parchment-500 block mb-1">Verse (opt)</label>
-                    <input
-                      type="number"
-                      value={addVerse}
-                      onChange={e => setAddVerse(e.target.value)}
-                      placeholder="—"
-                      className="w-full bg-parchment-800 text-parchment-200 rounded px-2 py-1.5 text-sm border border-parchment-700"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="text-xs text-parchment-500 block mb-1">Note</label>
-                  <input
-                    type="text"
-                    value={newNote}
-                    onChange={e => setNewNote(e.target.value)}
-                    placeholder="Your note..."
-                    className="w-full bg-parchment-800 text-parchment-200 rounded px-2 py-1.5 text-sm border border-parchment-700"
-                  />
-                </div>
-                <div>
-                  <label className="text-xs text-parchment-500 block mb-1">Color</label>
-                  <div className="flex gap-2">
-                    {COLORS.map(c => (
-                      <button
-                        key={c.name}
-                        onClick={() => setNewColor(c.value)}
-                        className={`w-8 h-8 rounded-full border-2 ${c.value} ${newColor === c.value ? 'ring-2 ring-gold-400' : ''}`}
-                        title={c.name}
-                      />
-                    ))}
-                  </div>
-                </div>
-                <button
-                  onClick={addBookmark}
-                  className="px-4 py-2 bg-gold-600 text-parchment-950 rounded-lg text-sm font-semibold hover:bg-gold-500 transition-colors"
-                >
-                  Save Bookmark
-                </button>
-              </div>
-            )}
-
-            {bookmarks.length === 0 ? (
-              <div className="text-center py-12 text-parchment-500">
-                <p className="text-lg mb-2">No bookmarks yet</p>
-                <p className="text-sm">Add bookmarks to save your favourite passages</p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {bookmarks.map(bm => (
-                  <div key={bm.id} className={`flex items-center gap-3 p-3 rounded-xl border ${bm.color} transition-all`}>
-                    <Link
-                      href={`/reader/${getBookSlug(bm.book)}/${bm.chapter}${bm.verse ? `#v${bm.verse}` : ''}`}
-                      className="flex-1"
-                    >
-                      <p className="text-sm font-semibold text-parchment-200">
-                        {getBookName(bm.book)} {bm.chapter}{bm.verse ? `:${bm.verse}` : ''}
-                      </p>
-                      {bm.note && <p className="text-xs text-parchment-400 mt-0.5">{bm.note}</p>}
-                      <p className="text-xs text-parchment-600 mt-0.5">{new Date(bm.createdAt).toLocaleDateString()}</p>
-                    </Link>
-                    <button
-                      onClick={() => removeBookmark(bm.id)}
-                      className="text-parchment-600 hover:text-red-400 text-sm p-1 transition-colors"
-                      title="Remove"
-                    >
-                      🗑️
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
+          <button
+            onClick={() => setShowAdd(!showAdd)}
+            className="shrink-0 inline-flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm text-parchment-200 border border-parchment-800 hover:bg-parchment-900 transition-colors"
+          >
+            {showAdd ? <X size={15} /> : <Plus size={15} />} {showAdd ? 'Cancel' : 'Add'}
+          </button>
         )}
+        {activeTab === 'history' && history.length > 0 && (
+          <button onClick={clearHistory} className="shrink-0 text-sm text-parchment-500 hover:text-parchment-200 transition-colors">
+            Clear history
+          </button>
+        )}
+      </div>
 
-        {/* History Tab */}
-        {activeTab === 'history' && (
-          <div className="space-y-4">
-            {history.length > 0 && (
-              <button
-                onClick={clearHistory}
-                className="text-xs text-parchment-500 hover:text-red-400 transition-colors"
-              >
-                Clear history
+      {activeTab === 'bookmarks' && (
+        <>
+          {showAdd && (
+            <div className="rounded-xl bg-parchment-900/70 p-4 mb-6 space-y-3 animate-fade-in">
+              <div className="grid grid-cols-[2fr_1fr_1fr] gap-2">
+                <select value={addBook} onChange={e => { setAddBook(parseInt(e.target.value)); setAddChapter(1); }} className={field} aria-label="Book">
+                  {BIBLE_BOOKS.map(b => <option key={b.id} value={b.id}>{b.name}</option>)}
+                </select>
+                <select value={addChapter} onChange={e => setAddChapter(parseInt(e.target.value))} className={field} aria-label="Chapter">
+                  {Array.from({ length: chapters }, (_, i) => i + 1).map(c => <option key={c} value={c}>{c}</option>)}
+                </select>
+                <input type="number" min={1} value={addVerse} onChange={e => setAddVerse(e.target.value)} placeholder="Verse" className={field} aria-label="Verse (optional)" />
+              </div>
+              <input type="text" value={newNote} onChange={e => setNewNote(e.target.value)} placeholder="Note (optional)" className={field} />
+              <button onClick={addBookmark} className="px-4 py-2 rounded-lg bg-gold-600 text-parchment-950 text-sm font-medium hover:opacity-90 transition-opacity">
+                Save bookmark
               </button>
-            )}
-            {history.length === 0 ? (
-              <div className="text-center py-12 text-parchment-500">
-                <p className="text-lg mb-2">No reading history</p>
-                <p className="text-sm">Start reading to build your history</p>
-              </div>
-            ) : (
-              <div className="space-y-1">
-                {history.slice(0, 100).map((h, i) => (
-                  <Link
-                    key={i}
-                    href={`/reader/${getBookSlug(h.book)}/${h.chapter}`}
-                    className="flex items-center justify-between p-2 rounded-lg hover:bg-parchment-900/50 transition-colors"
-                  >
-                    <span className="text-sm text-parchment-200">{getBookName(h.book)} {h.chapter}</span>
-                    <span className="text-xs text-parchment-600">{new Date(h.timestamp).toLocaleString()}</span>
+            </div>
+          )}
+
+          {bookmarks.length === 0 ? (
+            <p className="py-16 text-center text-sm text-parchment-500">No bookmarks yet.</p>
+          ) : (
+            <ul className="divide-y divide-parchment-800">
+              {bookmarks.map(bm => (
+                <li key={bm.id} className="flex items-center gap-3 py-3">
+                  <Link href={`/reader/${getBookSlug(bm.book)}/${bm.chapter}${bm.verse ? `#v${bm.verse}` : ''}`} className="flex-1 min-w-0 group">
+                    <p className="text-sm font-medium text-parchment-100 group-hover:text-gold-400">
+                      {getBookName(bm.book)} {bm.chapter}{bm.verse ? `:${bm.verse}` : ''}
+                    </p>
+                    {bm.note && <p className="text-sm text-parchment-400 mt-0.5">{bm.note}</p>}
+                    <p className="text-xs text-parchment-500 mt-0.5">{new Date(bm.createdAt).toLocaleDateString('en-GB')}</p>
                   </Link>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-      </main>
-    </>
+                  <button
+                    onClick={() => saveBookmarks(bookmarks.filter(b => b.id !== bm.id))}
+                    className="p-2 rounded-lg text-parchment-500 hover:text-red-500 hover:bg-parchment-900 transition-colors"
+                    aria-label="Remove bookmark"
+                  >
+                    <Trash2 size={15} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+
+      {activeTab === 'history' && (
+        history.length === 0 ? (
+          <p className="py-16 text-center text-sm text-parchment-500">Chapters you read will appear here.</p>
+        ) : (
+          <ul className="divide-y divide-parchment-800">
+            {history.map(h => (
+              <li key={`${h.book}-${h.chapter}`}>
+                <Link href={`/reader/${getBookSlug(h.book)}/${h.chapter}`} className="flex items-center justify-between py-3 group">
+                  <span className="text-sm text-parchment-100 group-hover:text-gold-400">{getBookName(h.book)} {h.chapter}</span>
+                  <span className="text-xs text-parchment-500">
+                    {new Date(h.timestamp).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )
+      )}
+    </main>
   );
 }

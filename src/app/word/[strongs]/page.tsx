@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { getDb } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
@@ -20,7 +19,6 @@ export default function WordPage({ params, searchParams }: Props) {
   if (!entry) {
     return (
       <>
-        <Sidebar />
         <main className="flex-1 p-8">
           <h1 className="text-2xl text-parchment-100 font-serif">Strong&apos;s {params.strongs} not found</h1>
           <p className="text-parchment-500 mt-2">Check the number, or search the <Link href="/concordance" className="text-gold-400 hover:text-gold-300">concordance</Link>.</p>
@@ -36,7 +34,7 @@ export default function WordPage({ params, searchParams }: Props) {
     offset: (page - 1) * PAGE_SIZE,
   });
   const pages = Math.ceil(totalVerses / PAGE_SIZE);
-  const renderings = getKjvRenderings(db, params.strongs, 30);
+  const renderings = getKjvRenderings(db, params.strongs, 12);
 
   // Neighbouring entries for browsing
   const prefix = params.strongs[0];
@@ -51,21 +49,15 @@ export default function WordPage({ params, searchParams }: Props) {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-6">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Strong&apos;s Concordance</span>
-        </div>
 
         {/* Main Entry */}
-        <div className="bg-parchment-900 border border-parchment-800 rounded-2xl p-8 mb-8 text-center">
+        <div className="bg-parchment-900/70 rounded-2xl p-8 mb-8 text-center">
           <div className="text-6xl mb-4 font-serif">{entry.original}</div>
           <h1 className="text-2xl font-bold text-gold-400 mb-1">{entry.transliteration}</h1>
           {entry.pronunciation && <p className="text-sm text-parchment-400 italic mb-1">{entry.pronunciation}</p>}
           <p className="text-sm text-parchment-500 mb-4">
-            {entry.id} · {entry.language === 'hebrew' ? '🕎 Hebrew (Old Testament)' : '🏛️ Greek (New Testament)'}
+            {entry.id} · {entry.language === 'hebrew' ? 'Hebrew (Old Testament)' : 'Greek (New Testament)'}
           </p>
           <p className="text-lg text-parchment-200 max-w-2xl mx-auto leading-relaxed font-serif">
             {entry.definition}
@@ -81,7 +73,7 @@ export default function WordPage({ params, searchParams }: Props) {
             <h2 className="text-xl font-semibold text-parchment-200 mb-4">Translated in the KJV as</h2>
             <div className="flex flex-wrap gap-2">
               {renderings.map(r => (
-                <span key={r.word} className="text-sm px-3 py-1 rounded-full bg-parchment-900 border border-parchment-800 text-parchment-300">
+                <span key={r.word} className="text-sm px-3 py-1 rounded-full bg-parchment-900/70 text-parchment-300">
                   {r.word} <span className="text-parchment-500">{r.count}</span>
                 </span>
               ))}
@@ -104,7 +96,7 @@ export default function WordPage({ params, searchParams }: Props) {
                   <Link
                     key={i}
                     href={`/reader/${slug}/${o.chapter}#v${o.verse}`}
-                    className="block p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all"
+                    className="block p-4 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 transition-all"
                   >
                     <div className="flex items-center gap-3 mb-1">
                       <span className="text-sm font-semibold text-gold-400">

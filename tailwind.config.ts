@@ -1,5 +1,10 @@
 import type { Config } from 'tailwindcss'
 
+// Colours come from CSS variables (see globals.css) so the same classes work in light and dark themes.
+// In both themes 950 is the page background and 50 the strongest text.
+const scale = (name: string, steps: number[]) =>
+  Object.fromEntries(steps.map(s => [s, `rgb(var(--${name}-${s}) / <alpha-value>)`]));
+
 const config: Config = {
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -9,28 +14,12 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        parchment: {
-          50: '#fdf8f0',
-          100: '#f5e6d0',
-          200: '#e8d0a8',
-          300: '#d4b07a',
-          400: '#c49a5c',
-          500: '#b08040',
-          600: '#8a6230',
-          700: '#6b4c25',
-          800: '#4a351a',
-          900: '#2d2010',
-          950: '#1a1208',
-        },
-        gold: {
-          400: '#d4a853',
-          500: '#c49630',
-          600: '#a07828',
-        },
+        parchment: scale('parchment', [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]),
+        gold: scale('gold', [400, 500, 600]),
       },
       fontFamily: {
-        serif: ['Georgia', 'Playfair Display', 'serif'],
-        sans: ['Inter', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-reading)', 'Georgia', 'serif'],
+        sans: ['var(--font-ui)', 'system-ui', 'sans-serif'],
       },
     },
   },

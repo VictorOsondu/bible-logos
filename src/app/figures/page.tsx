@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -88,15 +87,9 @@ const FIGURES: FigureOfSpeech[] = [
 export default function FiguresPage() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Figures of Speech</span>
-        </div>
 
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">🎭 Figures of Speech</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Figures of Speech</h1>
         <p className="text-parchment-400 mb-8 max-w-2xl">
           The Bible employs sophisticated literary devices inherited from ancient Near Eastern and Greco-Roman rhetoric.
           Understanding these figures unlocks layers of meaning that a surface reading misses.
@@ -104,7 +97,7 @@ export default function FiguresPage() {
 
         <div className="space-y-8">
           {FIGURES.map(fig => (
-            <section key={fig.name} className="bg-parchment-900 border border-parchment-800 rounded-xl p-6">
+            <section key={fig.name} className="bg-parchment-900/70 rounded-xl p-6">
               <div className="flex items-start justify-between flex-wrap gap-2 mb-3">
                 <h2 className="text-xl font-bold text-gold-400 font-serif">{fig.name}</h2>
                 <span className="text-xs text-parchment-500 font-mono italic">{fig.greek}</span>
@@ -123,7 +116,7 @@ export default function FiguresPage() {
                     <blockquote className="text-parchment-200 font-serif italic mt-1 text-sm leading-relaxed">
                       &ldquo;{ex.text}&rdquo;
                     </blockquote>
-                    <p className="text-xs text-parchment-400 mt-1">💡 {ex.explanation}</p>
+                    <p className="text-xs text-parchment-400 mt-1">{ex.explanation}</p>
                   </div>
                 ))}
               </div>

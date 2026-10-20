@@ -1,8 +1,8 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 import { getDb, isDatabaseAvailable } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
 import { NAV_SECTIONS } from '@/lib/navigation';
+import ContinueReading from '@/components/ContinueReading';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,137 +24,67 @@ const NOTABLE_VERSES: [number, number, number][] = [
 export default function Home() {
   if (!isDatabaseAvailable()) {
     return (
-      <>
-        <Sidebar />
-        <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-          <div className="text-center py-16">
-            <h1 className="text-4xl font-bold font-serif text-parchment-100 mb-4">📖 Bible Logos</h1>
-            <p className="text-parchment-400 mb-6">Database not found. Run <code className="bg-parchment-800 px-2 py-1 rounded text-gold-400">npm run seed</code> to populate the database.</p>
-          </div>
-        </main>
-      </>
+      <main className="flex-1 px-4 py-16 max-w-2xl text-center">
+        <h1 className="font-serif text-3xl font-semibold text-parchment-50 mb-3">Bible Logos</h1>
+        <p className="text-parchment-400">
+          The database has not been built yet. Run <code className="px-1.5 py-0.5 rounded bg-parchment-900 text-parchment-200">npm run seed</code> and reload.
+        </p>
+      </main>
     );
   }
 
   const db = getDb();
 
-  // Verse of the day
+  // Verse of the day: one of the notable verses, changing daily
   const now = new Date();
   const dayOfYear = Math.floor((now.getTime() - new Date(now.getFullYear(), 0, 0).getTime()) / 86400000);
-  const idx = dayOfYear % NOTABLE_VERSES.length;
-  const [vBook, vChapter, vVerse] = NOTABLE_VERSES[idx];
-  const votdRow = db.prepare(
-    'SELECT text FROM verses WHERE book = ? AND chapter = ? AND verse = ? AND translation = ?'
-  ).get(vBook, vChapter, vVerse, 'KJV') as { text: string } | undefined;
-  const votdBookInfo = getBookById(vBook);
-  const votdSlug = votdBookInfo?.name.toLowerCase().replace(/ /g, '-') || '';
-
-  // DB stats
-  const verseCount = (db.prepare("SELECT COUNT(*) as c FROM verses WHERE translation = 'KJV'").get() as any).c;
-  const translationCount = (db.prepare('SELECT COUNT(DISTINCT translation) as c FROM verses').get() as any).c;
-  const xrefCount = (db.prepare('SELECT COUNT(*) as c FROM cross_references').get() as any).c;
-  const strongsCount = (db.prepare('SELECT COUNT(*) as c FROM strongs').get() as any).c;
+  const [vBook, vChapter, vVerse] = NOTABLE_VERSES[dayOfYear % NOTABLE_VERSES.length];
+  const votd = db.prepare(
+    "SELECT text FROM verses WHERE book = ? AND chapter = ? AND verse = ? AND translation = 'KJV'"
+  ).get(vBook, vChapter, vVerse) as { text: string } | undefined;
+  const votdBook = getBookById(vBook);
+  const votdSlug = votdBook?.name.toLowerCase().replace(/ /g, '-') || '';
 
   return (
-    <>
-      <Sidebar />
-      <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        {/* Hero */}
-        <div className="text-center mb-10 pt-4 lg:pt-8">
-          <h1 className="text-5xl font-bold font-serif text-parchment-100 mb-3">
-            📖 Bible <span className="text-gold-400">Logos</span>
-          </h1>
-          <p className="text-lg text-parchment-400 max-w-xl mx-auto">
-            Personal Bible study and research: read in several translations, with every KJV word linked to its Hebrew or Greek original.
-          </p>
-        </div>
+    <main className="flex-1 px-4 py-8 lg:px-8 lg:py-14 max-w-4xl">
+      <ContinueReading />
 
-        {/* Verse of the Day */}
-        {votdRow && (
-          <Link href={`/reader/${votdSlug}/${vChapter}#v${vVerse}`} className="block mb-8 group">
-            <div className="bg-parchment-900 border border-gold-500/20 rounded-2xl p-6 lg:p-8 text-center hover:border-gold-500/40 transition-all shadow-lg shadow-gold-600/5">
-              <p className="text-xs text-gold-500 uppercase tracking-widest mb-3">✨ Verse of the Day</p>
-              <blockquote className="text-xl lg:text-2xl text-parchment-100 font-serif leading-relaxed italic max-w-2xl mx-auto mb-3">
-                &ldquo;{votdRow.text}&rdquo;
-              </blockquote>
-              <p className="text-sm text-gold-400 font-semibold">
-                — {votdBookInfo?.name} {vChapter}:{vVerse} (KJV)
-              </p>
-            </div>
+      {votd && (
+        <section className="my-12 lg:my-16 text-center">
+          <p className="text-xs font-medium uppercase tracking-wider text-parchment-500 mb-4">Verse of the day</p>
+          <Link href={`/reader/${votdSlug}/${vChapter}#v${vVerse}`} className="group block max-w-2xl mx-auto">
+            <blockquote className="font-serif text-2xl lg:text-3xl leading-snug text-parchment-50">
+              {votd.text}
+            </blockquote>
+            <p className="mt-4 text-sm text-gold-400 group-hover:underline underline-offset-4">
+              {votdBook?.name} {vChapter}:{vVerse}
+            </p>
           </Link>
-        )}
+        </section>
+      )}
 
-        {/* Start reading */}
-        <div className="grid grid-cols-2 gap-3 mb-8">
-          <Link href="/reader/genesis/1" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center">
-            <span className="text-2xl">🕎</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">Old Testament</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Start at Genesis</p>
-          </Link>
-          <Link href="/reader/matthew/1" className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all text-center">
-            <span className="text-2xl">✝️</span>
-            <p className="text-sm text-parchment-200 mt-2 font-semibold">New Testament</p>
-            <p className="text-xs text-parchment-500 mt-0.5">Start at Matthew</p>
-          </Link>
-        </div>
-
-        {/* Tools, by section */}
-        {NAV_SECTIONS.map(section => (
-          <section key={section.label} className="mb-8">
-            <h2 className="text-xl font-semibold text-parchment-200 mb-4 font-serif">{section.icon} {section.label}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-              {section.links.map(link => (
-                <Link key={link.href} href={link.href} className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all">
-                  <p className="text-sm text-parchment-200 font-semibold">{link.icon} {link.label}</p>
-                  <p className="text-xs text-parchment-500 mt-1">{link.description}</p>
-                </Link>
-              ))}
-            </div>
-          </section>
-        ))}
-
-        {/* Popular Passages */}
-        <section className="mb-8">
-          <h2 className="text-xl font-semibold text-parchment-200 mb-4 font-serif">📌 Popular Passages</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {[
-              { ref: 'John 3:16', slug: 'john', ch: 3, v: 16, desc: 'God\'s love for the world' },
-              { ref: 'Psalm 23', slug: 'psalms', ch: 23, v: 1, desc: 'The Lord is my Shepherd' },
-              { ref: 'Genesis 1:1', slug: 'genesis', ch: 1, v: 1, desc: 'In the beginning...' },
-              { ref: 'Romans 8:28', slug: 'romans', ch: 8, v: 28, desc: 'All things work together for good' },
-              { ref: 'Isaiah 53:5', slug: 'isaiah', ch: 53, v: 5, desc: 'By His stripes we are healed' },
-              { ref: 'Philippians 4:13', slug: 'philippians', ch: 4, v: 13, desc: 'I can do all things through Christ' },
-            ].map(p => (
-              <Link key={p.ref} href={`/reader/${p.slug}/${p.ch}#v${p.v}`}
-                className="flex items-center gap-3 p-3 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/30 transition-all">
-                <div className="w-10 h-10 rounded-lg bg-gold-600/20 flex items-center justify-center text-gold-400 font-bold text-sm flex-shrink-0">
-                  {p.ch}:{p.v}
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-parchment-200">{p.ref}</p>
-                  <p className="text-xs text-parchment-500">{p.desc}</p>
-                </div>
+      {NAV_SECTIONS.map(section => (
+        <section key={section.label} className="mb-10">
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-parchment-500 mb-3">{section.label}</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            {section.links.map(link => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="group flex items-start gap-3 p-3 rounded-xl hover:bg-parchment-900 transition-colors"
+              >
+                <span className="mt-0.5 p-2 rounded-lg bg-parchment-900 text-parchment-400 group-hover:bg-parchment-800 group-hover:text-gold-400 transition-colors">
+                  <link.icon size={16} />
+                </span>
+                <span>
+                  <span className="block text-sm font-medium text-parchment-100">{link.label}</span>
+                  <span className="block text-xs text-parchment-500 mt-0.5">{link.description}</span>
+                </span>
               </Link>
             ))}
           </div>
         </section>
-
-        {/* Stats */}
-        <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
-          {[
-            { label: 'Verses', value: verseCount.toLocaleString(), icon: '📜' },
-            { label: 'Translations', value: translationCount, icon: '🌐' },
-            { label: 'Cross-References', value: (xrefCount / 1000).toFixed(0) + 'k', icon: '🔗' },
-            { label: 'Strong\'s Entries', value: strongsCount.toLocaleString('en-GB'), icon: '📖' },
-          ].map(s => (
-            <div key={s.label} className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
-              <div className="text-lg mb-1">{s.icon}</div>
-              <div className="text-2xl font-bold text-gold-400">{s.value}</div>
-              <div className="text-xs text-parchment-500 mt-1">{s.label}</div>
-            </div>
-          ))}
-        </section>
-      </main>
-    </>
+      ))}
+    </main>
   );
 }

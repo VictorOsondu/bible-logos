@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 interface Person {
@@ -44,15 +43,9 @@ export default function PersonsPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Persons</span>
-        </div>
 
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">👤 Key Persons of the Bible</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Key Persons of the Bible</h1>
         <p className="text-parchment-400 mb-6">
           Major figures whose stories shape the biblical narrative, with name etymology and key references.
         </p>
@@ -72,7 +65,7 @@ export default function PersonsPage() {
               className={`text-xs px-3 py-2 rounded-lg border transition-colors ${
                 filter === cat
                   ? 'bg-gold-600 text-parchment-950 border-gold-500'
-                  : 'bg-parchment-900 text-parchment-400 border-parchment-700 hover:border-gold-500/30'
+                  : 'bg-parchment-900 text-parchment-400 border-parchment-700 hover:bg-parchment-900'
               }`}
             >
               {cat}
@@ -82,7 +75,7 @@ export default function PersonsPage() {
 
         <div className="space-y-4">
           {filtered.map(p => (
-            <div key={p.name} className="bg-parchment-900 border border-parchment-800 rounded-xl p-5 hover:border-gold-500/20 transition-colors">
+            <div key={p.name} className="bg-parchment-900/70 rounded-xl p-5 hover:bg-parchment-900 transition-colors">
               <div className="flex items-start justify-between flex-wrap gap-2 mb-2">
                 <div>
                   <h2 className="text-lg font-bold text-parchment-100 font-serif">{p.name}</h2>
@@ -105,7 +98,7 @@ export default function PersonsPage() {
                     href={`/reader/${kv.slug}/${kv.chapter}#v${kv.verse}`}
                     className="text-xs px-2 py-1 rounded bg-parchment-800 text-gold-400 hover:text-gold-300 hover:bg-parchment-700 transition-colors"
                   >
-                    📖 {kv.ref}
+                    {kv.ref}
                   </Link>
                 ))}
               </div>

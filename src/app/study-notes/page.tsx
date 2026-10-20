@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import Sidebar from '@/components/Sidebar';
 import { BIBLE_BOOKS } from '@/lib/bible-books';
 
 interface StudyNote {
@@ -124,26 +123,20 @@ export default function StudyNotesPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Study Notes</span>
-        </div>
 
         <div className="flex items-center justify-between flex-wrap gap-4 mb-6">
           <div>
-            <h1 className="text-3xl font-bold font-serif text-parchment-100">📝 Study Notes</h1>
+            <h1 className="text-3xl font-semibold font-serif text-parchment-50">Study Notes</h1>
             <p className="text-sm text-parchment-500 mt-1">{notes.length} note{notes.length !== 1 ? 's' : ''} saved locally</p>
           </div>
           <div className="flex gap-2">
             <button onClick={() => setShowForm(!showForm)} className="px-4 py-2 rounded-lg bg-gold-600 text-parchment-950 font-semibold text-sm hover:bg-gold-500 transition-colors">
-              {showForm ? '✕ Close' : '+ New Note'}
+              {showForm ? 'Close' : '+ New Note'}
             </button>
             {notes.length > 0 && (
               <button onClick={exportNotes} className="px-4 py-2 rounded-lg bg-parchment-800 text-parchment-300 text-sm hover:bg-parchment-700 transition-colors border border-parchment-700">
-                📥 Export MD
+                Export MD
               </button>
             )}
           </div>
@@ -181,7 +174,7 @@ export default function StudyNotesPage() {
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
-              placeholder="🔍 Search notes..."
+              placeholder="Search notes..."
               className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700 flex-1 min-w-[200px]"
             />
             <select value={filterBook} onChange={e => setFilterBook(Number(e.target.value))} className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700">
@@ -205,7 +198,7 @@ export default function StudyNotesPage() {
         {/* Notes list */}
         {filteredNotes.length === 0 && notes.length === 0 && (
           <div className="text-center py-16">
-            <p className="text-4xl mb-4">📝</p>
+            <p className="text-4xl mb-4"></p>
             <p className="text-parchment-400 text-lg">No study notes yet.</p>
             <p className="text-parchment-500 text-sm mt-2">Click &quot;New Note&quot; to start annotating your Bible study.</p>
           </div>
@@ -218,17 +211,17 @@ export default function StudyNotesPage() {
             const isEditing = editingId === note.id;
 
             return (
-              <div key={note.id} className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 hover:border-gold-500/20 transition-all">
+              <div key={note.id} className="bg-parchment-900/70 rounded-xl p-4 hover:bg-parchment-900 transition-all">
                 <div className="flex items-start justify-between gap-3 mb-2">
                   <Link href={`/reader/${slug}/${note.chapter}${note.verse ? '#v' + note.verse : ''}`} className="text-gold-400 font-semibold text-sm hover:text-gold-300 transition-colors">
-                    📖 {ref}
+                    {ref}
                   </Link>
                   <div className="flex gap-1.5 flex-shrink-0">
                     <button onClick={() => setEditingId(isEditing ? null : note.id)} className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:text-parchment-200 transition-colors">
-                      {isEditing ? '✕' : '✏️'}
+                      {isEditing ? '' : ''}
                     </button>
                     <button onClick={() => deleteNote(note.id)} className="text-xs px-2 py-1 rounded bg-parchment-800 text-red-400 hover:text-red-300 transition-colors">
-                      🗑️
+                      
                     </button>
                   </div>
                 </div>

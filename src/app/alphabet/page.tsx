@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -58,24 +57,18 @@ const GREEK_LETTERS = [
 export default function AlphabetPage() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Alphabet Reference</span>
-        </div>
 
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">🔤 Biblical Alphabets</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Biblical Alphabets</h1>
         <p className="text-parchment-400 mb-8">Reference guide for Hebrew (OT) and Greek (NT) letters with numerical values and biblical significance.</p>
 
         {/* Hebrew */}
         <section className="mb-10">
-          <h2 className="text-2xl font-bold font-serif text-gold-400 mb-4">🕎 Hebrew Alphabet (Aleph-Bet)</h2>
+          <h2 className="text-2xl font-bold font-serif text-gold-400 mb-4">Hebrew Alphabet (Aleph-Bet)</h2>
           <p className="text-sm text-parchment-500 mb-4">22 letters, read right to left. Each letter has a pictographic origin and numerical value used in gematria.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {HEBREW_LETTERS.map(l => (
-              <div key={l.name} className="flex items-center gap-3 p-3 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/20 transition-all">
+              <div key={l.name} className="flex items-center gap-3 p-3 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 transition-all">
                 <div className="w-12 h-12 rounded-lg bg-parchment-800 flex items-center justify-center text-2xl text-gold-400 font-bold flex-shrink-0" dir="rtl">
                   {l.letter}
                 </div>
@@ -94,11 +87,11 @@ export default function AlphabetPage() {
 
         {/* Greek */}
         <section>
-          <h2 className="text-2xl font-bold font-serif text-gold-400 mb-4">🏛️ Greek Alphabet</h2>
+          <h2 className="text-2xl font-bold font-serif text-gold-400 mb-4">Greek Alphabet</h2>
           <p className="text-sm text-parchment-500 mb-4">24 letters used in the New Testament manuscripts. Key theological terms are noted.</p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {GREEK_LETTERS.map(l => (
-              <div key={l.name} className="flex items-center gap-3 p-3 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/20 transition-all">
+              <div key={l.name} className="flex items-center gap-3 p-3 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 transition-all">
                 <div className="w-12 h-12 rounded-lg bg-parchment-800 flex items-center justify-center text-lg text-gold-400 font-bold flex-shrink-0">
                   {l.letter}
                 </div>

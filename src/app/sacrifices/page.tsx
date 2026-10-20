@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -91,16 +90,15 @@ const SACRIFICES: SacrificeType[] = [
 export default function SacrificesPage() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">🔥 Levitical Sacrifices</h1>
-          <p className="text-parchment-400">The five major offerings of the Mosaic system — their purpose, practice, and New Testament fulfillment in Christ.</p>
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Levitical Sacrifices</h1>
+          <p className="text-parchment-400">The five major offerings of the Mosaic system — their purpose, practice, and New Testament fulfilment in Christ.</p>
         </div>
 
         <div className="space-y-6">
           {SACRIFICES.map((s, i) => (
-            <div key={s.name} className="bg-parchment-900 border border-parchment-800 rounded-2xl p-5 hover:border-gold-500/20 transition-all">
+            <div key={s.name} className="bg-parchment-900/70 rounded-2xl p-5 hover:bg-parchment-900 transition-all">
               <div className="flex flex-wrap items-center gap-3 mb-3">
                 <h2 className="text-xl font-semibold text-gold-400 font-serif">{s.name}</h2>
                 <span className="text-lg text-parchment-400 font-serif" dir="rtl">{s.hebrew}</span>
@@ -124,8 +122,8 @@ export default function SacrificesPage() {
                 </div>
               </div>
 
-              <div className="bg-blue-950/20 border border-blue-900/30 rounded-lg p-3 mb-3">
-                <p className="text-xs text-blue-400 uppercase tracking-wider mb-1">✝️ New Testament Fulfillment</p>
+              <div className="bg-parchment-800/60 border border-parchment-800 rounded-lg p-3 mb-3">
+                <p className="text-xs text-parchment-300 uppercase tracking-wider mb-1">New Testament Fulfilment</p>
                 <p className="text-sm text-parchment-300">{s.ntFulfillment}</p>
               </div>
 
@@ -142,8 +140,8 @@ export default function SacrificesPage() {
         </div>
 
         {/* Summary */}
-        <section className="mt-8 bg-parchment-900 border border-parchment-800 rounded-2xl p-5">
-          <h2 className="text-xl font-semibold text-parchment-200 mb-3 font-serif">📖 The Big Picture</h2>
+        <section className="mt-8 bg-parchment-900/70 rounded-2xl p-5">
+          <h2 className="text-xl font-semibold text-parchment-200 mb-3 font-serif">The Big Picture</h2>
           <div className="text-sm text-parchment-300 space-y-2">
             <p>The Levitical sacrificial system taught Israel three foundational truths:</p>
             <ul className="list-disc list-inside space-y-1 ml-2">

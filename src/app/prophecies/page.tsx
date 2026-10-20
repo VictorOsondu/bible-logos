@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 interface Prophecy {
@@ -17,7 +16,7 @@ const PROPHECIES: Prophecy[] = [
     otRef: { book: 'isaiah', chapter: 7, verse: 14, text: 'Therefore the Lord himself shall give you a sign; Behold, a virgin shall conceive, and bear a son...' },
     ntRef: { book: 'matthew', chapter: 1, verse: 23, text: 'Behold, a virgin shall be with child, and shall bring forth a son, and they shall call his name Emmanuel...' },
     status: 'fulfilled',
-    notes: 'Isaiah prophesied ~700 BC. Matthew identifies Jesus\' birth as the fulfillment.',
+    notes: 'Isaiah prophesied ~700 BC. Matthew identifies Jesus\' birth as the fulfilment.',
   },
   {
     title: 'Born in Bethlehem',
@@ -111,9 +110,9 @@ const PROPHECIES: Prophecy[] = [
 
 const CATEGORIES = ['All', 'Messianic', 'Historical', 'Eschatological'];
 const STATUS_LABELS = {
-  fulfilled: { label: 'Fulfilled', color: 'text-green-400 bg-green-900/30 border-green-700/30' },
-  partially: { label: 'Partially Fulfilled', color: 'text-yellow-400 bg-yellow-900/30 border-yellow-700/30' },
-  future: { label: 'Future / Unfulfilled', color: 'text-blue-400 bg-blue-900/30 border-blue-700/30' },
+  fulfilled: { label: 'Fulfilled', color: 'text-parchment-300 bg-parchment-800/60 border-parchment-800' },
+  partially: { label: 'Partially Fulfilled', color: 'text-parchment-300 bg-parchment-800/60 border-parchment-800' },
+  future: { label: 'Future / Unfulfilled', color: 'text-parchment-300 bg-parchment-800/60 border-parchment-800' },
 };
 
 export default function PropheciesPage() {
@@ -123,24 +122,23 @@ export default function PropheciesPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">🔮 Prophecy Tracker</h1>
-        <p className="text-parchment-400 mb-6">Old Testament prophecies and their New Testament fulfillments — trace the prophetic thread through Scripture.</p>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Prophecy Tracker</h1>
+        <p className="text-parchment-400 mb-6">Old Testament prophecies and their New Testament fulfilments — trace the prophetic thread through Scripture.</p>
 
         {/* Stats */}
         <div className="grid grid-cols-3 gap-3 mb-8">
-          <div className="bg-green-900/20 border border-green-700/20 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-green-400">{fulfilled}</div>
-            <div className="text-xs text-green-500">Fulfilled</div>
+          <div className="bg-parchment-800/60 border border-parchment-800 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-parchment-300">{fulfilled}</div>
+            <div className="text-xs text-parchment-300">Fulfilled</div>
           </div>
-          <div className="bg-yellow-900/20 border border-yellow-700/20 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-yellow-400">{partial}</div>
-            <div className="text-xs text-yellow-500">Partially Fulfilled</div>
+          <div className="bg-parchment-800/60 border border-parchment-800 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-parchment-300">{partial}</div>
+            <div className="text-xs text-parchment-300">Partially Fulfilled</div>
           </div>
-          <div className="bg-blue-900/20 border border-blue-700/20 rounded-xl p-4 text-center">
-            <div className="text-2xl font-bold text-blue-400">{future}</div>
-            <div className="text-xs text-blue-500">Future</div>
+          <div className="bg-parchment-800/60 border border-parchment-800 rounded-xl p-4 text-center">
+            <div className="text-2xl font-bold text-parchment-300">{future}</div>
+            <div className="text-xs text-parchment-300">Future</div>
           </div>
         </div>
 
@@ -149,7 +147,7 @@ export default function PropheciesPage() {
           {PROPHECIES.map((p, i) => {
             const status = STATUS_LABELS[p.status];
             return (
-              <div key={i} className="bg-parchment-900 border border-parchment-800 rounded-xl p-5 hover:border-gold-500/20 transition-all">
+              <div key={i} className="bg-parchment-900/70 rounded-xl p-5 hover:bg-parchment-900 transition-all">
                 <div className="flex items-start justify-between gap-3 mb-3">
                   <div>
                     <h3 className="text-lg font-semibold text-parchment-100">{p.title}</h3>
@@ -164,7 +162,7 @@ export default function PropheciesPage() {
                   {/* OT Reference */}
                   <div className="bg-parchment-950 rounded-lg p-4 border border-parchment-800">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs font-semibold text-amber-400 uppercase tracking-wider">📜 Prophecy (OT)</span>
+                      <span className="text-xs font-semibold text-gold-400 uppercase tracking-wider">Prophecy (OT)</span>
                     </div>
                     <blockquote className="text-sm text-parchment-300 italic mb-2">&ldquo;{p.otRef.text}&rdquo;</blockquote>
                     <Link
@@ -178,7 +176,7 @@ export default function PropheciesPage() {
                   {/* NT Reference */}
                   <div className="bg-parchment-950 rounded-lg p-4 border border-parchment-800">
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="text-xs font-semibold text-emerald-400 uppercase tracking-wider">✝️ Fulfillment (NT)</span>
+                      <span className="text-xs font-semibold text-parchment-400 uppercase tracking-wider">Fulfilment (NT)</span>
                     </div>
                     <blockquote className="text-sm text-parchment-300 italic mb-2">&ldquo;{p.ntRef.text}&rdquo;</blockquote>
                     <Link
@@ -190,7 +188,7 @@ export default function PropheciesPage() {
                   </div>
                 </div>
 
-                <p className="text-xs text-parchment-500 mt-3 leading-relaxed">📝 {p.notes}</p>
+                <p className="text-xs text-parchment-500 mt-3 leading-relaxed">{p.notes}</p>
               </div>
             );
           })}

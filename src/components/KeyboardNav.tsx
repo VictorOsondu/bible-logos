@@ -4,15 +4,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface Props {
-  bookSlug: string;
-  chapter: number;
-  maxChapter: number;
-  prevBookSlug?: string;
-  prevBookMaxChapter?: number;
-  nextBookSlug?: string;
+  prevHref?: string;
+  nextHref?: string;
 }
 
-export default function KeyboardNav({ bookSlug, chapter, maxChapter, prevBookSlug, prevBookMaxChapter, nextBookSlug }: Props) {
+/** Arrow keys (or h/l) move between chapters; ? shows the shortcuts. */
+export default function KeyboardNav({ prevHref, nextHref }: Props) {
   const router = useRouter();
   const [showHelp, setShowHelp] = useState(false);
 
@@ -20,25 +17,16 @@ export default function KeyboardNav({ bookSlug, chapter, maxChapter, prevBookSlu
     const handler = (e: KeyboardEvent) => {
       // Don't intercept when typing in inputs
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement || e.target instanceof HTMLSelectElement) return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
 
       switch (e.key) {
         case 'ArrowLeft':
         case 'h':
-          e.preventDefault();
-          if (chapter > 1) {
-            router.push(`/reader/${bookSlug}/${chapter - 1}`);
-          } else if (prevBookSlug && prevBookMaxChapter) {
-            router.push(`/reader/${prevBookSlug}/${prevBookMaxChapter}`);
-          }
+          if (prevHref) { e.preventDefault(); router.push(prevHref); }
           break;
         case 'ArrowRight':
         case 'l':
-          e.preventDefault();
-          if (chapter < maxChapter) {
-            router.push(`/reader/${bookSlug}/${chapter + 1}`);
-          } else if (nextBookSlug) {
-            router.push(`/reader/${nextBookSlug}/1`);
-          }
+          if (nextHref) { e.preventDefault(); router.push(nextHref); }
           break;
         case '/':
           e.preventDefault();
@@ -56,24 +44,14 @@ export default function KeyboardNav({ bookSlug, chapter, maxChapter, prevBookSlu
 
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [bookSlug, chapter, maxChapter, prevBookSlug, prevBookMaxChapter, nextBookSlug, router]);
+  }, [prevHref, nextHref, router]);
 
-  if (!showHelp) {
-    return (
-      <button
-        onClick={() => setShowHelp(true)}
-        className="fixed bottom-4 right-4 z-40 w-8 h-8 rounded-full bg-parchment-800 border border-parchment-700 text-parchment-500 hover:text-gold-400 hover:border-gold-500/30 text-xs font-bold transition-all no-print"
-        title="Keyboard shortcuts (?)"
-      >
-        ?
-      </button>
-    );
-  }
+  if (!showHelp) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 no-print" onClick={() => setShowHelp(false)}>
-      <div className="bg-parchment-900 border border-parchment-700 rounded-2xl p-6 max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
-        <h3 className="text-lg font-semibold text-gold-400 mb-4 font-serif">⌨️ Keyboard Shortcuts</h3>
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4 no-print" onClick={() => setShowHelp(false)}>
+      <div className="bg-parchment-950 border border-parchment-800 rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
+        <h3 className="text-base font-semibold text-parchment-50 mb-4">Keyboard shortcuts</h3>
         <div className="space-y-2 text-sm">
           {[
             ['← / h', 'Previous chapter'],
@@ -83,7 +61,7 @@ export default function KeyboardNav({ bookSlug, chapter, maxChapter, prevBookSlu
             ['Esc', 'Close panel'],
           ].map(([key, desc]) => (
             <div key={key} className="flex items-center gap-3">
-              <kbd className="px-2 py-0.5 bg-parchment-800 rounded text-gold-400 font-mono text-xs border border-parchment-700 min-w-[3rem] text-center">{key}</kbd>
+              <kbd className="px-2 py-0.5 bg-parchment-900 rounded text-parchment-200 font-mono text-xs border border-parchment-800 min-w-[3rem] text-center">{key}</kbd>
               <span className="text-parchment-300">{desc}</span>
             </div>
           ))}

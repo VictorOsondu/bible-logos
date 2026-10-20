@@ -1,59 +1,63 @@
-// The app's pages, shared by the sidebar, footer, home page and search palette.
+// The app's pages, shared by the sidebar, home page and search palette.
+import {
+  ALargeSmall, ArrowLeftRight, Bookmark, CalendarCheck, Columns2, Crown, Flame, HandHeart, Handshake,
+  Hourglass, Languages, Link2, MapPin, Network, NotebookPen, Quote, ScrollText, Search, Sparkles, Sprout,
+  Star, Sun, Tags, Users, type LucideIcon,
+} from 'lucide-react';
 
 export interface NavLink {
   href: string;
-  icon: string;
+  icon: LucideIcon;
   label: string;
   description: string;
 }
 
 export interface NavSection {
   label: string;
-  icon: string;
   links: NavLink[];
 }
 
 export const NAV_SECTIONS: NavSection[] = [
   {
     label: 'Study',
-    icon: '📚',
     links: [
-      { href: '/search', icon: '🔍', label: 'Search', description: 'Full-text search in every translation' },
-      { href: '/compare', icon: '⚖️', label: 'Compare', description: 'Translations side by side' },
-      { href: '/concordance', icon: '📖', label: 'Concordance', description: "Strong's Hebrew & Greek lexicon" },
-      { href: '/passages', icon: '📌', label: 'Key Passages', description: 'Well-known passages, songs and prayers' },
-      { href: '/themes', icon: '🎨', label: 'Themes', description: 'Theological themes and their key words' },
-    ],
-  },
-  {
-    label: 'Reference',
-    icon: '🗂️',
-    links: [
-      { href: '/parables', icon: '🌾', label: 'Parables', description: 'The parables of Jesus' },
-      { href: '/miracles', icon: '✨', label: 'Miracles', description: 'Miracles in both Testaments' },
-      { href: '/prophecies', icon: '🔮', label: 'Prophecies', description: 'Prophecies and their fulfilment' },
-      { href: '/typology', icon: '🔗', label: 'Typology', description: 'Old Testament types and New Testament fulfilment' },
-      { href: '/covenants', icon: '📜', label: 'Covenants', description: "God's covenants through Scripture" },
-      { href: '/parallels', icon: '🔀', label: 'Parallels', description: 'Parallel accounts in the Gospels and elsewhere' },
-      { href: '/names-of-god', icon: '✡️', label: 'Names of God', description: 'Divine names and titles' },
-      { href: '/persons', icon: '👤', label: 'People', description: 'Key people of the Bible' },
-      { href: '/prayers', icon: '🙏', label: 'Prayers', description: 'Notable prayers of Scripture' },
-      { href: '/sacrifices', icon: '🔥', label: 'Sacrifices', description: 'The Levitical offerings' },
-      { href: '/figures', icon: '🎭', label: 'Figures of Speech', description: 'Literary devices in the text' },
-      { href: '/geography', icon: '🗺️', label: 'Places', description: 'Biblical places' },
-      { href: '/genealogy', icon: '🌳', label: 'Genealogies', description: 'Biblical family lines' },
-      { href: '/timeline', icon: '📅', label: 'Timeline', description: 'Biblical chronology' },
-      { href: '/alphabet', icon: '🔤', label: 'Alphabets', description: 'Hebrew and Greek letters' },
+      { href: '/search', icon: Search, label: 'Search', description: 'Full-text search in every translation' },
+      { href: '/compare', icon: Columns2, label: 'Compare', description: 'Translations side by side' },
+      { href: '/concordance', icon: Languages, label: 'Concordance', description: "Strong's Hebrew and Greek lexicon" },
+      { href: '/passages', icon: Star, label: 'Key Passages', description: 'Well-known passages, songs and prayers' },
+      { href: '/themes', icon: Tags, label: 'Themes', description: 'Theological themes and their key words' },
     ],
   },
   {
     label: 'Personal',
-    icon: '📝',
     links: [
-      { href: '/verse-of-the-day', icon: '☀️', label: 'Daily Verse', description: "Today's verse in every translation" },
-      { href: '/bookmarks', icon: '📑', label: 'Bookmarks', description: 'Saved passages and history' },
-      { href: '/study-notes', icon: '📝', label: 'Notes', description: 'Your study notes' },
-      { href: '/reading-plans', icon: '🗓️', label: 'Reading Plans', description: 'Guided reading with progress' },
+      { href: '/verse-of-the-day', icon: Sun, label: 'Daily Verse', description: "Today's verse in every translation" },
+      { href: '/bookmarks', icon: Bookmark, label: 'Bookmarks', description: 'Saved passages and history' },
+      { href: '/study-notes', icon: NotebookPen, label: 'Notes', description: 'Your study notes' },
+      { href: '/reading-plans', icon: CalendarCheck, label: 'Reading Plans', description: 'Guided reading with progress' },
+    ],
+  },
+  {
+    label: 'Reference',
+    links: [
+      { href: '/parables', icon: Sprout, label: 'Parables', description: 'The parables of Jesus' },
+      { href: '/miracles', icon: Sparkles, label: 'Miracles', description: 'Miracles in both Testaments' },
+      { href: '/prophecies', icon: ScrollText, label: 'Prophecies', description: 'Prophecies and their fulfilment' },
+      { href: '/typology', icon: Link2, label: 'Typology', description: 'Old Testament types and their fulfilment' },
+      { href: '/covenants', icon: Handshake, label: 'Covenants', description: "God's covenants through Scripture" },
+      { href: '/parallels', icon: ArrowLeftRight, label: 'Parallels', description: 'Parallel accounts in the Gospels and elsewhere' },
+      { href: '/names-of-god', icon: Crown, label: 'Names of God', description: 'Divine names and titles' },
+      { href: '/persons', icon: Users, label: 'People', description: 'Key people of the Bible' },
+      { href: '/prayers', icon: HandHeart, label: 'Prayers', description: 'Notable prayers of Scripture' },
+      { href: '/sacrifices', icon: Flame, label: 'Sacrifices', description: 'The Levitical offerings' },
+      { href: '/figures', icon: Quote, label: 'Figures of Speech', description: 'Literary devices in the text' },
+      { href: '/geography', icon: MapPin, label: 'Places', description: 'Biblical places' },
+      { href: '/genealogy', icon: Network, label: 'Genealogies', description: 'Biblical family lines' },
+      { href: '/timeline', icon: Hourglass, label: 'Timeline', description: 'Biblical chronology' },
+      { href: '/alphabet', icon: ALargeSmall, label: 'Alphabets', description: 'Hebrew and Greek letters' },
     ],
   },
 ];
+
+/** Asks the search palette to open (it listens for this event). */
+export const openSearch = () => window.dispatchEvent(new Event('open-search'));

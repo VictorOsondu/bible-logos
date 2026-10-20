@@ -1,140 +1,210 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { BIBLE_BOOKS, BookInfo } from '@/lib/bible-books';
-import { NAV_SECTIONS } from '@/lib/navigation';
+import { usePathname } from 'next/navigation';
+import { BookOpen, ChevronDown, Menu, Search, X } from 'lucide-react';
+import { BIBLE_BOOKS, getBookBySlug } from '@/lib/bible-books';
+import { NAV_SECTIONS, openSearch, type NavLink } from '@/lib/navigation';
+import ThemeToggle from './ThemeToggle';
+
+const iconButton = 'p-2 rounded-lg text-parchment-400 hover:text-parchment-100 hover:bg-parchment-800/70 transition-colors';
+
+function Logo() {
+  return (
+    <Link href="/" className="flex items-center gap-2 text-parchment-50">
+      <BookOpen size={20} className="text-gold-400" />
+      <span className="font-serif text-lg font-semibold tracking-tight">Bible Logos</span>
+    </Link>
+  );
+}
 
 export default function Sidebar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [expandedBook, setExpandedBook] = useState<number | null>(null);
+
+  // The book being read, from /reader/<book>/<chapter>
+  const readerMatch = /^\/reader\/([^/]+)\/(\d+)/.exec(pathname);
+  const currentBook = readerMatch ? getBookBySlug(readerMatch[1]) : undefined;
+  const currentChapter = readerMatch ? Number(readerMatch[2]) : undefined;
+
+  const [testament, setTestament] = useState<'OT' | 'NT'>(currentBook?.testament ?? 'OT');
+  const [expandedBook, setExpandedBook] = useState<number | null>(currentBook?.id ?? null);
   const [bookFilter, setBookFilter] = useState('');
-  const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
+  const isReferencePage = NAV_SECTIONS.find(s => s.label === 'Reference')!.links.some(l => pathname.startsWith(l.href));
+  const [showReference, setShowReference] = useState(isReferencePage);
 
-  const filterLower = bookFilter.toLowerCase();
-  const otBooks = BIBLE_BOOKS.filter(b => b.testament === 'OT' && (!filterLower || b.name.toLowerCase().includes(filterLower) || b.abbrev.toLowerCase().includes(filterLower)));
-  const ntBooks = BIBLE_BOOKS.filter(b => b.testament === 'NT' && (!filterLower || b.name.toLowerCase().includes(filterLower) || b.abbrev.toLowerCase().includes(filterLower)));
+  // Close the mobile drawer after navigating, and follow the book being read.
+  useEffect(() => {
+    setIsOpen(false);
+    if (currentBook) {
+      setTestament(currentBook.testament);
+      setExpandedBook(currentBook.id);
+    }
+  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const toggleBook = (id: number) => {
-    setExpandedBook(expandedBook === id ? null : id);
-  };
+  // While the drawer is open: Escape closes it and the page behind does not scroll.
+  useEffect(() => {
+    if (!isOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setIsOpen(false);
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
-  const toggleSection = (label: string) => {
-    setCollapsedSections(prev => {
-      const next = new Set(prev);
-      if (next.has(label)) next.delete(label);
-      else next.add(label);
-      return next;
-    });
-  };
-
-  const renderBook = (book: BookInfo) => (
-    <div key={book.id}>
-      <button
-        onClick={() => toggleBook(book.id)}
-        className="w-full text-left px-3 py-1.5 text-sm hover:bg-parchment-800 rounded transition-colors flex justify-between items-center text-parchment-200"
-      >
-        <span>{book.name}</span>
-        <span className="text-xs text-parchment-500">{book.chapters}</span>
-      </button>
-      {expandedBook === book.id && (
-        <div className="grid grid-cols-5 gap-1 px-3 py-2">
-          {Array.from({ length: book.chapters }, (_, i) => i + 1).map(ch => (
-            <Link
-              key={ch}
-              href={`/reader/${book.name.toLowerCase().replace(/ /g, '-')}/${ch}`}
-              className="text-center text-xs py-1 rounded bg-parchment-800 hover:bg-gold-600 hover:text-parchment-950 text-parchment-300 transition-colors"
-              onClick={() => setIsOpen(false)}
-            >
-              {ch}
-            </Link>
-          ))}
-        </div>
-      )}
-    </div>
+  const filter = bookFilter.trim().toLowerCase();
+  const books = BIBLE_BOOKS.filter(b =>
+    filter ? b.name.toLowerCase().includes(filter) || b.abbrev.toLowerCase().includes(filter) : b.testament === testament
   );
+
+  const navLink = (link: NavLink) => {
+    const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+    const Icon = link.icon;
+    return (
+      <Link
+        key={link.href}
+        href={link.href}
+        aria-current={active ? 'page' : undefined}
+        className={`flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm transition-colors ${
+          active ? 'bg-parchment-800 text-parchment-50 font-medium' : 'text-parchment-300 hover:bg-parchment-800/60 hover:text-parchment-100'
+        }`}
+      >
+        <Icon size={16} className={active ? 'text-gold-400' : 'text-parchment-500'} />
+        {link.label}
+      </Link>
+    );
+  };
+
+  const sectionHeading = 'px-3 pt-5 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-parchment-500';
 
   return (
     <>
-      {/* Mobile toggle */}
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 lg:hidden bg-parchment-800 text-gold-400 p-2 rounded-lg shadow-lg"
-        aria-label="Toggle navigation"
+      {/* Mobile top bar */}
+      <header className="lg:hidden sticky top-0 z-30 h-14 flex items-center gap-1 px-2 bg-parchment-950/90 backdrop-blur border-b border-parchment-800">
+        <button onClick={() => setIsOpen(true)} className={iconButton} aria-label="Open menu">
+          <Menu size={20} />
+        </button>
+        <div className="flex-1 ml-1"><Logo /></div>
+        <button onClick={openSearch} className={iconButton} aria-label="Search">
+          <Search size={18} />
+        </button>
+        <ThemeToggle className={iconButton} />
+      </header>
+
+      {isOpen && <div className="fixed inset-0 z-40 bg-black/40 lg:hidden" onClick={() => setIsOpen(false)} />}
+
+      <aside
+        className={`fixed lg:sticky top-0 left-0 z-50 lg:z-auto h-[100dvh] w-80 max-w-[85vw] lg:w-72 shrink-0 flex flex-col
+          bg-parchment-950 lg:bg-parchment-900/40 border-r border-parchment-800 transition-transform duration-200
+          ${isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'}`}
+        aria-label="Main navigation"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
-
-      {/* Overlay */}
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setIsOpen(false)} />
-      )}
-
-      {/* Sidebar */}
-      <aside className={`fixed lg:sticky top-0 left-0 h-screen w-72 bg-parchment-900 border-r border-parchment-800 overflow-y-auto z-40 transform transition-transform lg:transform-none ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-        <div className="p-4 border-b border-parchment-800">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">📖</span>
-            <h1 className="text-xl font-bold text-gold-400 font-serif">Bible Logos</h1>
-          </Link>
-          <p className="text-xs text-parchment-500 mt-1">Personal Bible study &amp; research</p>
+        <div className="h-14 flex items-center justify-between px-4 shrink-0">
+          <Logo />
+          <div className="flex items-center">
+            <ThemeToggle className={`${iconButton} hidden lg:block`} />
+            <button onClick={() => setIsOpen(false)} className={`${iconButton} lg:hidden`} aria-label="Close menu">
+              <X size={20} />
+            </button>
+          </div>
         </div>
 
-        <nav className="p-2">
-          {/* Collapsible nav sections */}
-          {NAV_SECTIONS.map(section => {
-            const isCollapsed = collapsedSections.has(section.label);
+        <div className="px-3 shrink-0">
+          <button
+            onClick={() => { setIsOpen(false); openSearch(); }}
+            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-parchment-800/60 text-sm text-parchment-500 hover:text-parchment-300 transition-colors"
+          >
+            <Search size={15} />
+            <span className="flex-1 text-left">Go to a verse or page…</span>
+            <kbd className="hidden lg:inline text-[10px] font-sans text-parchment-500">⌘K</kbd>
+          </button>
+        </div>
+
+        <nav className="flex-1 overflow-y-auto px-3 pb-6">
+          {NAV_SECTIONS.filter(s => s.label !== 'Reference').map(section => (
+            <div key={section.label}>
+              <h2 className={sectionHeading}>{section.label}</h2>
+              {section.links.map(navLink)}
+            </div>
+          ))}
+
+          {NAV_SECTIONS.filter(s => s.label === 'Reference').map(section => (
+            <div key={section.label}>
+              <button
+                onClick={() => setShowReference(v => !v)}
+                aria-expanded={showReference}
+                className={`${sectionHeading} w-full flex items-center justify-between hover:text-parchment-300`}
+              >
+                {section.label}
+                <ChevronDown size={14} className={`transition-transform ${showReference ? '' : '-rotate-90'}`} />
+              </button>
+              {showReference && section.links.map(navLink)}
+            </div>
+          ))}
+
+          {/* Books */}
+          <h2 className={sectionHeading}>Bible</h2>
+          <div className="flex gap-1 p-1 mb-2 rounded-lg bg-parchment-800/60 text-xs font-medium">
+            {(['OT', 'NT'] as const).map(t => (
+              <button
+                key={t}
+                onClick={() => { setTestament(t); setBookFilter(''); }}
+                className={`flex-1 py-1.5 rounded-md transition-colors ${
+                  testament === t && !filter ? 'bg-parchment-950 text-parchment-100 shadow-sm' : 'text-parchment-500 hover:text-parchment-300'
+                }`}
+              >
+                {t === 'OT' ? 'Old Testament' : 'New Testament'}
+              </button>
+            ))}
+          </div>
+          <input
+            type="search"
+            value={bookFilter}
+            onChange={e => setBookFilter(e.target.value)}
+            placeholder="Find a book"
+            className="w-full mb-2 px-3 py-1.5 rounded-lg bg-transparent border border-parchment-800 text-sm text-parchment-200 placeholder-parchment-600 focus:outline-none focus:border-gold-500/50"
+          />
+          {books.map(book => {
+            const expanded = expandedBook === book.id;
+            const slug = book.name.toLowerCase().replace(/ /g, '-');
+            const isCurrent = currentBook?.id === book.id;
             return (
-              <div key={section.label} className="mb-2">
+              <div key={book.id}>
                 <button
-                  onClick={() => toggleSection(section.label)}
-                  className="w-full flex items-center justify-between px-2 py-1.5 text-xs font-semibold text-gold-500 uppercase tracking-wider hover:text-gold-400 transition-colors"
+                  onClick={() => setExpandedBook(expanded ? null : book.id)}
+                  aria-expanded={expanded}
+                  className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                    isCurrent ? 'text-parchment-50 font-medium' : 'text-parchment-300 hover:bg-parchment-800/60 hover:text-parchment-100'
+                  }`}
                 >
-                  <span>{section.icon} {section.label}</span>
-                  <svg
-                    className={`w-3 h-3 transition-transform ${isCollapsed ? '-rotate-90' : ''}`}
-                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                  </svg>
+                  {book.name}
+                  <span className="text-xs text-parchment-500 tabular-nums">{book.chapters}</span>
                 </button>
-                {!isCollapsed && (
-                  <div className="grid grid-cols-2 gap-1.5 px-2 mb-1">
-                    {section.links.map(link => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        className="text-center text-xs py-2 bg-parchment-800 hover:bg-gold-600 hover:text-parchment-950 text-parchment-300 rounded transition-colors"
-                        onClick={() => setIsOpen(false)}
-                      >
-                        {link.icon} {link.label}
-                      </Link>
-                    ))}
+                {expanded && (
+                  <div className="grid grid-cols-6 gap-1 px-2 py-2">
+                    {Array.from({ length: book.chapters }, (_, i) => i + 1).map(ch => {
+                      const active = isCurrent && ch === currentChapter;
+                      return (
+                        <Link
+                          key={ch}
+                          href={`/reader/${slug}/${ch}`}
+                          aria-current={active ? 'page' : undefined}
+                          className={`text-center text-xs py-1.5 rounded-md tabular-nums transition-colors ${
+                            active ? 'bg-gold-600 text-parchment-950 font-semibold' : 'text-parchment-300 hover:bg-parchment-800'
+                          }`}
+                        >
+                          {ch}
+                        </Link>
+                      );
+                    })}
                   </div>
                 )}
               </div>
             );
           })}
-
-          {/* Book filter */}
-          <div className="px-2 mb-2 mt-2">
-            <input
-              type="text"
-              value={bookFilter}
-              onChange={(e) => setBookFilter(e.target.value)}
-              placeholder="Filter books..."
-              className="w-full text-xs px-3 py-1.5 bg-parchment-800 border border-parchment-700 rounded text-parchment-200 placeholder-parchment-600 focus:outline-none focus:border-gold-500/50 transition-colors"
-            />
-          </div>
-
-          <div className="mb-2">
-            <h3 className="text-xs font-semibold text-gold-500 uppercase tracking-wider px-3 py-2">Old Testament</h3>
-            {otBooks.map(renderBook)}
-          </div>
-          <div className="mt-4">
-            <h3 className="text-xs font-semibold text-gold-500 uppercase tracking-wider px-3 py-2">New Testament</h3>
-            {ntBooks.map(renderBook)}
-          </div>
         </nav>
       </aside>
     </>

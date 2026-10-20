@@ -2,72 +2,111 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
-
+/*
+ * Theme colours as RGB triples, used by the Tailwind palette (tailwind.config.ts).
+ * 950 is the page background, 900 raised surfaces, 800 borders, 500 secondary text, 100 body text.
+ * The theme follows the device unless the reader picks one (data-theme on <html>).
+ */
 :root {
-  --bg-primary: #1a1208;
-  --bg-secondary: #2d2010;
-  --bg-card: #3a2a18;
-  --text-primary: #f5e6d0;
-  --text-secondary: #d4b07a;
-  --gold: #d4a853;
-  --gold-dim: #8a6230;
-  --border: #4a351a;
+  --parchment-50: 21 18 15;
+  --parchment-100: 38 33 28;
+  --parchment-200: 55 49 42;
+  --parchment-300: 77 70 61;
+  --parchment-400: 101 93 81;
+  --parchment-500: 123 114 100;
+  --parchment-600: 169 159 141;
+  --parchment-700: 210 201 184;
+  --parchment-800: 230 224 212;
+  --parchment-900: 243 239 231;
+  --parchment-950: 251 249 245;
+  --gold-400: 150 102 20;
+  --gold-500: 135 92 16;
+  --gold-600: 160 112 24;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --parchment-50: 250 248 244;
+    --parchment-100: 241 236 227;
+    --parchment-200: 227 220 207;
+    --parchment-300: 207 198 184;
+    --parchment-400: 179 169 153;
+    --parchment-500: 148 138 123;
+    --parchment-600: 110 102 90;
+    --parchment-700: 74 68 59;
+    --parchment-800: 46 42 36;
+    --parchment-900: 31 28 24;
+    --parchment-950: 20 18 16;
+    --gold-400: 217 179 106;
+    --gold-500: 201 160 82;
+    --gold-600: 168 130 58;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --parchment-50: 250 248 244;
+  --parchment-100: 241 236 227;
+  --parchment-200: 227 220 207;
+  --parchment-300: 207 198 184;
+  --parchment-400: 179 169 153;
+  --parchment-500: 148 138 123;
+  --parchment-600: 110 102 90;
+  --parchment-700: 74 68 59;
+  --parchment-800: 46 42 36;
+  --parchment-900: 31 28 24;
+  --parchment-950: 20 18 16;
+  --gold-400: 217 179 106;
+  --gold-500: 201 160 82;
+  --gold-600: 168 130 58;
+  color-scheme: dark;
 }
 
 body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: 'Inter', system-ui, sans-serif;
+  background-color: rgb(var(--parchment-950));
+  color: rgb(var(--parchment-100));
+  font-family: var(--font-ui), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 .bible-text {
-  font-family: 'Playfair Display', Georgia, serif;
-  line-height: 1.8;
-  font-size: 1.1rem;
+  font-family: var(--font-reading), Georgia, serif;
+  font-size: 1.15rem;
+  line-height: 1.85;
 }
 
 .verse-number {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
-  font-weight: 700;
-  color: var(--gold);
+  font-family: var(--font-ui), sans-serif;
+  font-size: 0.65em;
+  font-weight: 600;
+  color: rgb(var(--gold-500));
   vertical-align: super;
-  margin-right: 2px;
+  line-height: 0;
+  margin-right: 0.3em;
+  user-select: none;
 }
 
+/* Words linked to Strong's: plain text until pointed at, so the page reads cleanly */
 .strongs-word {
-  text-decoration: underline;
-  text-decoration-color: var(--gold-dim);
-  text-decoration-style: dotted;
-  text-underline-offset: 3px;
   cursor: pointer;
-  transition: all 0.2s;
+  border-radius: 3px;
+  transition: background-color 0.15s, color 0.15s;
 }
 .strongs-word:hover {
-  text-decoration-color: var(--gold);
-  color: var(--gold);
+  color: rgb(var(--gold-400));
+  background-color: rgb(var(--gold-400) / 0.1);
 }
 
 .diff-highlight {
-  background-color: rgba(212, 168, 83, 0.2);
-  border-bottom: 2px solid var(--gold);
-  padding: 0 2px;
+  background-color: rgb(var(--gold-400) / 0.14);
+  border-radius: 3px;
 }
 
-/* Scrollbar */
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: var(--bg-primary); }
-::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 4px; }
-::-webkit-scrollbar-thumb:hover { background: var(--gold); }
-
-/* Selection */
 ::selection {
-  background-color: rgba(212, 168, 83, 0.3);
-  color: var(--text-primary);
+  background-color: rgb(var(--gold-400) / 0.25);
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
@@ -76,25 +115,24 @@ html {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
-select:focus-visible {
-  outline: 2px solid var(--gold);
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgb(var(--gold-400));
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* Better mobile tap targets */
 @media (max-width: 768px) {
   .bible-text {
-    font-size: 1rem;
-    line-height: 1.7;
+    font-size: 1.075rem;
+    line-height: 1.8;
   }
-  
-  select, input {
+
+  select, input, textarea {
     font-size: 16px; /* Prevent iOS zoom */
   }
 }
 
-/* Animations */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
@@ -104,15 +142,13 @@ select:focus-visible {
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Print styles */
 @media print {
-  aside, button, nav, .no-print { display: none !important; }
+  aside, button, nav, header, footer, .no-print { display: none !important; }
   main { padding: 0 !important; max-width: 100% !important; }
   .bible-text { color: #000 !important; }
   body { background: white !important; color: black !important; }
 }
 
-/* Line clamp utility */
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;

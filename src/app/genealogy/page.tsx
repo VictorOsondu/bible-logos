@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -15,7 +14,6 @@ interface Person {
 interface Lineage {
   title: string;
   description: string;
-  icon: string;
   persons: Person[];
 }
 
@@ -23,7 +21,6 @@ const LINEAGES: Lineage[] = [
   {
     title: 'Adam to Noah',
     description: 'The antediluvian patriarchs — ten generations from creation to the flood',
-    icon: '🌍',
     persons: [
       { name: 'Adam', ref: 'Genesis 5:1', slug: 'genesis', chapter: 5, verse: 1, role: 'First man' },
       { name: 'Seth', ref: 'Genesis 5:3', slug: 'genesis', chapter: 5, verse: 3, role: 'Son of Adam' },
@@ -40,7 +37,6 @@ const LINEAGES: Lineage[] = [
   {
     title: 'Noah to Abraham',
     description: 'The postdiluvian patriarchs — from the flood to the father of nations',
-    icon: '🕊️',
     persons: [
       { name: 'Shem', ref: 'Genesis 11:10', slug: 'genesis', chapter: 11, verse: 10, role: 'Son of Noah' },
       { name: 'Arphaxad', ref: 'Genesis 11:12', slug: 'genesis', chapter: 11, verse: 12 },
@@ -57,7 +53,6 @@ const LINEAGES: Lineage[] = [
   {
     title: 'The Patriarchs',
     description: 'Abraham through the twelve tribes of Israel',
-    icon: '⭐',
     persons: [
       { name: 'Abraham', ref: 'Genesis 12:1', slug: 'genesis', chapter: 12, verse: 1, role: 'Father of faith' },
       { name: 'Isaac', ref: 'Genesis 21:3', slug: 'genesis', chapter: 21, verse: 3, role: 'Child of promise' },
@@ -71,7 +66,6 @@ const LINEAGES: Lineage[] = [
   {
     title: 'The Royal Line of David',
     description: 'From Judah to King David — the messianic lineage',
-    icon: '👑',
     persons: [
       { name: 'Judah', ref: 'Genesis 49:10', slug: 'genesis', chapter: 49, verse: 10, role: 'The sceptre promise' },
       { name: 'Perez', ref: 'Ruth 4:18', slug: 'ruth', chapter: 4, verse: 18 },
@@ -89,7 +83,6 @@ const LINEAGES: Lineage[] = [
   {
     title: 'David to the Exile',
     description: 'The kings of Judah from Solomon to the Babylonian captivity',
-    icon: '🏛️',
     persons: [
       { name: 'Solomon', ref: '1 Kings 1:39', slug: '1-kings', chapter: 1, verse: 39, role: 'Builder of the Temple' },
       { name: 'Rehoboam', ref: '1 Kings 11:43', slug: '1-kings', chapter: 11, verse: 43, role: 'Kingdom divided' },
@@ -103,7 +96,6 @@ const LINEAGES: Lineage[] = [
   {
     title: 'Genealogy of Jesus (Matthew 1)',
     description: 'The legal lineage of Jesus through Joseph — 42 generations',
-    icon: '✝️',
     persons: [
       { name: 'Abraham', ref: 'Matthew 1:2', slug: 'matthew', chapter: 1, verse: 2 },
       { name: 'David', ref: 'Matthew 1:6', slug: 'matthew', chapter: 1, verse: 6, role: 'King' },
@@ -118,15 +110,9 @@ const LINEAGES: Lineage[] = [
 export default function GenealogyPage() {
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Genealogies</span>
-        </div>
 
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">🌳 Biblical Genealogies</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Biblical Genealogies</h1>
         <p className="text-parchment-400 mb-8 max-w-2xl">
           Tracing the family lines of Scripture — from Adam to Christ. The genealogies reveal God&apos;s
           faithfulness across generations and the unbroken thread of the messianic promise.
@@ -134,9 +120,8 @@ export default function GenealogyPage() {
 
         <div className="space-y-8">
           {LINEAGES.map((lineage, li) => (
-            <section key={li} className="bg-parchment-900 border border-parchment-800 rounded-2xl p-6">
+            <section key={li} className="bg-parchment-900/70 rounded-2xl p-6">
               <div className="flex items-start gap-3 mb-4">
-                <span className="text-3xl">{lineage.icon}</span>
                 <div>
                   <h2 className="text-xl font-bold text-parchment-100 font-serif">{lineage.title}</h2>
                   <p className="text-sm text-parchment-400">{lineage.description}</p>
@@ -176,19 +161,19 @@ export default function GenealogyPage() {
 
         {/* Summary stats */}
         <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
+          <div className="bg-parchment-900/70 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gold-400">{LINEAGES.length}</div>
             <div className="text-xs text-parchment-500 mt-1">Family Lines</div>
           </div>
-          <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
+          <div className="bg-parchment-900/70 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gold-400">{LINEAGES.reduce((s, l) => s + l.persons.length, 0)}</div>
             <div className="text-xs text-parchment-500 mt-1">Named Persons</div>
           </div>
-          <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
+          <div className="bg-parchment-900/70 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gold-400">~4000 yr</div>
             <div className="text-xs text-parchment-500 mt-1">Time Span</div>
           </div>
-          <div className="bg-parchment-900 border border-parchment-800 rounded-xl p-4 text-center">
+          <div className="bg-parchment-900/70 rounded-xl p-4 text-center">
             <div className="text-2xl font-bold text-gold-400">42</div>
             <div className="text-xs text-parchment-500 mt-1">Generations (Matt 1)</div>
           </div>

@@ -23,6 +23,7 @@ Bible Logos runs on your own computer. It downloads public-domain Bible texts an
 - Read any chapter in the **King James Version, American Standard Version, Bible in Basic English, Young's Literal Translation and the Latin Vulgate**, alone or side by side.
 - **Every word of the KJV is linked to its Hebrew or Greek original.** Click a word to see the original script, transliteration, pronunciation, Strong's definition, derivation and every other place it occurs.
 - Words the KJV translators added are shown in *italics*, as in printed editions.
+- A calm, reading-first layout with light and dark themes (following your device by default) that works as well on a phone as on a desktop.
 
 ### 🔤 Strong's concordance
 
@@ -38,7 +39,8 @@ Bible Logos runs on your own computer. It downloads public-domain Bible texts an
 
 ### 📝 Personal study
 
-- Bookmarks, study notes and reading plans, saved in your browser.
+- Pick up where you left off: the home page remembers the last chapter you read.
+- Bookmark any verse from the reader; bookmarks, history, study notes and reading plans are saved in your browser.
 - Key Passages: the Beatitudes, the Lord's Prayer, the Ten Commandments and the Bible's songs and doxologies, each opened in the reader.
 - Reference indexes (parables, miracles, prophecies, covenants, people, places, names of God and more) that link straight to the verses.
 - Research links for any verse, with live results from Semantic Scholar, PubMed and Open Library.
@@ -82,7 +84,7 @@ The seed script downloads everything below; none of it is stored in this reposit
 - **SQLite** via `better-sqlite3`, with an FTS5 full-text index
 - `scripts/seed.ts` builds the database; `scripts/kjv-strongs.ts` parses the Strong's lexicon and the tagged KJV
 - `src/lib/strongs.ts` holds the Strong's queries shared by the pages and API
-- `src/lib/navigation.ts` lists the app's pages for the sidebar, footer, home page and search
+- `src/lib/navigation.ts` lists the app's pages for the sidebar, home page and search
 
 ## 🙏 Credits
 

@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
@@ -47,21 +46,12 @@ const PRAYERS: Prayer[] = [
 ];
 
 const TYPE_COLORS: Record<string, string> = {
-  petition: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+  petition: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
   praise: 'bg-gold-500/20 text-gold-300 border-gold-500/30',
-  confession: 'bg-purple-500/20 text-purple-300 border-purple-500/30',
-  intercession: 'bg-green-500/20 text-green-300 border-green-500/30',
-  thanksgiving: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
-  lament: 'bg-red-500/20 text-red-300 border-red-500/30',
-};
-
-const TYPE_ICONS: Record<string, string> = {
-  petition: '\u{1F64F}',
-  praise: '\u{1F3B6}',
-  confession: '\u{1F494}',
-  intercession: '\u{1F91D}',
-  thanksgiving: '\u{1F64C}',
-  lament: '\u{1F622}',
+  confession: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
+  intercession: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
+  thanksgiving: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
+  lament: 'bg-parchment-800/60 text-parchment-300 border-parchment-800',
 };
 
 export default function PrayersPage() {
@@ -78,11 +68,11 @@ export default function PrayersPage() {
     <Link
       key={idx}
       href={`/reader/${p.book}/${p.chapter}#v${p.verse}`}
-      className="block bg-parchment-900 border border-parchment-700 rounded-xl p-4 hover:border-gold-500/40 transition-all group"
+      className="block bg-parchment-900/70 rounded-xl p-4 hover:bg-parchment-900 transition-all group"
     >
       <div className="flex items-start justify-between gap-3 mb-2">
         <h3 className="font-serif font-semibold text-parchment-100 group-hover:text-gold-400 transition-colors">
-          {TYPE_ICONS[p.type]} {p.title}
+          {p.title}
         </h3>
         <span className={`text-xs px-2 py-0.5 rounded-full border whitespace-nowrap ${TYPE_COLORS[p.type]}`}>
           {p.type}
@@ -99,15 +89,9 @@ export default function PrayersPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="flex items-center gap-2 text-sm text-parchment-500 mb-2">
-          <Link href="/" className="hover:text-gold-400">Home</Link>
-          <span>/</span>
-          <span className="text-gold-400">Prayers</span>
-        </div>
 
-        <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">{'\u{1F64F}'} Prayers of the Bible</h1>
+        <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">Prayers of the Bible</h1>
         <p className="text-parchment-400 mb-8">
           {PRAYERS.length} notable prayers — petitions, praises, confessions, and intercessions from across Scripture.
         </p>
@@ -116,12 +100,12 @@ export default function PrayersPage() {
           {typeCounts.map(t => (
             <div key={t.name} className={`rounded-xl border p-3 text-center ${TYPE_COLORS[t.name]}`}>
               <div className="text-xl font-bold">{t.count}</div>
-              <div className="text-xs capitalize">{TYPE_ICONS[t.name]} {t.name}</div>
+              <div className="text-xs capitalize">{t.name}</div>
             </div>
           ))}
         </div>
 
-        <div className="bg-parchment-900 border border-parchment-700 rounded-xl p-5 mb-8">
+        <div className="bg-parchment-900/70 rounded-xl p-5 mb-8">
           <h2 className="text-lg font-serif text-parchment-100 mb-3">By Person</h2>
           <div className="flex flex-wrap gap-3">
             {personCounts.map(p => (
@@ -133,12 +117,12 @@ export default function PrayersPage() {
           </div>
         </div>
 
-        <h2 className="text-2xl font-serif text-parchment-100 mb-4">{'\u{1F4DC}'} Old Testament ({otPrayers.length})</h2>
+        <h2 className="text-2xl font-serif text-parchment-100 mb-4">Old Testament ({otPrayers.length})</h2>
         <div className="grid gap-3 mb-10">
           {otPrayers.map((p, i) => renderPrayer(p, i))}
         </div>
 
-        <h2 className="text-2xl font-serif text-parchment-100 mb-4">{'\u271D\uFE0F'} New Testament ({ntPrayers.length})</h2>
+        <h2 className="text-2xl font-serif text-parchment-100 mb-4">New Testament ({ntPrayers.length})</h2>
         <div className="grid gap-3 mb-10">
           {ntPrayers.map((p, i) => renderPrayer(p, i + 100))}
         </div>

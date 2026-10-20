@@ -1,4 +1,3 @@
-import Sidebar from '@/components/Sidebar';
 import Link from 'next/link';
 
 export default function GeographyPage() {
@@ -71,11 +70,10 @@ export default function GeographyPage() {
 
   return (
     <>
-      <Sidebar />
       <main className="flex-1 p-4 lg:p-8 max-w-5xl">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold font-serif text-parchment-100 mb-2">
-            🗺️ Biblical Geography
+          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-2">
+            Biblical Geography
           </h1>
           <p className="text-parchment-400 text-sm">
             Explore key locations from Scripture with historical context and verse references.
@@ -89,7 +87,7 @@ export default function GeographyPage() {
               {region.places.map(place => (
                 <div
                   key={place.name + place.desc}
-                  className="p-4 rounded-xl bg-parchment-900 border border-parchment-800 hover:border-gold-500/20 transition-all"
+                  className="p-4 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 transition-all"
                 >
                   <div className="flex items-start justify-between mb-2">
                     <h3 className="text-lg font-semibold text-parchment-100">{place.name}</h3>
@@ -99,7 +97,7 @@ export default function GeographyPage() {
                       rel="noopener noreferrer"
                       className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:bg-gold-600 hover:text-parchment-950 transition-colors flex-shrink-0"
                     >
-                      📍 Map
+                      Map
                     </a>
                   </div>
                   <p className="text-sm text-parchment-300 mb-2">{place.desc}</p>
