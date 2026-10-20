@@ -11,3 +11,4 @@ data/
 # Playwright
 /test-results/
 /playwright-report/
+/coverage/

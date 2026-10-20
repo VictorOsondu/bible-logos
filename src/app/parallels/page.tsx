@@ -76,7 +76,7 @@ export default function ParallelsPage() {
                         className="block p-3 rounded-lg bg-parchment-800/50 hover:bg-parchment-800 transition-colors border border-parchment-700/50"
                       >
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs font-mono text-gold-500 bg-gold-600/10 px-1.5 py-0.5 rounded">
+                          <span className="text-xs font-mono text-gold-500 bg-gold-600/10 px-1.5 py-0.5 rounded-sm">
                             {p.bookName} {p.chapter}:{ref[2]}-{ref[3]}
                           </span>
                         </div>

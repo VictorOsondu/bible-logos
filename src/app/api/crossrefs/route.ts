@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
 import { handleApiError } from '@/lib/api-utils';
 
+interface CrossRef {
+  book: number;
+  chapter: number;
+  verse_start: number;
+  verse_end: number;
+  votes: number;
+  category: string;
+}
+
 export async function GET(request: NextRequest) {
   try {
   const { searchParams } = new URL(request.url);
@@ -26,7 +35,7 @@ export async function GET(request: NextRequest) {
     WHERE from_book = ? AND from_chapter = ? AND from_verse_start <= ? AND from_verse_end >= ?
     ORDER BY votes DESC
     LIMIT 50
-  `).all(b, c, v, v);
+  `).all(b, c, v, v) as CrossRef[];
 
   const toRefs = db.prepare(`
     SELECT from_book as book, from_chapter as chapter, from_verse_start as verse_start, from_verse_end as verse_end, votes, category
@@ -34,16 +43,16 @@ export async function GET(request: NextRequest) {
     WHERE to_book = ? AND to_chapter = ? AND to_verse_start <= ? AND to_verse_end >= ?
     ORDER BY votes DESC
     LIMIT 50
-  `).all(b, c, v, v);
+  `).all(b, c, v, v) as CrossRef[];
 
   // Fetch verse texts for cross-references
   const fetchVerseText = db.prepare(
     'SELECT text FROM verses WHERE book = ? AND chapter = ? AND verse = ? AND translation = ? LIMIT 1'
   );
 
-  const enrichRefs = (refs: any[]) => refs.map(r => ({
+  const enrichRefs = (refs: CrossRef[]) => refs.map(r => ({
     ...r,
-    text: (fetchVerseText.get(r.book, r.chapter, r.verse_start, 'KJV') as any)?.text || ''
+    text: (fetchVerseText.get(r.book, r.chapter, r.verse_start, 'KJV') as { text: string } | undefined)?.text || ''
   }));
 
   return NextResponse.json({

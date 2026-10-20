@@ -7,10 +7,11 @@ export const dynamic = 'force-dynamic';
 const PAGE_SIZE = 60;
 
 interface Props {
-  searchParams: { q?: string; language?: string; page?: string };
+  searchParams: Promise<{ q?: string; language?: string; page?: string }>;
 }
 
-export default function ConcordancePage({ searchParams }: Props) {
+export default async function ConcordancePage(props: Props) {
+  const searchParams = await props.searchParams;
   if (!isDatabaseAvailable()) {
     return (
       <>
@@ -67,7 +68,7 @@ export default function ConcordancePage({ searchParams }: Props) {
             name="q"
             defaultValue={q}
             placeholder="Search Strong's: love, H2617, logos…"
-            className="flex-1 px-4 py-2 rounded-lg bg-parchment-900/70 text-parchment-100 placeholder-parchment-600 focus:outline-none focus:border-gold-500/50"
+            className="flex-1 px-4 py-2 rounded-lg bg-parchment-900/70 text-parchment-100 placeholder-parchment-600 focus:outline-hidden focus:border-gold-500/50"
           />
           {language && <input type="hidden" name="language" value={language} />}
           <button type="submit" className="px-4 py-2 rounded-lg bg-gold-600/20 border border-gold-500/40 text-gold-400 hover:bg-gold-600/30">
@@ -112,7 +113,7 @@ export default function ConcordancePage({ searchParams }: Props) {
                     <p className="text-xs text-parchment-400 mt-1 line-clamp-2">{entry.definition}</p>
                   </div>
                   {entry.uses > 0 && (
-                    <span className="text-xs text-parchment-500 bg-parchment-800 px-2 py-0.5 rounded-full flex-shrink-0">
+                    <span className="text-xs text-parchment-500 bg-parchment-800 px-2 py-0.5 rounded-full shrink-0">
                       {entry.uses} ×
                     </span>
                   )}

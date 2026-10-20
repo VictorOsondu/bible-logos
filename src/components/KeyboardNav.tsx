@@ -49,7 +49,7 @@ export default function KeyboardNav({ prevHref, nextHref }: Props) {
   if (!showHelp) return null;
 
   return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4 no-print" onClick={() => setShowHelp(false)}>
+    <div className="fixed inset-0 z-60 flex items-center justify-center bg-black/40 backdrop-blur-xs px-4 no-print" onClick={() => setShowHelp(false)}>
       <div className="bg-parchment-950 border border-parchment-800 rounded-2xl p-6 w-full max-w-sm shadow-2xl" onClick={e => e.stopPropagation()}>
         <h3 className="text-base font-semibold text-parchment-50 mb-4">Keyboard shortcuts</h3>
         <div className="space-y-2 text-sm">
@@ -61,7 +61,7 @@ export default function KeyboardNav({ prevHref, nextHref }: Props) {
             ['Esc', 'Close panel'],
           ].map(([key, desc]) => (
             <div key={key} className="flex items-center gap-3">
-              <kbd className="px-2 py-0.5 bg-parchment-900 rounded text-parchment-200 font-mono text-xs border border-parchment-800 min-w-[3rem] text-center">{key}</kbd>
+              <kbd className="px-2 py-0.5 bg-parchment-900 rounded-sm text-parchment-200 font-mono text-xs border border-parchment-800 min-w-12 text-center">{key}</kbd>
               <span className="text-parchment-300">{desc}</span>
             </div>
           ))}

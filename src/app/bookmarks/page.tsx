@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Plus, Trash2, X } from 'lucide-react';
 import { BIBLE_BOOKS } from '@/lib/bible-books';
-import {
-  BOOKMARKS_KEY, HISTORY_KEY, getBookmarks, getHistory, type Bookmark, type ReadingHistory,
-} from '@/lib/reading';
+import { clearHistory, saveBookmarks, useBookmarks, useHistory } from '@/lib/reading';
 
 function getBookName(id: number): string {
   return BIBLE_BOOKS.find(b => b.id === id)?.name || `Book ${id}`;
@@ -15,27 +13,17 @@ function getBookSlug(id: number): string {
   return (BIBLE_BOOKS.find(b => b.id === id)?.name || '').toLowerCase().replace(/ /g, '-');
 }
 
-const field = 'w-full bg-parchment-950 text-parchment-100 rounded-lg px-3 py-2 text-sm border border-parchment-800 focus:outline-none focus:border-gold-500/50';
+const field = 'w-full bg-parchment-950 text-parchment-100 rounded-lg px-3 py-2 text-sm border border-parchment-800 focus:outline-hidden focus:border-gold-500/50';
 
 export default function BookmarksPage() {
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
-  const [history, setHistory] = useState<ReadingHistory[]>([]);
+  const bookmarks = useBookmarks();
+  const history = useHistory();
   const [activeTab, setActiveTab] = useState<'bookmarks' | 'history'>('bookmarks');
   const [showAdd, setShowAdd] = useState(false);
   const [addBook, setAddBook] = useState(1);
   const [addChapter, setAddChapter] = useState(1);
   const [addVerse, setAddVerse] = useState('');
   const [newNote, setNewNote] = useState('');
-
-  useEffect(() => {
-    setBookmarks(getBookmarks());
-    setHistory(getHistory());
-  }, []);
-
-  const saveBookmarks = (bms: Bookmark[]) => {
-    setBookmarks(bms);
-    try { localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bms)); } catch { /* storage unavailable */ }
-  };
 
   const addBookmark = () => {
     saveBookmarks([{
@@ -52,17 +40,12 @@ export default function BookmarksPage() {
     setShowAdd(false);
   };
 
-  const clearHistory = () => {
-    setHistory([]);
-    try { localStorage.removeItem(HISTORY_KEY); } catch { /* storage unavailable */ }
-  };
-
   const chapters = BIBLE_BOOKS.find(b => b.id === addBook)?.chapters || 1;
   const tab = (id: typeof activeTab, label: string, count: number) => (
     <button
       onClick={() => setActiveTab(id)}
       className={`flex-1 sm:flex-none px-4 py-1.5 rounded-md text-sm transition-colors ${
-        activeTab === id ? 'bg-parchment-950 text-parchment-100 shadow-sm' : 'text-parchment-500 hover:text-parchment-300'
+        activeTab === id ? 'bg-parchment-950 text-parchment-100 shadow-xs' : 'text-parchment-500 hover:text-parchment-300'
       }`}
     >
       {label} <span className="text-parchment-500">{count}</span>

@@ -1,29 +1,41 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 import { Moon, Sun } from 'lucide-react';
 
 export const THEME_KEY = 'biblelogos-theme';
+const THEME_EVENT = 'biblelogos-theme';
 
 /** Applies a saved theme before first paint, so the page never flashes the wrong colours. */
 export const themeScript = `try{var t=localStorage.getItem('${THEME_KEY}');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
 
+const darkQuery = () => window.matchMedia('(prefers-color-scheme: dark)');
+
 function currentTheme(): 'light' | 'dark' {
   const chosen = document.documentElement.dataset.theme;
   if (chosen === 'light' || chosen === 'dark') return chosen;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  return darkQuery().matches ? 'dark' : 'light';
+}
+
+// Changes come from this toggle (in any instance) or from the device's own setting
+function subscribe(onChange: () => void) {
+  const query = darkQuery();
+  query.addEventListener('change', onChange);
+  window.addEventListener(THEME_EVENT, onChange);
+  return () => {
+    query.removeEventListener('change', onChange);
+    window.removeEventListener(THEME_EVENT, onChange);
+  };
 }
 
 export default function ThemeToggle({ className = '' }: { className?: string }) {
-  const [theme, setTheme] = useState<'light' | 'dark' | null>(null);
-
-  useEffect(() => setTheme(currentTheme()), []);
+  const theme = useSyncExternalStore(subscribe, currentTheme, () => null);
 
   const toggle = () => {
     const next = currentTheme() === 'dark' ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
     try { localStorage.setItem(THEME_KEY, next); } catch { /* private browsing */ }
-    setTheme(next);
+    window.dispatchEvent(new Event(THEME_EVENT));
   };
 
   const label = theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme';

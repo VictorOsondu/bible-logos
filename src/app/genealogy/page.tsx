@@ -134,7 +134,7 @@ export default function GenealogyPage() {
                 <div className="space-y-3">
                   {lineage.persons.map((person, pi) => (
                     <div key={pi} className="flex items-center gap-4 relative">
-                      <div className="w-7 h-7 rounded-full bg-gold-600/20 border-2 border-gold-500/40 flex items-center justify-center text-[10px] text-gold-400 font-bold flex-shrink-0 relative z-10">
+                      <div className="w-7 h-7 rounded-full bg-gold-600/20 border-2 border-gold-500/40 flex items-center justify-center text-[10px] text-gold-400 font-bold shrink-0 relative z-10">
                         {pi + 1}
                       </div>
                       <Link

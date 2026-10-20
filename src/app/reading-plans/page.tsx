@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useStoredJson, writeStoredJson } from '@/lib/storage';
 import Link from 'next/link';
 import { BIBLE_BOOKS } from '@/lib/bible-books';
 
@@ -102,22 +103,16 @@ const PLANS: ReadingPlan[] = [
 
 const PROGRESS_KEY = 'biblelogos-reading-plans';
 
-function loadProgress(): Record<string, boolean[]> {
-  if (typeof window === 'undefined') return {};
-  try {
-    return JSON.parse(localStorage.getItem(PROGRESS_KEY) || '{}');
-  } catch { return {}; }
-}
+const NO_PROGRESS: Record<string, boolean[]> = {};
 
 function saveProgress(p: Record<string, boolean[]>) {
-  localStorage.setItem(PROGRESS_KEY, JSON.stringify(p));
+  writeStoredJson(PROGRESS_KEY, p);
 }
 
 export default function ReadingPlansPage() {
-  const [progress, setProgress] = useState<Record<string, boolean[]>>({});
+  const progress = useStoredJson(PROGRESS_KEY, NO_PROGRESS);
   const [activePlan, setActivePlan] = useState<string | null>(null);
 
-  useEffect(() => { setProgress(loadProgress()); }, []);
 
   const toggleDay = (planId: string, dayIdx: number) => {
     const arr = progress[planId] || [];
@@ -125,7 +120,6 @@ export default function ReadingPlansPage() {
     while (updated.length <= dayIdx) updated.push(false);
     updated[dayIdx] = !updated[dayIdx];
     const newProgress = { ...progress, [planId]: updated };
-    setProgress(newProgress);
     saveProgress(newProgress);
   };
 
@@ -189,7 +183,7 @@ export default function ReadingPlansPage() {
                     const slug = book ? book.name.toLowerCase().replace(/ /g, '-') : '';
                     return (
                       <div key={idx} className={`flex items-center gap-3 p-3 rounded-xl border transition-all ${completed ? 'bg-gold-600/10 border-gold-500/30' : 'bg-parchment-900 border-parchment-800'}`}>
-                        <button onClick={() => toggleDay(plan.id, idx)} className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-colors ${completed ? 'bg-gold-600 border-gold-600 text-parchment-950' : 'border-parchment-600 hover:border-gold-500'}`}>
+                        <button onClick={() => toggleDay(plan.id, idx)} className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${completed ? 'bg-gold-600 border-gold-600 text-parchment-950' : 'border-parchment-600 hover:border-gold-500'}`}>
                           {completed && <span className="text-xs"></span>}
                         </button>
                         <div className="flex-1 min-w-0">
@@ -197,7 +191,7 @@ export default function ReadingPlansPage() {
                             Day {idx + 1}: {day.title}
                           </p>
                         </div>
-                        <Link href={`/reader/${slug}/${day.chapter}`} className="text-xs px-3 py-1.5 rounded-lg bg-parchment-800 text-gold-400 hover:bg-gold-600 hover:text-parchment-950 transition-colors flex-shrink-0">
+                        <Link href={`/reader/${slug}/${day.chapter}`} className="text-xs px-3 py-1.5 rounded-lg bg-parchment-800 text-gold-400 hover:bg-gold-600 hover:text-parchment-950 transition-colors shrink-0">
                           Read →
                         </Link>
                       </div>

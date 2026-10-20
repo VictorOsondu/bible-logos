@@ -34,14 +34,16 @@ export default function Sidebar() {
   const isReferencePage = NAV_SECTIONS.find(s => s.label === 'Reference')!.links.some(l => pathname.startsWith(l.href));
   const [showReference, setShowReference] = useState(isReferencePage);
 
-  // Close the mobile drawer after navigating, and follow the book being read.
-  useEffect(() => {
+  // After navigating: close the mobile drawer and follow the book being read.
+  const [lastPathname, setLastPathname] = useState(pathname);
+  if (pathname !== lastPathname) {
+    setLastPathname(pathname);
     setIsOpen(false);
     if (currentBook) {
       setTestament(currentBook.testament);
       setExpandedBook(currentBook.id);
     }
-  }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
+  }
 
   // While the drawer is open: Escape closes it and the page behind does not scroll.
   useEffect(() => {
@@ -83,7 +85,7 @@ export default function Sidebar() {
   return (
     <>
       {/* Mobile top bar */}
-      <header className="lg:hidden sticky top-0 z-30 h-14 flex items-center gap-1 px-2 bg-parchment-950/90 backdrop-blur border-b border-parchment-800">
+      <header className="lg:hidden sticky top-0 z-30 h-14 flex items-center gap-1 px-2 bg-parchment-950/90 backdrop-blur-sm border-b border-parchment-800">
         <button onClick={() => setIsOpen(true)} className={iconButton} aria-label="Open menu">
           <Menu size={20} />
         </button>
@@ -97,7 +99,7 @@ export default function Sidebar() {
       {isOpen && <div className="fixed inset-0 z-40 bg-black/40 lg:hidden" onClick={() => setIsOpen(false)} />}
 
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 lg:z-auto h-[100dvh] w-80 max-w-[85vw] lg:w-72 shrink-0 flex flex-col
+        className={`fixed lg:sticky top-0 left-0 z-50 lg:z-auto h-dvh w-80 max-w-[85vw] lg:w-72 shrink-0 flex flex-col
           bg-parchment-950 lg:bg-parchment-900/40 border-r border-parchment-800 transition-transform duration-200
           ${isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'}`}
         aria-label="Main navigation"
@@ -153,7 +155,7 @@ export default function Sidebar() {
                 key={t}
                 onClick={() => { setTestament(t); setBookFilter(''); }}
                 className={`flex-1 py-1.5 rounded-md transition-colors ${
-                  testament === t && !filter ? 'bg-parchment-950 text-parchment-100 shadow-sm' : 'text-parchment-500 hover:text-parchment-300'
+                  testament === t && !filter ? 'bg-parchment-950 text-parchment-100 shadow-xs' : 'text-parchment-500 hover:text-parchment-300'
                 }`}
               >
                 {t === 'OT' ? 'Old Testament' : 'New Testament'}
@@ -165,7 +167,7 @@ export default function Sidebar() {
             value={bookFilter}
             onChange={e => setBookFilter(e.target.value)}
             placeholder="Find a book"
-            className="w-full mb-2 px-3 py-1.5 rounded-lg bg-transparent border border-parchment-800 text-sm text-parchment-200 placeholder-parchment-600 focus:outline-none focus:border-gold-500/50"
+            className="w-full mb-2 px-3 py-1.5 rounded-lg bg-transparent border border-parchment-800 text-sm text-parchment-200 placeholder-parchment-600 focus:outline-hidden focus:border-gold-500/50"
           />
           {books.map(book => {
             const expanded = expandedBook === book.id;

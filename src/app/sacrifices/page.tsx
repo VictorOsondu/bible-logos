@@ -97,14 +97,14 @@ export default function SacrificesPage() {
         </div>
 
         <div className="space-y-6">
-          {SACRIFICES.map((s, i) => (
+          {SACRIFICES.map(s => (
             <div key={s.name} className="bg-parchment-900/70 rounded-2xl p-5 hover:bg-parchment-900 transition-all">
               <div className="flex flex-wrap items-center gap-3 mb-3">
                 <h2 className="text-xl font-semibold text-gold-400 font-serif">{s.name}</h2>
                 <span className="text-lg text-parchment-400 font-serif" dir="rtl">{s.hebrew}</span>
                 <span className="text-sm text-parchment-500 italic">({s.transliteration})</span>
                 <Link href={`/word/${s.strongs}`}
-                  className="text-xs px-2 py-0.5 rounded bg-gold-600/20 text-gold-400 hover:bg-gold-600/30 transition-colors font-mono">
+                  className="text-xs px-2 py-0.5 rounded-sm bg-gold-600/20 text-gold-400 hover:bg-gold-600/30 transition-colors font-mono">
                   {s.strongs}
                 </Link>
               </div>

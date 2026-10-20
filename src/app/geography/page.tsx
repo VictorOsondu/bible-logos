@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export default function GeographyPage() {
   const regions = [
     {
@@ -95,7 +93,7 @@ export default function GeographyPage() {
                       href={`https://www.google.com/maps/@${place.lat},${place.lng},12z`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:bg-gold-600 hover:text-parchment-950 transition-colors flex-shrink-0"
+                      className="text-xs px-2 py-1 rounded-sm bg-parchment-800 text-parchment-400 hover:bg-gold-600 hover:text-parchment-950 transition-colors shrink-0"
                     >
                       Map
                     </a>
@@ -103,7 +101,7 @@ export default function GeographyPage() {
                   <p className="text-sm text-parchment-300 mb-2">{place.desc}</p>
                   <div className="flex flex-wrap gap-1">
                     {place.refs.map(ref => (
-                      <span key={ref} className="text-xs px-2 py-0.5 rounded bg-parchment-800 text-gold-400">
+                      <span key={ref} className="text-xs px-2 py-0.5 rounded-sm bg-parchment-800 text-gold-400">
                         {ref}
                       </span>
                     ))}

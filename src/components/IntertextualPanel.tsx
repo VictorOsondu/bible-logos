@@ -18,6 +18,11 @@ interface SharedWord {
   definition: string;
 }
 
+interface SourceWord extends SharedWord {
+  original: string;
+  language: string;
+}
+
 interface Connection {
   book: number;
   chapter: number;
@@ -27,7 +32,7 @@ interface Connection {
 }
 
 export default function IntertextualPanel({ book, chapter, verse }: Props) {
-  const { data, loading, error, retry } = useJson<{ data: Connection[]; sourceWords: any[] }>(
+  const { data, loading, error, retry } = useJson<{ data: Connection[]; sourceWords: SourceWord[] }>(
     `/api/intertextual?book=${book}&chapter=${chapter}&verse=${verse}`
   );
 
@@ -46,7 +51,7 @@ export default function IntertextualPanel({ book, chapter, verse }: Props) {
     <div className="space-y-3">
       {/* Source words */}
       <div className="flex flex-wrap gap-1.5 mb-2">
-        {sourceWords.map((w: any) => (
+        {sourceWords.map(w => (
           <Link
             key={w.strongs_id}
             href={`/word/${w.strongs_id}`}
@@ -77,7 +82,7 @@ export default function IntertextualPanel({ book, chapter, verse }: Props) {
             <p className="text-xs text-parchment-300 italic line-clamp-2 mb-1.5">{c.text}</p>
             <div className="flex flex-wrap gap-1">
               {c.sharedWords.map((w) => (
-                <span key={w.strongs_id} className="text-xs px-1.5 py-0.5 rounded bg-parchment-700 text-parchment-300">
+                <span key={w.strongs_id} className="text-xs px-1.5 py-0.5 rounded-sm bg-parchment-700 text-parchment-300">
                   {w.transliteration}
                 </span>
               ))}

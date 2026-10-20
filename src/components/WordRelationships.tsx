@@ -25,9 +25,9 @@ export default function WordRelationships({ strongsId }: Props) {
   if (loading) {
     return (
       <div className="bg-parchment-900/70 rounded-xl p-5 animate-pulse">
-        <div className="h-4 bg-parchment-800 rounded w-40 mb-4" />
+        <div className="h-4 bg-parchment-800 rounded-sm w-40 mb-4" />
         <div className="space-y-2">
-          {[1, 2, 3].map(i => <div key={i} className="h-10 bg-parchment-800 rounded" />)}
+          {[1, 2, 3].map(i => <div key={i} className="h-10 bg-parchment-800 rounded-sm" />)}
         </div>
       </div>
     );
@@ -92,7 +92,7 @@ export default function WordRelationships({ strongsId }: Props) {
                   </p>
                   <p className="text-xs text-parchment-500 truncate">{co.definition}</p>
                 </div>
-                <span className="text-xs text-gold-500 font-semibold flex-shrink-0">{co.shared_verses}×</span>
+                <span className="text-xs text-gold-500 font-semibold shrink-0">{co.shared_verses}×</span>
               </Link>
             ))}
           </div>

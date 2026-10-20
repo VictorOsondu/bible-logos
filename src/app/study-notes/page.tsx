@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { useStoredJson, writeStoredJson } from '@/lib/storage';
 import Link from 'next/link';
 import { BIBLE_BOOKS } from '@/lib/bible-books';
 
@@ -17,16 +18,10 @@ interface StudyNote {
 
 const STORAGE_KEY = 'biblelogos-study-notes';
 
-function loadNotes(): StudyNote[] {
-  if (typeof window === 'undefined') return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch { return []; }
-}
+const NO_NOTES: StudyNote[] = [];
 
 function saveNotes(notes: StudyNote[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+  writeStoredJson(STORAGE_KEY, notes);
 }
 
 function getBookName(id: number): string {
@@ -39,7 +34,7 @@ function getBookSlug(id: number): string {
 }
 
 export default function StudyNotesPage() {
-  const [notes, setNotes] = useState<StudyNote[]>([]);
+  const notes = useStoredJson(STORAGE_KEY, NO_NOTES);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [filterTag, setFilterTag] = useState<string>('');
   const [filterBook, setFilterBook] = useState<number>(0);
@@ -54,7 +49,6 @@ export default function StudyNotesPage() {
   const [newTags, setNewTags] = useState('');
   const [showForm, setShowForm] = useState(false);
 
-  useEffect(() => { setNotes(loadNotes()); }, []);
 
   const allTags = Array.from(new Set(notes.flatMap(n => n.tags))).sort();
 
@@ -81,7 +75,6 @@ export default function StudyNotesPage() {
       updatedAt: Date.now(),
     };
     const updated = [note, ...notes];
-    setNotes(updated);
     saveNotes(updated);
     setNewText('');
     setNewTags('');
@@ -91,7 +84,6 @@ export default function StudyNotesPage() {
 
   const deleteNote = (id: string) => {
     const updated = notes.filter(n => n.id !== id);
-    setNotes(updated);
     saveNotes(updated);
   };
 
@@ -101,7 +93,6 @@ export default function StudyNotesPage() {
         ? { ...n, text, tags: tags.split(',').map(t => t.trim()).filter(Boolean), updatedAt: Date.now() }
         : n
     );
-    setNotes(updated);
     saveNotes(updated);
     setEditingId(null);
   };
@@ -187,7 +178,7 @@ export default function StudyNotesPage() {
                 {allTags.map(t => <option key={t} value={t}>{t}</option>)}
               </select>
             )}
-            <select value={sortBy} onChange={e => setSortBy(e.target.value as any)} className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700">
+            <select value={sortBy} onChange={e => setSortBy(e.target.value as typeof sortBy)} className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700">
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>
               <option value="book">By Book</option>
@@ -216,11 +207,11 @@ export default function StudyNotesPage() {
                   <Link href={`/reader/${slug}/${note.chapter}${note.verse ? '#v' + note.verse : ''}`} className="text-gold-400 font-semibold text-sm hover:text-gold-300 transition-colors">
                     {ref}
                   </Link>
-                  <div className="flex gap-1.5 flex-shrink-0">
-                    <button onClick={() => setEditingId(isEditing ? null : note.id)} className="text-xs px-2 py-1 rounded bg-parchment-800 text-parchment-400 hover:text-parchment-200 transition-colors">
+                  <div className="flex gap-1.5 shrink-0">
+                    <button onClick={() => setEditingId(isEditing ? null : note.id)} className="text-xs px-2 py-1 rounded-sm bg-parchment-800 text-parchment-400 hover:text-parchment-200 transition-colors">
                       {isEditing ? '' : ''}
                     </button>
-                    <button onClick={() => deleteNote(note.id)} className="text-xs px-2 py-1 rounded bg-parchment-800 text-red-400 hover:text-red-300 transition-colors">
+                    <button onClick={() => deleteNote(note.id)} className="text-xs px-2 py-1 rounded-sm bg-parchment-800 text-red-400 hover:text-red-300 transition-colors">
                       
                     </button>
                   </div>

@@ -1,14 +1,30 @@
 import Link from 'next/link';
 import { toFtsQuery } from '@/lib/search';
-import { getBookById, BIBLE_BOOKS } from '@/lib/bible-books';
+import { getBookById } from '@/lib/bible-books';
 
 export const dynamic = 'force-dynamic';
 
 interface Props {
-  searchParams: { q?: string; book?: string; testament?: string; translation?: string; offset?: string };
+  searchParams: Promise<SearchQuery>;
 }
 
-async function searchVerses(params: Props['searchParams']) {
+interface SearchQuery {
+  q?: string;
+  book?: string;
+  testament?: string;
+  translation?: string;
+  offset?: string;
+}
+
+interface VerseResult {
+  book: number;
+  chapter: number;
+  verse: number;
+  text: string;
+  translation: string;
+}
+
+async function searchVerses(params: SearchQuery): Promise<{ results: VerseResult[]; total: number; limit?: number; offset?: number }> {
   const match = toFtsQuery(params.q || '');
   if (!match) return { results: [], total: 0 };
   
@@ -27,7 +43,7 @@ async function searchVerses(params: Props['searchParams']) {
     JOIN verses v ON v.id = fts.rowid
     WHERE fts.text MATCH ? AND v.translation = ?
   `;
-  const queryParams: any[] = [match, translation];
+  const queryParams: (string | number)[] = [match, translation];
 
   if (book) {
     query += ' AND v.book = ?';
@@ -40,15 +56,15 @@ async function searchVerses(params: Props['searchParams']) {
   queryParams.push(limit, offset);
   
   try {
-    const results = db.prepare(query).all(...queryParams);
+    const results = db.prepare(query).all(...queryParams) as VerseResult[];
     
     let countQuery = `SELECT COUNT(*) as total FROM verses_fts fts JOIN verses v ON v.id = fts.rowid WHERE fts.text MATCH ? AND v.translation = ?`;
-    const countParams: any[] = [match, translation];
+    const countParams: (string | number)[] = [match, translation];
     if (book) { countQuery += ' AND v.book = ?'; countParams.push(book); }
     if (params.testament === 'OT') countQuery += ' AND v.book <= 39';
     if (params.testament === 'NT') countQuery += ' AND v.book >= 40';
     
-    const total = (db.prepare(countQuery).get(...countParams) as any).total;
+    const total = (db.prepare(countQuery).get(...countParams) as { total: number }).total;
     return { results, total, limit, offset };
   } catch (error) {
     console.error('Search failed:', error);
@@ -56,7 +72,8 @@ async function searchVerses(params: Props['searchParams']) {
   }
 }
 
-export default async function SearchPage({ searchParams }: Props) {
+export default async function SearchPage(props: Props) {
+  const searchParams = await props.searchParams;
   const data = await searchVerses(searchParams);
   const q = searchParams.q || '';
   const currentOffset = Math.max(parseInt(searchParams.offset || '0') || 0, 0);
@@ -79,7 +96,7 @@ export default async function SearchPage({ searchParams }: Props) {
               <input
                 type="text" name="q" defaultValue={q}
                 placeholder="Search the Bible…"
-                className="w-full px-4 py-3 rounded-xl bg-parchment-900/70 text-parchment-100 placeholder-parchment-600 focus:outline-none focus:ring-2 focus:ring-gold-500/50 font-serif"
+                className="w-full px-4 py-3 rounded-xl bg-parchment-900/70 text-parchment-100 placeholder-parchment-600 focus:outline-hidden focus:ring-2 focus:ring-gold-500/50 font-serif"
               />
             </div>
             <div>
@@ -112,7 +129,7 @@ export default async function SearchPage({ searchParams }: Props) {
         )}
 
         <div className="space-y-2">
-          {(data.results as any[]).map((v: any, i: number) => {
+          {data.results.map((v, i) => {
             const bookInfo = getBookById(v.book);
             const slug = bookInfo?.name.toLowerCase().replace(/ /g, '-');
             return (

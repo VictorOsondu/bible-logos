@@ -27,7 +27,7 @@ export default function Home() {
       <main className="flex-1 px-4 py-16 max-w-2xl text-center">
         <h1 className="font-serif text-3xl font-semibold text-parchment-50 mb-3">Bible Logos</h1>
         <p className="text-parchment-400">
-          The database has not been built yet. Run <code className="px-1.5 py-0.5 rounded bg-parchment-900 text-parchment-200">npm run seed</code> and reload.
+          The database has not been built yet. Run <code className="px-1.5 py-0.5 rounded-sm bg-parchment-900 text-parchment-200">npm run seed</code> and reload.
         </p>
       </main>
     );

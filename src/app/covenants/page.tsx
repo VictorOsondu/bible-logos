@@ -103,7 +103,7 @@ export default function CovenantsPage() {
 
         {/* Covenant Timeline */}
         <div className="relative mb-8">
-          <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gradient-to-b from-gold-500 via-gold-600/50 to-gold-500" />
+          <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-linear-to-b from-gold-500 via-gold-600/50 to-gold-500" />
           <div className="space-y-6">
             {COVENANTS.map((c, i) => (
               <div key={c.name} className="relative pl-16">

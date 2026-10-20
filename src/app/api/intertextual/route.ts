@@ -1,5 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDb, isDatabaseAvailable, DatabaseNotAvailableError } from '@/lib/db';
+import { getDb, isDatabaseAvailable } from '@/lib/db';
+import { handleApiError } from '@/lib/api-utils';
+
+interface VerseWord {
+  strongs_id: string;
+  word: string;
+  original: string;
+  transliteration: string;
+  definition: string;
+  language: string;
+}
+
+interface SharedWord {
+  strongs_id: string;
+  word: string;
+  transliteration: string;
+  definition: string;
+}
+
+interface Connection extends SharedWord {
+  book: number;
+  chapter: number;
+  verse: number;
+}
 
 // Intertextual connections — identifies shared vocabulary and thematic links between passages
 // This goes beyond simple cross-references by analyzing shared Strong's numbers
@@ -27,13 +50,13 @@ export async function GET(req: NextRequest) {
       FROM word_strongs ws
       JOIN strongs s ON s.id = ws.strongs_id
       WHERE ws.book = ? AND ws.chapter = ? AND ws.verse = ?
-    `).all(book, chapter, verse) as any[];
+    `).all(book, chapter, verse) as VerseWord[];
 
     if (verseWords.length === 0) {
       return NextResponse.json({ data: [], sourceWords: [] });
     }
 
-    const strongsIds = verseWords.map((w: any) => w.strongs_id);
+    const strongsIds = verseWords.map(w => w.strongs_id);
 
     // Find other verses sharing these Strong's numbers
     const placeholders = strongsIds.map(() => '?').join(',');
@@ -45,16 +68,16 @@ export async function GET(req: NextRequest) {
       WHERE ws.strongs_id IN (${placeholders})
         AND NOT (ws.book = ? AND ws.chapter = ? AND ws.verse = ?)
       ORDER BY ws.book, ws.chapter, ws.verse
-    `).all(...strongsIds, book, chapter, verse) as any[];
+    `).all(...strongsIds, book, chapter, verse) as Connection[];
 
     // Group by verse and count shared words
-    const verseMap: Record<string, { book: number; chapter: number; verse: number; sharedWords: any[]; text?: string }> = {};
+    const verseMap: Record<string, { book: number; chapter: number; verse: number; sharedWords: SharedWord[]; text?: string }> = {};
     for (const c of connections) {
       const key = `${c.book}-${c.chapter}-${c.verse}`;
       if (!verseMap[key]) {
         verseMap[key] = { book: c.book, chapter: c.chapter, verse: c.verse, sharedWords: [] };
       }
-      if (!verseMap[key].sharedWords.find((w: any) => w.strongs_id === c.strongs_id)) {
+      if (!verseMap[key].sharedWords.find(w => w.strongs_id === c.strongs_id)) {
         verseMap[key].sharedWords.push({
           strongs_id: c.strongs_id,
           word: c.word,
@@ -79,7 +102,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({
       data: ranked,
-      sourceWords: verseWords.map((w: any) => ({
+      sourceWords: verseWords.map(w => ({
         strongs_id: w.strongs_id,
         word: w.word,
         original: w.original,
@@ -88,10 +111,7 @@ export async function GET(req: NextRequest) {
         language: w.language,
       })),
     });
-  } catch (err) {
-    if (err instanceof DatabaseNotAvailableError) {
-      return NextResponse.json({ error: 'Database not available' }, { status: 503 });
-    }
-    throw err;
+  } catch (error) {
+    return handleApiError(error);
   }
 }

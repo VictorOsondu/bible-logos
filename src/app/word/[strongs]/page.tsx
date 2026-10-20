@@ -5,17 +5,30 @@ import { getBookById } from '@/lib/bible-books';
 import WordRelationships from '@/components/WordRelationships';
 import { getKjvRenderings, getOccurrences } from '@/lib/strongs';
 
+interface StrongsEntry {
+  id: string;
+  original: string;
+  transliteration: string;
+  pronunciation: string | null;
+  definition: string;
+  kjv_usage: string | null;
+  derivation: string | null;
+  language: string;
+}
+
 const PAGE_SIZE = 100;
 
 interface Props {
-  params: { strongs: string };
-  searchParams: { page?: string };
+  params: Promise<{ strongs: string }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
-export default function WordPage({ params, searchParams }: Props) {
+export default async function WordPage(props: Props) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const db = getDb();
   
-  const entry = db.prepare('SELECT * FROM strongs WHERE id = ?').get(params.strongs) as any;
+  const entry = db.prepare('SELECT * FROM strongs WHERE id = ?').get(params.strongs) as StrongsEntry | undefined;
   
   if (!entry) notFound();
 
@@ -80,7 +93,7 @@ export default function WordPage({ params, searchParams }: Props) {
               {pages > 1 && <span className="text-sm text-parchment-500 font-normal"> · page {page} of {pages}</span>}
             </h2>
             <div className="space-y-2">
-              {occurrences.map((o: any, i: number) => {
+              {occurrences.map((o, i) => {
                 const bookInfo = getBookById(o.book);
                 const slug = bookInfo?.name.toLowerCase().replace(/ /g, '-');
                 return (
@@ -93,7 +106,7 @@ export default function WordPage({ params, searchParams }: Props) {
                       <span className="text-sm font-semibold text-gold-400">
                         {bookInfo?.name} {o.chapter}:{o.verse}
                       </span>
-                      <span className="text-xs px-2 py-0.5 rounded bg-parchment-800 text-parchment-400">
+                      <span className="text-xs px-2 py-0.5 rounded-sm bg-parchment-800 text-parchment-400">
                         &ldquo;{o.word}&rdquo;
                       </span>
                     </div>

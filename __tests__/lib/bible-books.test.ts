@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { BIBLE_BOOKS, getBookById, getBookBySlug, BookInfo } from '@/lib/bible-books';
+import { BIBLE_BOOKS, getBookById, getBookBySlug } from '@/lib/bible-books';
 
 describe('bible-books', () => {
   it('should have 66 books', () => {

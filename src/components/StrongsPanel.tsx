@@ -84,7 +84,7 @@ export default function StrongsPanel({ strongsId }: { strongsId: string }) {
                 <Link
                   key={i}
                   href={`/reader/${bookInfo?.name.toLowerCase().replace(/ /g, '-')}/${o.chapter}#v${o.verse}`}
-                  className="block p-2 rounded hover:bg-parchment-800 transition-colors text-xs"
+                  className="block p-2 rounded-sm hover:bg-parchment-800 transition-colors text-xs"
                 >
                   <span className="text-gold-400">{bookInfo?.name} {o.chapter}:{o.verse}</span>
                   <span className="text-parchment-500 ml-2">&quot;{o.word}&quot;</span>

@@ -35,7 +35,7 @@ export default function CrossRefPanel({ book, chapter, verse }: { book: number; 
       <Link
         key={`${direction}-${ref.book}-${ref.chapter}-${ref.verse_start}`}
         href={`/reader/${bookInfo?.name.toLowerCase().replace(/ /g, '-') || ref.book}/${ref.chapter}#v${ref.verse_start}`}
-        className="block p-2 rounded hover:bg-parchment-800 transition-colors group"
+        className="block p-2 rounded-sm hover:bg-parchment-800 transition-colors group"
       >
         <div className="flex justify-between items-center mb-1">
           <span className="text-xs font-semibold text-gold-400 group-hover:text-gold-300">{label}</span>

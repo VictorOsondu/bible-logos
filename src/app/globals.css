@@ -1,6 +1,36 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-parchment-50: rgb(var(--parchment-50));
+  --color-parchment-100: rgb(var(--parchment-100));
+  --color-parchment-200: rgb(var(--parchment-200));
+  --color-parchment-300: rgb(var(--parchment-300));
+  --color-parchment-400: rgb(var(--parchment-400));
+  --color-parchment-500: rgb(var(--parchment-500));
+  --color-parchment-600: rgb(var(--parchment-600));
+  --color-parchment-700: rgb(var(--parchment-700));
+  --color-parchment-800: rgb(var(--parchment-800));
+  --color-parchment-900: rgb(var(--parchment-900));
+  --color-parchment-950: rgb(var(--parchment-950));
+
+  --color-gold-400: rgb(var(--gold-400));
+  --color-gold-500: rgb(var(--gold-500));
+  --color-gold-600: rgb(var(--gold-600));
+
+  --font-serif: var(--font-reading), Georgia, serif;
+  --font-sans: var(--font-ui), system-ui, sans-serif;
+}
+
+/* Borders without an explicit colour use the theme's border colour (Tailwind 4 defaults to currentcolor) */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-parchment-800, currentcolor);
+  }
+}
 
 /*
  * Theme colours as RGB triples, used by the Tailwind palette (tailwind.config.ts).
@@ -88,7 +118,7 @@ body {
 }
 
 /* Words linked to Strong's: plain text until pointed at, so the page reads cleanly */
-/* Verse numbers and linked words are buttons (for keyboard access) styled as plain text */
+/* Verse numbers are buttons (for keyboard access) styled as plain text */
 button.verse-number {
   appearance: none;
   background: none;
@@ -102,16 +132,6 @@ button.verse-number {
 }
 button.verse-number:hover {
   background-color: rgb(var(--gold-400) / 0.12);
-}
-.strongs-word {
-  appearance: none;
-  background: none;
-  border: 0;
-  margin: 0;
-  padding: 0;
-  font: inherit;
-  line-height: inherit;
-  text-align: inherit;
 }
 
 .strongs-word {
@@ -143,7 +163,8 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
-textarea:focus-visible {
+textarea:focus-visible,
+[role='button']:focus-visible {
   outline: 2px solid rgb(var(--gold-400));
   outline-offset: 2px;
   border-radius: 4px;

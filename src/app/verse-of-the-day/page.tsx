@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { getDb, isDatabaseAvailable } from '@/lib/db';
+import { getDb } from '@/lib/db';
 import { getBookById } from '@/lib/bible-books';
 
 export const dynamic = 'force-dynamic';
@@ -56,7 +56,7 @@ export default function VerseOfTheDayPage() {
     SELECT COUNT(*) as c FROM cross_references
     WHERE (from_book = ? AND from_chapter = ? AND from_verse_start <= ? AND from_verse_end >= ?)
        OR (to_book = ? AND to_chapter = ? AND to_verse_start <= ? AND to_verse_end >= ?)
-  `).get(book, chapter, verse, verse, book, chapter, verse, verse) as any)?.c || 0;
+  `).get(book, chapter, verse, verse, book, chapter, verse, verse) as { c: number } | undefined)?.c || 0;
 
   const dateStr = now.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 

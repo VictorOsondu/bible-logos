@@ -108,7 +108,6 @@ const PROPHECIES: Prophecy[] = [
   },
 ];
 
-const CATEGORIES = ['All', 'Messianic', 'Historical', 'Eschatological'];
 const STATUS_LABELS = {
   fulfilled: { label: 'Fulfilled', color: 'text-parchment-300 bg-parchment-800/60 border-parchment-800' },
   partially: { label: 'Partially Fulfilled', color: 'text-parchment-300 bg-parchment-800/60 border-parchment-800' },
@@ -152,8 +151,8 @@ export default function PropheciesPage() {
                   <div>
                     <h3 className="text-lg font-semibold text-parchment-100">{p.title}</h3>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-xs text-parchment-500 bg-parchment-800 px-2 py-0.5 rounded">{p.category}</span>
-                      <span className={`text-xs px-2 py-0.5 rounded border ${status.color}`}>{status.label}</span>
+                      <span className="text-xs text-parchment-500 bg-parchment-800 px-2 py-0.5 rounded-sm">{p.category}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-sm border ${status.color}`}>{status.label}</span>
                     </div>
                   </div>
                 </div>

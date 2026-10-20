@@ -1,5 +1,3 @@
-import Link from 'next/link';
-
 export const dynamic = 'force-dynamic';
 
 const HEBREW_LETTERS = [
@@ -69,7 +67,7 @@ export default function AlphabetPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {HEBREW_LETTERS.map(l => (
               <div key={l.name} className="flex items-center gap-3 p-3 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 transition-all">
-                <div className="w-12 h-12 rounded-lg bg-parchment-800 flex items-center justify-center text-2xl text-gold-400 font-bold flex-shrink-0" dir="rtl">
+                <div className="w-12 h-12 rounded-lg bg-parchment-800 flex items-center justify-center text-2xl text-gold-400 font-bold shrink-0" dir="rtl">
                   {l.letter}
                 </div>
                 <div className="min-w-0">
@@ -92,7 +90,7 @@ export default function AlphabetPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
             {GREEK_LETTERS.map(l => (
               <div key={l.name} className="flex items-center gap-3 p-3 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 transition-all">
-                <div className="w-12 h-12 rounded-lg bg-parchment-800 flex items-center justify-center text-lg text-gold-400 font-bold flex-shrink-0">
+                <div className="w-12 h-12 rounded-lg bg-parchment-800 flex items-center justify-center text-lg text-gold-400 font-bold shrink-0">
                   {l.letter}
                 </div>
                 <div className="min-w-0">

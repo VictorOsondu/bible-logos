@@ -5,7 +5,7 @@ import Link from 'next/link';
 export const dynamic = 'force-dynamic';
 
 interface Props {
-  searchParams: { book?: string; chapter?: string; verse?: string };
+  searchParams: Promise<{ book?: string; chapter?: string; verse?: string }>;
 }
 
 function diffWords(texts: string[]): { text: string; isDiff: boolean }[][] {
@@ -24,7 +24,8 @@ function diffWords(texts: string[]): { text: string; isDiff: boolean }[][] {
   });
 }
 
-export default function ComparePage({ searchParams }: Props) {
+export default async function ComparePage(props: Props) {
+  const searchParams = await props.searchParams;
   const bookId = parseInt(searchParams.book || '43'); // Default: John
   const chapter = parseInt(searchParams.chapter || '3');
   const verse = parseInt(searchParams.verse || '16');
@@ -32,10 +33,6 @@ export default function ComparePage({ searchParams }: Props) {
   const bookInfo = getBookById(bookId);
   
   const db = getDb();
-  const allTranslations = db.prepare(
-    "SELECT DISTINCT translation FROM verses ORDER BY CASE translation WHEN 'KJV' THEN 1 WHEN 'ASV' THEN 2 WHEN 'YLT' THEN 3 WHEN 'BBE' THEN 4 ELSE 5 END"
-  ).all() as { translation: string }[];
-  
   const verses = db.prepare(`
     SELECT translation, text FROM verses
     WHERE book = ? AND chapter = ? AND verse = ?
@@ -48,7 +45,7 @@ export default function ComparePage({ searchParams }: Props) {
   // Navigation helpers
   const maxVerse = (db.prepare(
     'SELECT MAX(verse) as m FROM verses WHERE book = ? AND chapter = ? AND translation = ?'
-  ).get(bookId, chapter, 'KJV') as any)?.m || 1;
+  ).get(bookId, chapter, 'KJV') as { m: number | null } | undefined)?.m || 1;
 
   return (
     <>
@@ -67,7 +64,7 @@ export default function ComparePage({ searchParams }: Props) {
               <select
                 name="book"
                 defaultValue={bookId}
-                className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700 focus:border-gold-500 focus:outline-none"
+                className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700 focus:border-gold-500 focus:outline-hidden"
               >
                 {BIBLE_BOOKS.map(b => (
                   <option key={b.id} value={b.id}>{b.name}</option>
@@ -77,12 +74,12 @@ export default function ComparePage({ searchParams }: Props) {
             <div>
               <label className="text-xs text-parchment-500 block mb-1">Chapter</label>
               <input type="number" name="chapter" defaultValue={chapter} min={1} max={bookInfo?.chapters || 150}
-                className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700 w-20 focus:border-gold-500 focus:outline-none" />
+                className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700 w-20 focus:border-gold-500 focus:outline-hidden" />
             </div>
             <div>
               <label className="text-xs text-parchment-500 block mb-1">Verse</label>
               <input type="number" name="verse" defaultValue={verse} min={1}
-                className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700 w-20 focus:border-gold-500 focus:outline-none" />
+                className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-2 text-sm border border-parchment-700 w-20 focus:border-gold-500 focus:outline-hidden" />
             </div>
             <button type="submit" className="px-4 py-2 bg-gold-600 text-parchment-950 rounded-lg font-semibold hover:bg-gold-500 transition-colors text-sm">
               Compare

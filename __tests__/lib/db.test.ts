@@ -1,6 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import path from 'path';
-import fs from 'fs';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 
 // Reset module between tests
 beforeEach(() => {

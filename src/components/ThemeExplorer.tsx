@@ -181,7 +181,7 @@ export default function ThemeExplorer() {
                     <span className="text-parchment-200 text-sm font-medium">{theme.name}</span>
                     <div className="flex gap-1">
                       {theme.strongsIds.map(id => (
-                        <span key={id} className="text-xs bg-gold-600/20 text-gold-400 px-1.5 py-0.5 rounded">{id}</span>
+                        <span key={id} className="text-xs bg-gold-600/20 text-gold-400 px-1.5 py-0.5 rounded-sm">{id}</span>
                       ))}
                     </div>
                   </button>

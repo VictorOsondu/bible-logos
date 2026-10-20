@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getDb } from '@/lib/db';
 import { handleApiError } from '@/lib/api-utils';
 
+interface RelatedWord {
+  id: string;
+  original: string;
+  transliteration: string;
+  definition: string;
+  language: string;
+  shared_verses: number;
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -13,7 +22,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Get the source entry
-    const entry = db.prepare('SELECT * FROM strongs WHERE id = ?').get(strongsId) as any;
+    const entry = db.prepare('SELECT id, original, transliteration, definition, language FROM strongs WHERE id = ?').get(strongsId);
     if (!entry) {
       return NextResponse.json({ error: "Strong's number not found" }, { status: 404 });
     }
@@ -29,36 +38,22 @@ export async function GET(request: NextRequest) {
       GROUP BY s.id
       ORDER BY shared_verses DESC
       LIMIT 15
-    `).all(strongsId, strongsId) as any[];
-
-    // Find words from the same language family (same prefix range)
-    const lang = strongsId.charAt(0);
-    const num = parseInt(strongsId.substring(1));
-    const rangeStart = `${lang}${Math.max(1, num - 20)}`;
-    const rangeEnd = `${lang}${num + 20}`;
-    const sameFamily = db.prepare(`
-      SELECT id, original, transliteration, definition, language
-      FROM strongs
-      WHERE id >= ? AND id <= ? AND id != ?
-      ORDER BY id
-      LIMIT 10
-    `).all(rangeStart, rangeEnd, strongsId) as any[];
+    `).all(strongsId, strongsId) as RelatedWord[];
 
     // Get verse distribution across testaments
     const otCount = db.prepare(`
       SELECT COUNT(DISTINCT book || '-' || chapter || '-' || verse) as c
       FROM word_strongs WHERE strongs_id = ? AND book <= 39
-    `).get(strongsId) as any;
+    `).get(strongsId) as { c: number };
 
     const ntCount = db.prepare(`
       SELECT COUNT(DISTINCT book || '-' || chapter || '-' || verse) as c
       FROM word_strongs WHERE strongs_id = ? AND book >= 40
-    `).get(strongsId) as any;
+    `).get(strongsId) as { c: number };
 
     return NextResponse.json({
       entry,
       coOccurrences,
-      sameFamily,
       distribution: {
         oldTestament: otCount?.c || 0,
         newTestament: ntCount?.c || 0,

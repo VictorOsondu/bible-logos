@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import VerseDisplay from '@/components/VerseDisplay';
 import KeyboardNav from '@/components/KeyboardNav';
-import { getBookBySlug, getBookById, BIBLE_BOOKS } from '@/lib/bible-books';
+import { getBookBySlug, BIBLE_BOOKS } from '@/lib/bible-books';
 import { getDb } from '@/lib/db';
 import { getChapterTokens } from '@/lib/strongs';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -28,11 +28,12 @@ interface Verse {
 }
 
 interface Props {
-  params: { book: string; chapter: string };
-  searchParams: { translations?: string };
+  params: Promise<{ book: string; chapter: string }>;
+  searchParams: Promise<{ translations?: string }>;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(props: Props): Promise<Metadata> {
+  const params = await props.params;
   const bookInfo = getBookBySlug(params.book);
   const title = bookInfo ? `${bookInfo.name} ${params.chapter} — Bible Logos` : 'Bible Logos';
   return {
@@ -41,7 +42,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function ReaderPage({ params, searchParams }: Props) {
+export default async function ReaderPage(props: Props) {
+  const params = await props.params;
+  const searchParams = await props.searchParams;
   const bookInfo = getBookBySlug(params.book);
   if (!bookInfo) notFound();
   

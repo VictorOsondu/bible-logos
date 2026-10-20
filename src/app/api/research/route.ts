@@ -337,7 +337,8 @@ async function queryService(request: NextRequest): Promise<NextResponse> {
           pages: info.pageCount || null,
           categories: (info.categories || []).slice(0, 5),
           isbn: info.industryIdentifiers?.find((i: any) => i.type === 'ISBN_13')?.identifier || info.industryIdentifiers?.[0]?.identifier || null,
-          thumbnail: info.imageLinks?.thumbnail || null,
+          // Google returns http:// links; the content security policy only allows https
+          thumbnail: info.imageLinks?.thumbnail?.replace(/^http:\/\//, 'https://') || null,
           url: info.infoLink || `https://books.google.com/books?id=${item.id}`,
           averageRating: info.averageRating || null,
         };

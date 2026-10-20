@@ -6,7 +6,7 @@ vi.mock('@/lib/db', () => ({
   isDatabaseAvailable: vi.fn(() => true),
   getDb: vi.fn(() => ({
     prepare: vi.fn((sql: string) => ({
-      all: vi.fn((...args: any[]) => {
+      all: vi.fn(() => {
         if (sql.includes('FROM word_strongs ws') && sql.includes('JOIN strongs s') && !sql.includes('IN (')) {
           return [
             { strongs_id: 'G26', word: 'loved', original: 'ἀγάπη', transliteration: 'agapē', definition: 'Love', language: 'greek' },

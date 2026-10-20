@@ -155,7 +155,7 @@ export default function TimelinePage() {
                 <div className="absolute left-4 top-2 w-5 h-5 rounded-full bg-gold-500 border-4 border-parchment-950 z-10 hidden lg:block" />
                 
                 <div className="lg:ml-14">
-                  <div className={`bg-gradient-to-r ${era.color} border border-parchment-800 rounded-2xl p-5 lg:p-6`}>
+                  <div className={`bg-linear-to-r ${era.color} border border-parchment-800 rounded-2xl p-5 lg:p-6`}>
                     <div className="flex items-baseline gap-3 mb-4">
                       <h2 className="text-xl font-bold font-serif text-gold-400">{era.era}</h2>
                       <span className="text-sm text-parchment-500">{era.period}</span>
@@ -167,7 +167,7 @@ export default function TimelinePage() {
                           href={`/reader/${book.slug}/1`}
                           className="flex items-start gap-3 p-3 rounded-xl bg-parchment-950/50 hover:bg-parchment-900/70 hover:bg-parchment-900 transition-all group"
                         >
-                          <div className="mt-0.5 w-2 h-2 rounded-full bg-gold-500/60 flex-shrink-0 group-hover:bg-gold-400" />
+                          <div className="mt-0.5 w-2 h-2 rounded-full bg-gold-500/60 shrink-0 group-hover:bg-gold-400" />
                           <div className="min-w-0">
                             <p className="text-sm font-semibold text-parchment-200 group-hover:text-gold-400 transition-colors">{book.name}</p>
                             <p className="text-xs text-parchment-500 mb-0.5">{book.date}</p>

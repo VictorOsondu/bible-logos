@@ -56,7 +56,7 @@ export default function PersonsPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search by name…"
-            className="bg-parchment-800 border border-parchment-700 rounded-lg px-3 py-2 text-sm text-parchment-100 placeholder-parchment-500 focus:outline-none focus:border-gold-500/50"
+            className="bg-parchment-800 border border-parchment-700 rounded-lg px-3 py-2 text-sm text-parchment-100 placeholder-parchment-500 focus:outline-hidden focus:border-gold-500/50"
           />
           {CATEGORIES.map(cat => (
             <button
@@ -96,7 +96,7 @@ export default function PersonsPage() {
                   <Link
                     key={kv.ref}
                     href={`/reader/${kv.slug}/${kv.chapter}#v${kv.verse}`}
-                    className="text-xs px-2 py-1 rounded bg-parchment-800 text-gold-400 hover:text-gold-300 hover:bg-parchment-700 transition-colors"
+                    className="text-xs px-2 py-1 rounded-sm bg-parchment-800 text-gold-400 hover:text-gold-300 hover:bg-parchment-700 transition-colors"
                   >
                     {kv.ref}
                   </Link>

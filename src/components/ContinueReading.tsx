@@ -1,16 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { getBookById } from '@/lib/bible-books';
-import { getHistory, type ReadingHistory } from '@/lib/reading';
+import { useHistory } from '@/lib/reading';
+import { useIsClient } from '@/lib/storage';
 
 /** The reader's last chapter, or a starting point on a first visit. */
 export default function ContinueReading() {
-  const [last, setLast] = useState<ReadingHistory | null | undefined>(undefined);
-
-  useEffect(() => setLast(getHistory()[0] ?? null), []);
+  const isClient = useIsClient(); // history lives in the browser, so wait until it can be read
+  const last = useHistory()[0];
 
   const book = last ? getBookById(last.book) : undefined;
   const href = book ? `/reader/${book.name.toLowerCase().replace(/ /g, '-')}/${last!.chapter}` : '/reader/genesis/1';
@@ -19,7 +18,7 @@ export default function ContinueReading() {
     <div className="grid sm:grid-cols-[1fr_auto_auto] gap-2">
       <Link
         href={href}
-        className={`group flex items-center justify-between gap-3 px-5 py-4 rounded-xl bg-gold-600 text-parchment-950 hover:opacity-90 transition-opacity ${last === undefined ? 'invisible' : ''}`}
+        className={`group flex items-center justify-between gap-3 px-5 py-4 rounded-xl bg-gold-600 text-parchment-950 hover:opacity-90 transition-opacity ${isClient ? '' : 'invisible'}`}
       >
         <span>
           <span className="block text-xs font-medium opacity-80">{book ? 'Continue reading' : 'Start reading'}</span>

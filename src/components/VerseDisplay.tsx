@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 import Link from 'next/link';
 import { Bookmark, Columns2, Dna, GraduationCap, Link as LinkIcon, X } from 'lucide-react';
 import { getBookById } from '@/lib/bible-books';
-import { isBookmarked, toggleBookmark } from '@/lib/reading';
+import { isBookmarked, toggleBookmark, useBookmarks } from '@/lib/reading';
 import CrossRefPanel from './CrossRefPanel';
 import StrongsPanel from './StrongsPanel';
 import ResearchPanel from './ResearchPanel';
@@ -40,34 +40,44 @@ const chip = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border b
 // Below this width the study panel is a bottom sheet over the text rather than a side column.
 const SHEET_BREAKPOINT = 1280;
 
+// The URL fragment, e.g. "#v16" when linked to a verse
+const subscribeToHash = (onChange: () => void) => {
+  window.addEventListener('hashchange', onChange);
+  return () => window.removeEventListener('hashchange', onChange);
+};
+const useHash = () => useSyncExternalStore(subscribeToHash, () => window.location.hash, () => '');
+
 export default function VerseDisplay({ verses, translations, kjvTokens, lexicon }: Props) {
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null);
   const [panel, setPanel] = useState<Panel | null>(null);
   const [selectedStrongs, setSelectedStrongs] = useState<string | null>(null);
-  const [targetVerse, setTargetVerse] = useState<number | null>(null);
-  const [bookmarked, setBookmarked] = useState(false);
 
   const book = verses[0]?.book;
   const chapter = verses[0]?.chapter;
   const bookName = book ? getBookById(book)?.name ?? '' : '';
 
+  const hashMatch = /^#v(\d+)$/.exec(useHash());
+  const targetVerse = hashMatch ? Number(hashMatch[1]) : null;
+  const bookmarks = useBookmarks();
+  const bookmarked = selectedVerse !== null && isBookmarked(bookmarks, book, chapter, selectedVerse);
+
   // Scroll to a linked verse (#v16). Browsers do this on a full page load, but not after
   // client-side navigation, where the verses render after the router has tried to scroll.
   useEffect(() => {
-    const match = /^#v(\d+)$/.exec(window.location.hash);
-    if (!match) return;
-    setTargetVerse(Number(match[1]));
-    document.getElementById(`v${match[1]}`)?.scrollIntoView();
-  }, [verses]);
+    if (targetVerse !== null) document.getElementById(`v${targetVerse}`)?.scrollIntoView();
+  }, [verses, targetVerse]);
 
-  useEffect(() => {
-    if (selectedVerse !== null && book) setBookmarked(isBookmarked(book, chapter, selectedVerse));
-  }, [selectedVerse, book, chapter]);
+  const closePanel = () => { setPanel(null); setSelectedVerse(null); setSelectedStrongs(null); };
 
   // Escape closes the study panel
   useEffect(() => {
     if (!panel) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') closePanel(); };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      setPanel(null);
+      setSelectedVerse(null);
+      setSelectedStrongs(null);
+    };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
   }, [panel]);
@@ -76,8 +86,6 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
   const grouped = new Map<number, Verse[]>();
   for (const v of verses) grouped.set(v.verse, [...(grouped.get(v.verse) ?? []), v]);
   for (const list of grouped.values()) list.sort((a, b) => translations.indexOf(a.translation) - translations.indexOf(b.translation));
-
-  const closePanel = () => { setPanel(null); setSelectedVerse(null); setSelectedStrongs(null); };
 
   const selectVerse = (verse: number) => {
     if (selectedVerse === verse) return closePanel();
@@ -104,16 +112,24 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
       if (!id) return token.t;
       const info = lexicon?.[id];
       return (
-        <button
+        // A span rather than a <button> so multi-word phrases can wrap across lines like the rest of the text
+        <span
           key={i}
-          type="button"
+          role="button"
+          tabIndex={0}
           className="strongs-word"
           title={info ? `${info.transliteration} (${info.original}): ${info.definition}` : id}
           aria-label={info ? `${token.t}: ${info.transliteration}, Strong's ${id}` : `${token.t}, Strong's ${id}`}
           onClick={e => { e.stopPropagation(); openWord(id); }}
+          onKeyDown={e => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            e.preventDefault();
+            e.stopPropagation();
+            openWord(id);
+          }}
         >
           {token.t}
-        </button>
+        </span>
       );
     });
   };
@@ -181,7 +197,7 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
                     <Columns2 size={13} /> Compare
                   </Link>
                   <button
-                    onClick={() => setBookmarked(toggleBookmark(book, chapter, verseNum))}
+                    onClick={() => toggleBookmark(book, chapter, verseNum)}
                     className={`${chip} ${bookmarked ? 'text-gold-400 border-gold-400/40' : ''}`}
                     aria-pressed={bookmarked}
                   >
@@ -214,7 +230,9 @@ export default function VerseDisplay({ verses, translations, kjvTokens, lexicon 
           {panel === 'strongs' && selectedStrongs && <StrongsPanel strongsId={selectedStrongs} />}
           {panel === 'crossref' && selectedVerse !== null && <CrossRefPanel book={book} chapter={chapter} verse={selectedVerse} />}
           {panel === 'intertextual' && selectedVerse !== null && <IntertextualPanel book={book} chapter={chapter} verse={selectedVerse} />}
-          {panel === 'research' && selectedVerse !== null && <ResearchPanel book={book} chapter={chapter} verse={selectedVerse} />}
+          {panel === 'research' && selectedVerse !== null && (
+            <ResearchPanel key={`${book}-${chapter}-${selectedVerse}`} book={book} chapter={chapter} verse={selectedVerse} />
+          )}
         </aside>
       )}
     </div>

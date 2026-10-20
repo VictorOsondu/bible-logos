@@ -8,7 +8,7 @@ const contentSecurityPolicy = [
   "default-src 'self'",
   `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ''}`,
   "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' data:",
+  "img-src 'self' data: https://books.google.com", // book covers in the research panel
   "font-src 'self'",
   `connect-src 'self'${isDev ? ' ws:' : ''}`,
   "object-src 'none'",
@@ -28,9 +28,8 @@ const securityHeaders = [
 const nextConfig = {
   output: 'standalone',
   poweredByHeader: false,
-  experimental: {
-    serverComponentsExternalPackages: ['better-sqlite3'],
-  },
+  // Native module: load it from node_modules at runtime rather than bundling it
+  serverExternalPackages: ['better-sqlite3'],
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },

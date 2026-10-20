@@ -67,10 +67,11 @@ async function fetchSource({ url, sha256: expected }: Source, maxRetries = 3): P
       fs.mkdirSync(CACHE_DIR, { recursive: true });
       fs.writeFileSync(cached, data);
       return data.toString('utf8').replace(/^\uFEFF/, '');
-    } catch (error: any) {
-      if (attempt >= maxRetries || error?.message?.startsWith('checksum mismatch')) throw error;
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (attempt >= maxRetries || message.startsWith('checksum mismatch')) throw error;
       const delay = attempt * 2000;
-      console.warn(`  Attempt ${attempt} failed (${error?.message || error}), retrying in ${delay / 1000}s...`);
+      console.warn(`  Attempt ${attempt} failed (${message}), retrying in ${delay / 1000}s...`);
       await sleep(delay);
     }
   }
@@ -273,8 +274,8 @@ async function main() {
   console.log(`\n✅ Database seeded successfully in ${elapsed}s!`);
 
   const statsDb = new Database(DB_PATH, { readonly: true });
-  const verseCount = statsDb.prepare('SELECT COUNT(*) as c FROM verses').get() as any;
-  const xrefCount = statsDb.prepare('SELECT COUNT(*) as c FROM cross_references').get() as any;
+  const verseCount = statsDb.prepare('SELECT COUNT(*) as c FROM verses').get() as { c: number };
+  const xrefCount = statsDb.prepare('SELECT COUNT(*) as c FROM cross_references').get() as { c: number };
   const translationStats = statsDb.prepare('SELECT translation, COUNT(*) as c FROM verses GROUP BY translation').all();
   console.log(`Total verses: ${verseCount.c}`);
   console.log(`Cross-references: ${xrefCount.c}`);

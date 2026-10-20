@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useJson } from '@/lib/useJson';
 import { getBookById } from '@/lib/bible-books';
 
 interface Paper {
@@ -43,6 +44,8 @@ interface CrossRefResult {
   url: string;
 }
 
+type Tab = 'ai' | 'scholar' | 'pubmed' | 'books' | 'crossref' | 'openalex' | 'archive' | 'europepmc' | 'googlebooks' | 'core' | 'wiki' | 'perseus' | 'wikidata' | 'sacredtexts' | 'resources';
+
 export default function ResearchPanel({ book, chapter, verse }: { book: number; chapter: number; verse: number }) {
   const [papers, setPapers] = useState<Paper[]>([]);
   const [pubmed, setPubmed] = useState<PubMedResult[]>([]);
@@ -57,14 +60,14 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
   const [perseusResults, setPerseusResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [failedTab, setFailedTab] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'ai' | 'scholar' | 'pubmed' | 'books' | 'crossref' | 'openalex' | 'archive' | 'europepmc' | 'googlebooks' | 'core' | 'wiki' | 'perseus' | 'wikidata' | 'sacredtexts' | 'resources'>('ai');
+  const [activeTab, setActiveTab] = useState<Tab>('ai');
 
   const bookInfo = getBookById(book);
   const bookName = bookInfo?.name || '';
   const ref = `${bookName} ${chapter}:${verse}`;
   const searchQuery = `Bible ${bookName} chapter ${chapter} verse ${verse}`;
 
-  const fetchScholar = async () => {
+  const fetchScholar = async (tab: Tab) => {
     if (papers.length > 0) return;
     setLoading(true);
     try {
@@ -72,11 +75,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setPapers(data.data || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchPubMed = async () => {
+  const fetchPubMed = async (tab: Tab) => {
     if (pubmed.length > 0) return;
     setLoading(true);
     try {
@@ -84,11 +87,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setPubmed(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchOpenLib = async () => {
+  const fetchOpenLib = async (tab: Tab) => {
     if (openlib.length > 0) return;
     setLoading(true);
     try {
@@ -96,11 +99,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setOpenlib(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchCrossRef = async () => {
+  const fetchCrossRef = async (tab: Tab) => {
     if (crossref.length > 0) return;
     setLoading(true);
     try {
@@ -108,11 +111,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setCrossref(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchOpenAlex = async () => {
+  const fetchOpenAlex = async (tab: Tab) => {
     if (openalex.length > 0) return;
     setLoading(true);
     try {
@@ -120,11 +123,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setOpenalex(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchArchive = async () => {
+  const fetchArchive = async (tab: Tab) => {
     if (archive.length > 0) return;
     setLoading(true);
     try {
@@ -132,11 +135,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setArchive(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchEuropePMC = async () => {
+  const fetchEuropePMC = async (tab: Tab) => {
     if (europepmc.length > 0) return;
     setLoading(true);
     try {
@@ -144,11 +147,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setEuropepmc(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchGoogleBooks = async () => {
+  const fetchGoogleBooks = async (tab: Tab) => {
     if (googlebooks.length > 0) return;
     setLoading(true);
     try {
@@ -156,11 +159,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setGooglebooks(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchCore = async () => {
+  const fetchCore = async (tab: Tab) => {
     if (coreResults.length > 0) return;
     setLoading(true);
     try {
@@ -168,11 +171,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setCoreResults(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchWiki = async () => {
+  const fetchWiki = async (tab: Tab) => {
     if (wikiResults.length > 0) return;
     setLoading(true);
     try {
@@ -180,11 +183,11 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setWikiResults(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const fetchPerseus = async () => {
+  const fetchPerseus = async (tab: Tab) => {
     if (perseusResults.length > 0) return;
     setLoading(true);
     try {
@@ -192,25 +195,25 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setPerseusResults(data.results || []);
-    } catch { setFailedTab(activeTab); }
+    } catch { setFailedTab(tab); }
     setLoading(false);
   };
 
-  const runFetch = () => {
+  // Load a tab's results when it is opened (each fetcher skips work it has already done)
+  const runFetch = (tab: Tab) => {
     setFailedTab(null);
-    if (activeTab === 'scholar') fetchScholar();
-    if (activeTab === 'pubmed') fetchPubMed();
-    if (activeTab === 'books') fetchOpenLib();
-    if (activeTab === 'crossref') fetchCrossRef();
-    if (activeTab === 'openalex') fetchOpenAlex();
-    if (activeTab === 'archive') fetchArchive();
-    if (activeTab === 'europepmc') fetchEuropePMC();
-    if (activeTab === 'googlebooks') fetchGoogleBooks();
-    if (activeTab === 'core') fetchCore();
-    if (activeTab === 'wiki') fetchWiki();
-    if (activeTab === 'perseus') fetchPerseus();
+    if (tab === 'scholar') fetchScholar(tab);
+    if (tab === 'pubmed') fetchPubMed(tab);
+    if (tab === 'books') fetchOpenLib(tab);
+    if (tab === 'crossref') fetchCrossRef(tab);
+    if (tab === 'openalex') fetchOpenAlex(tab);
+    if (tab === 'archive') fetchArchive(tab);
+    if (tab === 'europepmc') fetchEuropePMC(tab);
+    if (tab === 'googlebooks') fetchGoogleBooks(tab);
+    if (tab === 'core') fetchCore(tab);
+    if (tab === 'wiki') fetchWiki(tab);
+    if (tab === 'perseus') fetchPerseus(tab);
   };
-  useEffect(runFetch, [activeTab]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // AI research queries
   const aiQueries = [
@@ -267,8 +270,8 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
         {([['ai', 'AI'], ['scholar', 'Scholar'], ['pubmed', 'PubMed'], ['books', 'Books'], ['googlebooks', 'Google'], ['crossref', 'CrossRef'], ['openalex', 'OpenAlex'], ['archive', 'Archive'], ['europepmc', 'EuroPMC'], ['core', 'CORE'], ['wiki', 'Wiki'], ['perseus', 'Perseus'], ['wikidata', 'Wikidata'], ['sacredtexts', 'Sacred'], ['resources', 'Links']] as const).map(([key, label]) => (
           <button
             key={key}
-            onClick={() => setActiveTab(key)}
-            className={`flex-1 text-xs py-1.5 rounded transition-colors ${activeTab === key ? 'bg-gold-600 text-parchment-950 font-semibold' : 'text-parchment-400 hover:text-parchment-200'}`}
+            onClick={() => { setActiveTab(key); runFetch(key); }}
+            className={`flex-1 text-xs py-1.5 rounded-sm transition-colors ${activeTab === key ? 'bg-gold-600 text-parchment-950 font-semibold' : 'text-parchment-400 hover:text-parchment-200'}`}
           >
             {label}
           </button>
@@ -278,7 +281,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
       {failedTab === activeTab && (
         <p className="text-sm text-parchment-400">
           Couldn&apos;t reach this service just now.{' '}
-          <button onClick={runFetch} className="underline underline-offset-2 hover:text-parchment-100">Try again</button>
+          <button onClick={() => runFetch(activeTab)} className="underline underline-offset-2 hover:text-parchment-100">Try again</button>
         </p>
       )}
 
@@ -296,7 +299,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs px-2 py-1 rounded bg-parchment-700 text-parchment-300 hover:bg-gold-600 hover:text-parchment-950 transition-colors"
+                    className="text-xs px-2 py-1 rounded-sm bg-parchment-700 text-parchment-300 hover:bg-gold-600 hover:text-parchment-950 transition-colors"
                   >
                     {link.name}
                   </a>
@@ -387,7 +390,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
               {b.subjects.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">
                   {b.subjects.slice(0, 4).map((s, j) => (
-                    <span key={j} className="text-xs px-1.5 py-0.5 rounded bg-parchment-700 text-parchment-400">{s}</span>
+                    <span key={j} className="text-xs px-1.5 py-0.5 rounded-sm bg-parchment-700 text-parchment-400">{s}</span>
                   ))}
                 </div>
               )}
@@ -485,7 +488,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
               {item.subjects?.length > 0 && (
                 <div className="flex flex-wrap gap-1 mt-2">
                   {item.subjects.slice(0, 4).map((s: string, j: number) => (
-                    <span key={j} className="text-xs px-1.5 py-0.5 rounded bg-parchment-700 text-parchment-400">{s}</span>
+                    <span key={j} className="text-xs px-1.5 py-0.5 rounded-sm bg-parchment-700 text-parchment-400">{s}</span>
                   ))}
                 </div>
               )}
@@ -539,7 +542,9 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
             >
               <div className="flex gap-3">
                 {item.thumbnail && (
-                  <img src={item.thumbnail} alt="" className="w-10 h-14 object-cover rounded flex-shrink-0" />
+                  // Small remote covers; next/image would route them through the image optimiser for no gain
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={item.thumbnail} alt="" loading="lazy" className="w-10 h-14 object-cover rounded-sm shrink-0" />
                 )}
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm text-parchment-100 font-medium leading-tight">{item.title}</h4>
@@ -611,7 +616,7 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
               className="block p-3 bg-parchment-800 rounded-lg hover:bg-parchment-700 transition-colors group">
               <p className="text-sm text-parchment-200 font-medium group-hover:text-gold-400 mb-1">{item.title}</p>
               <div className="flex items-center gap-2 text-xs text-parchment-500">
-                <span className="px-1.5 py-0.5 bg-parchment-700 rounded">{item.type}</span>
+                <span className="px-1.5 py-0.5 bg-parchment-700 rounded-sm">{item.type}</span>
               </div>
               {item.description && <p className="text-xs text-parchment-500 mt-1">{item.description}</p>}
             </a>
@@ -655,19 +660,10 @@ export default function ResearchPanel({ book, chapter, verse }: { book: number; 
 }
 
 function WikidataTab({ query }: { query: string }) {
-  const [results, setResults] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    if (!query) return;
-    setLoading(true);
-    setFailed(false);
-    fetch(`/api/research?q=${encodeURIComponent(query)}&source=wikidata&limit=8`)
-      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
-      .then(d => { setResults(d.results || []); setLoading(false); })
-      .catch(() => { setFailed(true); setLoading(false); });
-  }, [query]);
+  const { data, loading, error: failed } = useJson<{ results?: any[] }>(
+    query ? `/api/research?q=${encodeURIComponent(query)}&source=wikidata&limit=8` : null
+  );
+  const results = data?.results ?? [];
 
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto">
@@ -688,19 +684,10 @@ function WikidataTab({ query }: { query: string }) {
 }
 
 function SacredTextsTab({ query }: { query: string }) {
-  const [results, setResults] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [failed, setFailed] = useState(false);
-
-  useEffect(() => {
-    if (!query) return;
-    setLoading(true);
-    setFailed(false);
-    fetch(`/api/research?q=${encodeURIComponent(query)}&source=sacredtexts`)
-      .then(r => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
-      .then(d => { setResults(d.results || []); setLoading(false); })
-      .catch(() => { setFailed(true); setLoading(false); });
-  }, [query]);
+  const { data, loading, error: failed } = useJson<{ results?: any[] }>(
+    query ? `/api/research?q=${encodeURIComponent(query)}&source=sacredtexts` : null
+  );
+  const results = data?.results ?? [];
 
   return (
     <div className="space-y-2 max-h-[50vh] overflow-y-auto">
@@ -710,7 +697,7 @@ function SacredTextsTab({ query }: { query: string }) {
         <a key={i} href={item.url} target="_blank" rel="noopener noreferrer"
            className="block p-3 rounded-lg bg-parchment-800 hover:bg-parchment-700 transition-colors">
           <div className="flex items-center gap-2">
-            <span className="text-xs px-2 py-0.5 rounded bg-gold-600/20 text-gold-400">{item.type}</span>
+            <span className="text-xs px-2 py-0.5 rounded-sm bg-gold-600/20 text-gold-400">{item.type}</span>
             <h4 className="text-sm text-parchment-200 font-medium">{item.title}</h4>
           </div>
           {item.description && <p className="text-xs text-parchment-500 mt-1">{item.description}</p>}
