@@ -23,7 +23,8 @@ interface Verse {
 interface Props {
   verses: Verse[];
   translations: string[];
-  kjvTokens?: Record<number, VerseToken[]>; // Strong's-tagged KJV, keyed by verse
+  /** Strong's-tagged words by translation (the KJV and HTL), then by verse */
+  tokens?: Record<string, Record<number, VerseToken[]>>;
 }
 
 type Panel = 'crossref' | 'strongs' | 'research' | 'intertextual';
@@ -46,7 +47,7 @@ const subscribeToHash = (onChange: () => void) => {
 };
 const useHash = () => useSyncExternalStore(subscribeToHash, () => window.location.hash, () => '');
 
-export default function VerseDisplay({ verses, translations, kjvTokens }: Props) {
+export default function VerseDisplay({ verses, translations, tokens: taggedTokens }: Props) {
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null);
   const [panel, setPanel] = useState<Panel | null>(null);
   const [selectedStrongs, setSelectedStrongs] = useState<string | null>(null);
@@ -101,7 +102,7 @@ export default function VerseDisplay({ verses, translations, kjvTokens }: Props)
     setPanel('strongs');
   };
 
-  const tokensFor = (v: Verse) => (v.translation === 'KJV' ? kjvTokens?.[v.verse] : undefined);
+  const tokensFor = (v: Verse) => taggedTokens?.[v.translation]?.[v.verse];
   const plainText = (v: Verse) => {
     const tokens = tokensFor(v);
     return tokens ? tokensToText(tokens) : v.text;

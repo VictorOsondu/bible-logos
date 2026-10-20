@@ -118,6 +118,8 @@ Only the 66 books of the Protestant canon are included for now.
 
 > **Genesis 1:1** bereShit baRa' 'EloHim 'et hashaMayim ve'Et ha'Aretz
 
+As with the KJV, **you can click any word** to open its Strong's entry: *bereShit* opens H7225, *rê'shîyth*, "beginning". Each word links to its main element. A few small words made only of a prefix and a pronoun ending (such as *bo*, "in him") have no Strong's number and are not linked.
+
 - A **capital letter** marks the stressed syllable: *bereShit* is said *be-re-SHEET*.
 - An **apostrophe** stands for the letters aleph and ayin, which have no English equivalent.
 - **Hyphens** join words the Hebrew links with a maqqef, as in *'el-Hevel* ("to Abel").

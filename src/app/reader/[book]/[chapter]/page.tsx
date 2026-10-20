@@ -57,8 +57,11 @@ export default async function ReaderPage(props: Props) {
     ORDER BY verse
   `).all(bookInfo.id, chapter, ...selectedTranslations) as Verse[];
 
-  // Strong's-tagged KJV text for this chapter
-  const kjvTokens = getChapterTokens(db, bookInfo.id, chapter);
+  // Strong's-tagged words for the chosen translations that have them (the KJV and HTL)
+  const tokens = Object.fromEntries(selectedTranslations
+    .map(t => [t, getChapterTokens(db, bookInfo.id, chapter, t)] as const)
+    .filter(([, byVerse]) => Object.keys(byVerse).length > 0));
+  const tagged = Object.keys(tokens);
 
   const verseCount = new Set(verses.map(v => v.verse)).size;
   const words = verses.filter(v => v.translation === selectedTranslations[0]).reduce((n, v) => n + v.text.split(/\s+/).length, 0);
@@ -142,15 +145,15 @@ export default async function ReaderPage(props: Props) {
           </div>
         </details>
         <p className="mt-3 text-xs text-parchment-500">
-          Tap a verse for cross-references{selectedTranslations.includes('KJV') ? ', or a KJV word for its Hebrew or Greek original' : ''}.
+          Tap a verse for cross-references{tagged.length ? `, or a word in the ${tagged.join(' or ')} for its ${tagged.includes('KJV') ? 'Hebrew or Greek original' : 'Hebrew original'}` : ''}.
         </p>
       </header>
 
       <VerseDisplay
-        // The tagged tokens already carry the KJV text; don't send it twice
-        verses={verses.map(v => (v.translation === 'KJV' && kjvTokens[v.verse] ? { ...v, text: '' } : v))}
+        // The tagged tokens already carry the text; don't send it twice
+        verses={verses.map(v => (tokens[v.translation]?.[v.verse] ? { ...v, text: '' } : v))}
         translations={selectedTranslations}
-        kjvTokens={kjvTokens}
+        tokens={tokens}
       />
 
       <p className="max-w-2xl mx-auto mt-10 text-xs text-parchment-500">

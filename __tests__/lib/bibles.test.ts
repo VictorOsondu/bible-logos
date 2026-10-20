@@ -62,8 +62,8 @@ describe('TAHOT transliteration', () => {
   it('joins words into verses, linking maqqef words and placing psalm titles before verse 1', () => {
     const rows = [
       'Eng (Heb) Ref & Type\tHebrew\tTransliteration\tTranslation',
-      'Gen.1.1#01=L\tבְּ/רֵאשִׁ֖ית\tbe./re.Shit\tin/ beginning',
-      'Gen.1.1#02=L\tבָּרָ֣א\tba.Ra\'\the created',
+      'Gen.1.1#01=L\tבְּ/רֵאשִׁ֖ית\tbe./re.Shit\tin/ beginning\tH9003/{H7225G}',
+      'Gen.1.1#02=L\tבָּרָ֣א\tba.Ra\'\the created\t{H1254A}',
       'Gen.4.8#03=L\tאֶל\t\'el-\tto',
       'Gen.4.8#04=L\tהֶבֶל\tHe.vel\tAbel',
       'Gen.4.8#0501=X\tנֵלְכָה\tne.le.Khah\tlet us go',
@@ -73,11 +73,24 @@ describe('TAHOT transliteration', () => {
       'Mal.4.1(3.19)#02=L\tהִנֵּה\thi.Neh\tbehold',
       '1Sa.9.1#04=Q(K)\t\t[ ]\t',
     ].join('\n');
-    expect(parseTahot(rows)).toEqual([
+    expect(parseTahot(rows).map(({ book, chapter, verse, text }) => ({ book, chapter, verse, text }))).toEqual([
       { book: 1, chapter: 1, verse: 1, text: "bereShit baRa'" },
       { book: 1, chapter: 4, verse: 8, text: "'el-Hevel" },
       { book: 19, chapter: 23, verse: 1, text: 'mizMor Yahweh' },
       { book: 39, chapter: 4, verse: 1, text: 'ki-hiNeh' },
+    ]);
+  });
+
+  it('links each word to the Strong\'s number of its main element', () => {
+    const rows = [
+      'Gen.1.1#01=L\tבְּ/רֵאשִׁ֖ית\tbe./re.Shit\tin/ beginning\tH9003/{H7225G}',
+      'Gen.1.1#02=L\tבָּרָ֣א\tba.Ra\'\the created\t{H1254A}',
+      'Gen.1.1#03=L\tאֱלֹהִ֑ים\t\'E.lo.Him\tGod\t{H0430G}',
+      'Gen.1.1#04=L\tאֵ֥ת\t\'et-\t<obj.>\t{H0853}',
+      'Gen.1.1#05=L\tו\tve\tand\tH9002',
+    ].join('\n');
+    expect(parseTahot(rows)[0].tokens).toEqual([
+      { t: 'bereShit', s: ['H7225'] }, ' ', { t: "baRa'", s: ['H1254'] }, ' ', { t: "'EloHim", s: ['H430'] }, ' ', { t: "'et-", s: ['H853'] }, 've',
     ]);
   });
 });

@@ -1,11 +1,18 @@
 // Parsers for the Bible text formats the seed script downloads, and the conversion of Hebrew
 // verse numbering to the English (KJV) numbering every translation is stored in.
 
+import { tokensToText, type VerseToken } from '../src/lib/strongs';
+
 export interface FlatVerse {
   book: number;
   chapter: number;
   verse: number;
   text: string;
+}
+
+/** A verse that also carries its words as Strong's-tagged tokens, as the KJV and HTL do. */
+export interface TaggedFlatVerse extends FlatVerse {
+  tokens: VerseToken[];
 }
 
 // Book names used by scrollmapper and the cross-reference files
@@ -203,30 +210,42 @@ export const readableTransliteration = (word: string) =>
 
 /**
  * The transliteration column of STEPBible's Translators Amalgamated Hebrew OT (TAHOT), one row per
- * word, joined into verses. Rows carry the English reference first ("Psa.3.0(3.1)"), so no
- * renumbering is needed; a psalm title (English verse 0) is joined to the start of verse 1. Words
- * marked X come from other ancient witnesses rather than the Hebrew text and are left out.
+ * word, joined into verses. Each word keeps the Strong's number of its main element (prefixes such
+ * as "and" or "the" carry STEPBible's own numbers, which the lexicon does not have). Rows carry the
+ * English reference first ("Psa.3.0(3.1)"), so no renumbering is needed; a psalm title (English
+ * verse 0) is joined to the start of verse 1. Words marked X come from other ancient witnesses
+ * rather than the Hebrew text and are left out.
  */
-export function parseTahot(text: string): FlatVerse[] {
-  const verses = new Map<Ref, FlatVerse>();
-  const titles = new Map<Ref, string>();
+export function parseTahot(text: string): TaggedFlatVerse[] {
+  const verses = new Map<Ref, TaggedFlatVerse>();
+  const titles = new Map<Ref, VerseToken[]>();
+  const append = (tokens: VerseToken[], token: VerseToken) => {
+    // A word ending in a hyphen (maqqef) is joined to the next one
+    const last = tokens[tokens.length - 1];
+    if (last !== undefined && !(typeof last === 'string' ? last : last.t).endsWith('-')) tokens.push(' ');
+    tokens.push(token);
+  };
   for (const line of text.split('\n')) {
-    const row = /^([1-3]?[A-Z][a-z]+)\.(\d+)\.(\d+)(?:\([^)]*\))?#\d+=([^\t]*)\t[^\t]*\t([^\t]*)/.exec(line);
+    const row = /^([1-3]?[A-Z][a-z]+)\.(\d+)\.(\d+)(?:\([^)]*\))?#\d+=([^\t]*)\t[^\t]*\t([^\t\n]*)(?:\t[^\t]*\t([^\t\n]*))?/.exec(line);
     if (!row || row[4] === 'X') continue;
     const book = TAHOT_BOOKS.indexOf(row[1]) + 1;
     const word = readableTransliteration(row[5]);
     if (!book || !word) continue;
+    const strongs = /\{H0*(\d+)[A-Za-z]?\}/.exec(row[6] ?? '');
+    const token: VerseToken = strongs ? { t: word, s: [`H${strongs[1]}`] } : word;
     const [chapter, verse] = [Number(row[2]), Number(row[3])];
     const key = ref(book, chapter, Math.max(verse, 1));
-    const previous = verse === 0 ? titles.get(key) : verses.get(key)?.text;
-    // A word ending in a hyphen (maqqef) is joined to the next one
-    const joined = previous === undefined ? word : previous.endsWith('-') ? previous + word : `${previous} ${word}`;
-    if (verse === 0) titles.set(key, joined);
-    else verses.set(key, { book, chapter, verse, text: joined });
+    if (verse === 0) {
+      if (!titles.has(key)) titles.set(key, []);
+      append(titles.get(key)!, token);
+    } else {
+      if (!verses.has(key)) verses.set(key, { book, chapter, verse, text: '', tokens: [] });
+      append(verses.get(key)!.tokens, token);
+    }
   }
   for (const [key, title] of titles) {
     const verse = verses.get(key);
-    if (verse) verse.text = `${title} ${verse.text}`;
+    if (verse) verse.tokens = [...title, ' ', ...verse.tokens];
   }
-  return finish([...verses.values()]);
+  return [...verses.values()].map(v => ({ ...v, text: tokensToText(v.tokens) }));
 }

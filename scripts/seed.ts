@@ -6,7 +6,7 @@ import { SOURCES, TRANSLATION_SOURCES, type TranslationSource } from './sources'
 import { fetchChapters, fetchFileSet, fetchSource, fetchZippedSource } from './download';
 import {
   BOOK_MAP, parseChapterBundle, parseScrollmapper, parseTahot, parseUsfm, parseUsfx, parseVersificationMappings, parseZefania, toEnglishVersification,
-  type FlatVerse,
+  type FlatVerse, type TaggedFlatVerse,
 } from './bibles';
 import { plainText } from '../src/lib/strongs';
 import { BIBLE_BOOKS } from '../src/lib/bible-books';
@@ -97,11 +97,12 @@ async function main() {
 
     -- KJV verses as Strong's-tagged segments (JSON array of VerseToken)
     CREATE TABLE IF NOT EXISTS verse_tokens (
+      translation TEXT NOT NULL DEFAULT 'KJV',
       book INTEGER NOT NULL,
       chapter INTEGER NOT NULL,
       verse INTEGER NOT NULL,
       tokens TEXT NOT NULL,
-      PRIMARY KEY (book, chapter, verse)
+      PRIMARY KEY (translation, book, chapter, verse)
     );
 
     CREATE VIRTUAL TABLE IF NOT EXISTS verses_fts USING fts5(text, content=verses, content_rowid=id);
@@ -124,6 +125,8 @@ async function main() {
   insertBible(taggedKjv.map(v => ({ book: v.book, chapter: v.chapter, verse: v.verse, text: tokensToText(v.tokens) })), 'KJV');
   console.log(`  KJV: ${taggedKjv.length} verses`);
 
+  // Other translations whose words are linked to Strong's numbers (the HTL), stored once the lexicon is in
+  const taggedTranslations: { id: string; verses: TaggedFlatVerse[] }[] = [];
   for (const id of TRANSLATION_IDS.filter(id => id !== 'KJV')) {
     console.log(`Loading ${id}...`);
     const source = TRANSLATION_SOURCES[id];
@@ -136,6 +139,7 @@ async function main() {
       continue;
     }
     insertBible(verses, id);
+    if (verses.length && 'tokens' in verses[0]) taggedTranslations.push({ id, verses: verses as TaggedFlatVerse[] });
     console.log(`  ${id}: ${verses.length} verses`);
   }
 
@@ -189,11 +193,11 @@ async function main() {
 
   console.log("Linking KJV words to Strong's numbers...");
   const insertWordStrong = db.prepare('INSERT INTO word_strongs (book, chapter, verse, word, strongs_id, position) VALUES (?, ?, ?, ?, ?, ?)');
-  const insertTokens = db.prepare('INSERT INTO verse_tokens (book, chapter, verse, tokens) VALUES (?, ?, ?, ?)');
+  const insertTokens = db.prepare('INSERT INTO verse_tokens (translation, book, chapter, verse, tokens) VALUES (?, ?, ?, ?, ?)');
   let wordLinks = 0;
   db.transaction(() => {
     for (const v of taggedKjv) {
-      insertTokens.run(v.book, v.chapter, v.verse, JSON.stringify(v.tokens));
+      insertTokens.run('KJV', v.book, v.chapter, v.verse, JSON.stringify(v.tokens));
       v.tokens.forEach((token, position) => {
         if (typeof token === 'string' || !token.s) return;
         for (const id of token.s) {
@@ -204,6 +208,24 @@ async function main() {
     }
   })();
   console.log(`  ${wordLinks} word links across ${taggedKjv.length} verses.`);
+
+  // Words in other tagged translations keep a link only where the lexicon has the number
+  const lexicon = new Set((db.prepare('SELECT id FROM strongs').all() as { id: string }[]).map(r => r.id));
+  for (const { id, verses } of taggedTranslations) {
+    console.log(`Linking ${id} words to Strong's numbers...`);
+    let linked = 0;
+    db.transaction(() => {
+      for (const v of verses) {
+        const tokens = v.tokens.map(token => {
+          if (typeof token === 'string' || !token.s) return token;
+          if (token.s.every(s => lexicon.has(s))) { linked++; return token; }
+          return token.t;
+        });
+        insertTokens.run(id, v.book, v.chapter, v.verse, JSON.stringify(tokens));
+      }
+    })();
+    console.log(`  ${linked} words linked across ${verses.length} verses.`);
+  }
 
   // A finished database is only read: a plain journal mode lets it work on read-only disks.
   db.pragma('journal_mode = DELETE');
