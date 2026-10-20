@@ -1,94 +1,30 @@
 import Database from 'better-sqlite3';
 import path from 'path';
 import fs from 'fs';
-import crypto from 'crypto';
 import { parseLexicon, parseKjvOsis, tokensToText, TaggedVerse } from './kjv-strongs';
-import { SOURCES, type Source } from './sources';
+import { SOURCES, TRANSLATION_SOURCES, type TranslationSource } from './sources';
+import { fetchChapters, fetchSource } from './download';
+import {
+  BOOK_MAP, parseChapterBundle, parseScrollmapper, parseUsfx, parseVersificationMappings, parseZefania, toEnglishVersification,
+  type FlatVerse,
+} from './bibles';
 import { plainText } from '../src/lib/strongs';
+import { BIBLE_BOOKS } from '../src/lib/bible-books';
+import { TRANSLATION_IDS } from '../src/lib/translations';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const DB_PATH = path.join(DATA_DIR, 'bible.db');
 const BUILD_PATH = `${DB_PATH}.building`;
-// Verified downloads are kept here so re-seeding (and CI) does not fetch them again
-const CACHE_DIR = path.join(DATA_DIR, 'sources');
 
-const BOOK_MAP: Record<string, number> = {
-  'Genesis':1,'Exodus':2,'Leviticus':3,'Numbers':4,'Deuteronomy':5,
-  'Joshua':6,'Judges':7,'Ruth':8,
-  '1 Samuel':9,'I Samuel':9,'2 Samuel':10,'II Samuel':10,
-  '1 Kings':11,'I Kings':11,'2 Kings':12,'II Kings':12,
-  '1 Chronicles':13,'I Chronicles':13,'2 Chronicles':14,'II Chronicles':14,
-  'Ezra':15,'Nehemiah':16,'Esther':17,'Job':18,'Psalms':19,'Psalm':19,
-  'Proverbs':20,'Ecclesiastes':21,'Song of Solomon':22,'Song of Songs':22,
-  'Isaiah':23,'Jeremiah':24,'Lamentations':25,'Ezekiel':26,'Daniel':27,
-  'Hosea':28,'Joel':29,'Amos':30,'Obadiah':31,'Jonah':32,'Micah':33,
-  'Nahum':34,'Habakkuk':35,'Zephaniah':36,'Haggai':37,'Zechariah':38,'Malachi':39,
-  'Matthew':40,'Mark':41,'Luke':42,'John':43,'Acts':44,'Romans':45,
-  '1 Corinthians':46,'I Corinthians':46,'2 Corinthians':47,'II Corinthians':47,
-  'Galatians':48,'Ephesians':49,'Philippians':50,'Colossians':51,
-  '1 Thessalonians':52,'I Thessalonians':52,'2 Thessalonians':53,'II Thessalonians':53,
-  '1 Timothy':54,'I Timothy':54,'2 Timothy':55,'II Timothy':55,
-  'Titus':56,'Philemon':57,'Hebrews':58,'James':59,
-  '1 Peter':60,'I Peter':60,'2 Peter':61,'II Peter':61,
-  '1 John':62,'I John':62,'2 John':63,'II John':63,'3 John':64,'III John':64,
-  'Jude':65,'Revelation':66,'Revelation of John':66
-};
+let hebrewMappings: ReturnType<typeof parseVersificationMappings> | null = null;
 
-interface ScrollmapperBible {
-  translation: string;
-  books: { name: string; chapters: { chapter: number; verses: { verse: number; text: string }[] }[] }[];
-}
-
-async function sleep(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-const sha256 = (data: Buffer) => crypto.createHash('sha256').update(data).digest('hex');
-
-/** Returns a pinned source's contents, from the local cache or downloaded, after checking its hash. */
-async function fetchSource({ url, sha256: expected }: Source, maxRetries = 3): Promise<string> {
-  const cached = path.join(CACHE_DIR, `${expected.slice(0, 16)}-${path.basename(new URL(url).pathname)}`);
-  if (fs.existsSync(cached)) {
-    const data = fs.readFileSync(cached);
-    if (sha256(data) === expected) return data.toString('utf8').replace(/^\uFEFF/, '');
-    console.warn(`  Cached ${path.basename(cached)} is corrupt; downloading again.`);
-  }
-
-  for (let attempt = 1; ; attempt++) {
-    try {
-      console.log(`  Downloading ${url}${attempt > 1 ? ` (attempt ${attempt}/${maxRetries})` : ''}...`);
-      const res = await fetch(url, { signal: AbortSignal.timeout(120000) });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = Buffer.from(await res.arrayBuffer());
-      const actual = sha256(data);
-      if (actual !== expected) {
-        throw new Error(`checksum mismatch for ${url}: expected ${expected}, got ${actual}`);
-      }
-      fs.mkdirSync(CACHE_DIR, { recursive: true });
-      fs.writeFileSync(cached, data);
-      return data.toString('utf8').replace(/^\uFEFF/, '');
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      if (attempt >= maxRetries || message.startsWith('checksum mismatch')) throw error;
-      const delay = attempt * 2000;
-      console.warn(`  Attempt ${attempt} failed (${message}), retrying in ${delay / 1000}s...`);
-      await sleep(delay);
-    }
-  }
-}
-
-function flattenBible(bible: ScrollmapperBible): { book: number; chapter: number; verse: number; text: string }[] {
-  const result: { book: number; chapter: number; verse: number; text: string }[] = [];
-  for (const bookData of bible.books) {
-    const bookId = BOOK_MAP[bookData.name];
-    if (!bookId) { console.log(`  Unknown book: ${bookData.name}, skipping`); continue; }
-    for (const ch of bookData.chapters) {
-      for (const v of ch.verses) {
-        result.push({ book: bookId, chapter: ch.chapter, verse: v.verse, text: v.text });
-      }
-    }
-  }
-  return result;
+async function loadTranslation(t: TranslationSource): Promise<FlatVerse[]> {
+  if (t.format === 'chapters') return parseChapterBundle(await fetchChapters(t.source, BIBLE_BOOKS));
+  const text = await fetchSource(t.source);
+  const verses = t.format === 'zefania' ? parseZefania(text) : t.format === 'usfx' ? parseUsfx(text) : parseScrollmapper(text);
+  if (!t.hebrewVerses) return verses;
+  hebrewMappings ??= parseVersificationMappings(await fetchSource(SOURCES.englishVersification));
+  return toEnglishVersification(verses, hebrewMappings);
 }
 
 async function main() {
@@ -171,31 +107,25 @@ async function main() {
   // ── Load Bible Translations ─────────────────────────────────
   const insertVerse = db.prepare('INSERT INTO verses (id, book, chapter, verse, text, translation) VALUES (?, ?, ?, ?, ?, ?)');
 
-  const insertBible = db.transaction((verses: { book: number; chapter: number; verse: number; text: string }[], translation: string, idOffset: number) => {
+  // Ids keep each translation in its own block: translation index × 10^8 + book × 10^6 + chapter × 10^3 + verse
+  const insertBible = db.transaction((verses: FlatVerse[], translation: string) => {
+    const offset = TRANSLATION_IDS.indexOf(translation) * 100000000;
     for (const v of verses) {
-      const id = idOffset + v.book * 1000000 + v.chapter * 1000 + v.verse;
-      insertVerse.run(id, v.book, v.chapter, v.verse, v.text, translation);
+      insertVerse.run(offset + v.book * 1000000 + v.chapter * 1000 + v.verse, v.book, v.chapter, v.verse, v.text, translation);
     }
   });
-
-  const translations: { source: Source; name: string; offset: number }[] = [
-    { source: SOURCES.asv, name: 'ASV', offset: 100000000 },
-    { source: SOURCES.bbe, name: 'BBE', offset: 200000000 },
-    { source: SOURCES.ylt, name: 'YLT', offset: 300000000 },
-    { source: SOURCES.vulgate, name: 'VUL', offset: 400000000 },
-  ];
 
   // The KJV comes from CrossWire's Strong's-tagged edition so the reader's text and tags always agree.
   console.log("Loading Strong's-tagged KJV (CrossWire)...");
   const taggedKjv: TaggedVerse[] = parseKjvOsis(await fetchSource(SOURCES.kjvOsis));
-  insertBible(taggedKjv.map(v => ({ book: v.book, chapter: v.chapter, verse: v.verse, text: tokensToText(v.tokens) })), 'KJV', 0);
+  insertBible(taggedKjv.map(v => ({ book: v.book, chapter: v.chapter, verse: v.verse, text: tokensToText(v.tokens) })), 'KJV');
   console.log(`  KJV: ${taggedKjv.length} verses`);
 
-  for (const t of translations) {
-    console.log(`Loading ${t.name}...`);
-    const flat = flattenBible(JSON.parse(await fetchSource(t.source)) as ScrollmapperBible);
-    insertBible(flat, t.name, t.offset);
-    console.log(`  ${t.name}: ${flat.length} verses`);
+  for (const id of TRANSLATION_IDS.filter(id => id !== 'KJV')) {
+    console.log(`Loading ${id}...`);
+    const verses = await loadTranslation(TRANSLATION_SOURCES[id]);
+    insertBible(verses, id);
+    console.log(`  ${id}: ${verses.length} verses`);
   }
 
   // Build FTS index

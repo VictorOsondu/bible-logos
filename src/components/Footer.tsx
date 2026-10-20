@@ -11,6 +11,12 @@ export default function Footer() {
           data sources
         </a>
       </p>
+      <p className="mt-1">
+        A work in progress: not everything has been checked yet.{' '}
+        <a href="https://github.com/VictorOsondu/bible-logos/issues" target="_blank" rel="noopener noreferrer" className="underline underline-offset-2 hover:text-parchment-300">
+          Report a mistake
+        </a>
+      </p>
     </footer>
   );
 }

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { toFtsQuery } from '@/lib/search';
 import { getBookById } from '@/lib/bible-books';
+import { TRANSLATIONS } from '@/lib/translations';
 
 export const dynamic = 'force-dynamic';
 
@@ -110,10 +111,9 @@ export default async function SearchPage(props: Props) {
             <div>
               <select name="translation"
                 className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-3 text-sm border border-parchment-700">
-                <option value="KJV" selected={!searchParams.translation || searchParams.translation === 'KJV'}>KJV</option>
-                <option value="ASV" selected={searchParams.translation === 'ASV'}>ASV</option>
-                <option value="BBE" selected={searchParams.translation === 'BBE'}>BBE</option>
-                <option value="YLT" selected={searchParams.translation === 'YLT'}>YLT</option>
+                {TRANSLATIONS.map(t => (
+                  <option key={t.id} value={t.id} selected={(searchParams.translation || 'KJV') === t.id}>{t.id}</option>
+                ))}
               </select>
             </div>
             <button type="submit" className="px-6 py-3 bg-gold-600 text-parchment-950 rounded-xl font-semibold hover:bg-gold-500 transition-colors">

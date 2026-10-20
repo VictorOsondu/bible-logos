@@ -43,7 +43,7 @@ export default function VerseOfTheDayPage() {
   const bookInfo = getBookById(book);
   const slug = bookInfo?.name.toLowerCase().replace(/ /g, '-') || '';
 
-  const translations = ['KJV', 'ASV', 'BBE', 'VUL'];
+  const translations = ['KJV', 'BSB', 'WEB', 'LSV', 'ASV'];
   const texts: { translation: string; text: string }[] = [];
   for (const t of translations) {
     const row = db.prepare(

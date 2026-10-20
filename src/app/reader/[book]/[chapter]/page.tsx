@@ -5,19 +5,11 @@ import KeyboardNav from '@/components/KeyboardNav';
 import { getBookBySlug, BIBLE_BOOKS } from '@/lib/bible-books';
 import { getDb } from '@/lib/db';
 import { getChapterTokens } from '@/lib/strongs';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Check, ChevronDown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { byTranslationOrder, getTranslation } from '@/lib/translations';
 import ReadingTracker from '@/components/ReadingTracker';
 
 import type { Metadata } from 'next';
-
-const TRANSLATION_ORDER = ['KJV', 'ASV', 'YLT', 'BBE', 'VUL'];
-const TRANSLATION_NAMES: Record<string, string> = {
-  KJV: 'King James Version',
-  ASV: 'American Standard Version',
-  YLT: "Young's Literal Translation",
-  BBE: 'Bible in Basic English',
-  VUL: 'Latin Vulgate',
-};
 
 interface Verse {
   book: number;
@@ -56,7 +48,7 @@ export default async function ReaderPage(props: Props) {
   const db = getDb();
   const available = (db.prepare('SELECT DISTINCT translation FROM verses').all() as { translation: string }[])
     .map(t => t.translation)
-    .sort((a, b) => TRANSLATION_ORDER.indexOf(a) - TRANSLATION_ORDER.indexOf(b));
+    .sort(byTranslationOrder);
   const selectedTranslations = requested.filter(t => available.includes(t));
   if (selectedTranslations.length === 0) selectedTranslations.push('KJV');
 
@@ -90,7 +82,7 @@ export default async function ReaderPage(props: Props) {
   const toggleHref = (t: string) => {
     const set = selectedTranslations.includes(t)
       ? selectedTranslations.filter(x => x !== t)
-      : [...selectedTranslations, t].sort((a, b) => TRANSLATION_ORDER.indexOf(a) - TRANSLATION_ORDER.indexOf(b));
+      : [...selectedTranslations, t].sort(byTranslationOrder);
     const list = set.length ? set : selectedTranslations;
     return `/reader/${params.book}/${chapter}${list.join(',') === 'KJV' ? '' : `?translations=${list.join(',')}`}`;
   };
@@ -108,30 +100,49 @@ export default async function ReaderPage(props: Props) {
         <div className="flex items-center justify-center gap-2 mt-1">
           {prev ? <Link href={prev.href} className={arrow} aria-label={`Previous: ${prev.label}`}><ChevronLeft size={20} /></Link> : <span className="w-9" />}
           <h1 className="font-serif text-3xl lg:text-4xl font-semibold text-parchment-50">
-            {bookInfo.name} <span className="text-gold-400">{chapter}</span>
+            <Link href={`/reader?book=${params.book}`} className="hover:text-gold-400 transition-colors" title="Choose a book or chapter">
+              {bookInfo.name} <span className="text-gold-400">{chapter}</span>
+            </Link>
           </h1>
           {next ? <Link href={next.href} className={arrow} aria-label={`Next: ${next.label}`}><ChevronRight size={20} /></Link> : <span className="w-9" />}
         </div>
         <p className="mt-1 text-xs text-parchment-500">{verseCount} verses · {minutes} min read</p>
 
-        <div className="mt-5 inline-flex flex-wrap justify-center gap-1 p-1 rounded-full bg-parchment-900">
-          {available.map(t => {
-            const active = selectedTranslations.includes(t);
-            return (
-              <Link
-                key={t}
-                href={toggleHref(t)}
-                aria-pressed={active}
-                title={TRANSLATION_NAMES[t] ?? t}
-                className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                  active ? 'bg-parchment-700/70 text-parchment-50' : 'text-parchment-500 hover:text-parchment-200'
-                }`}
-              >
-                {t}
-              </Link>
-            );
-          })}
-        </div>
+        {/* Stays open while choosing, so several can be ticked in turn */}
+        <details className="group relative mt-5 inline-block text-left">
+          <summary className="list-none [&::-webkit-details-marker]:hidden cursor-pointer inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-parchment-900 text-xs font-medium text-parchment-200 hover:bg-parchment-800 transition-colors">
+            {selectedTranslations.join(' · ')}
+            <ChevronDown size={14} className="text-parchment-500 transition-transform group-open:rotate-180" />
+            <span className="sr-only">Choose translations</span>
+          </summary>
+          <div className="absolute left-1/2 -translate-x-1/2 z-20 mt-2 w-[min(24rem,calc(100vw-2rem))] max-h-[60vh] overflow-y-auto p-1.5 rounded-xl bg-parchment-950 border border-parchment-800 shadow-xl">
+            <p className="px-3 pt-2 pb-1 text-xs text-parchment-500">Choose one or more to read side by side.</p>
+            {available.map(t => {
+              const active = selectedTranslations.includes(t);
+              const info = getTranslation(t);
+              return (
+                <Link
+                  key={t}
+                  href={toggleHref(t)}
+                  aria-pressed={active}
+                  className="flex items-start gap-3 px-3 py-2 rounded-lg hover:bg-parchment-900 transition-colors"
+                >
+                  <span className={`mt-0.5 w-4 h-4 shrink-0 rounded-sm border flex items-center justify-center ${
+                    active ? 'bg-gold-600 border-gold-600 text-parchment-950' : 'border-parchment-700'
+                  }`}>
+                    {active && <Check size={12} strokeWidth={3} />}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm text-parchment-100">
+                      <span className="font-semibold">{t}</span> <span className="text-parchment-400">{info?.name}</span>
+                    </span>
+                    {info?.note && <span className="block text-xs text-parchment-500">{info.note}</span>}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </details>
         <p className="mt-3 text-xs text-parchment-500">
           Tap a verse for cross-references{selectedTranslations.includes('KJV') ? ', or a KJV word for its Hebrew or Greek original' : ''}.
         </p>
@@ -144,7 +155,11 @@ export default async function ReaderPage(props: Props) {
         kjvTokens={kjvTokens}
       />
 
-      <nav className="max-w-2xl mx-auto mt-12 grid grid-cols-2 gap-3" aria-label="Chapter navigation">
+      <p className="max-w-2xl mx-auto mt-10 text-xs text-parchment-500">
+        {selectedTranslations.map(t => `${getTranslation(t)?.name ?? t} (${t}): ${getTranslation(t)?.licence ?? 'see README'}.`).join(' ')}
+      </p>
+
+      <nav className="max-w-2xl mx-auto mt-6 grid grid-cols-2 gap-3" aria-label="Chapter navigation">
         {prev ? (
           <Link href={prev.href} className="group flex items-center gap-2 p-4 rounded-xl border border-parchment-800 hover:border-parchment-700 hover:bg-parchment-900/60 transition-colors">
             <ChevronLeft size={18} className="text-parchment-500 group-hover:text-gold-400" />

@@ -155,7 +155,8 @@ export default function VerseDisplay({ verses, translations, kjvTokens }: Props)
 
   return (
     <div className="xl:flex xl:gap-8 xl:justify-center">
-      <div className="max-w-2xl mx-auto xl:mx-0 w-full">
+      {/* While the bottom sheet is open, room below the verses lets even the last one scroll clear of it */}
+      <div className={`max-w-2xl mx-auto xl:mx-0 w-full ${panel ? 'pb-[60dvh] xl:pb-0' : ''}`}>
         {[...grouped.entries()].map(([verseNum, list]) => {
           const selected = selectedVerse === verseNum;
           return (

@@ -25,6 +25,15 @@ test.describe('reader', () => {
     await expect(page.getByRole('complementary', { name: 'John 3:16' }).getByText(/cross-references? found/)).toBeVisible();
   });
 
+  test('translations can be added side by side', async ({ page }) => {
+    await page.goto('/reader/malachi/4');
+    await page.locator('summary', { hasText: 'Choose translations' }).click();
+    await page.getByRole('link', { name: /^BSB Berean Standard Bible/ }).click();
+    await expect(page).toHaveURL(/translations=KJV,BSB$/);
+    await expect(page.locator('#v5')).toContainText('Elijah');
+    await expect(page.getByText(/Berean Standard Bible \(BSB\): Public domain/)).toBeVisible();
+  });
+
   test('previous and next chapter links cross into neighbouring books', async ({ page }) => {
     await page.goto('/reader/malachi/4');
     await page.getByRole('link', { name: /^Next/ }).last().click();

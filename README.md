@@ -5,7 +5,7 @@
 ### A simple but powerful tool for personal Bible study and research.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](LICENSE)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
+[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://typescriptlang.org)
 
 Based on [BibleLens](https://github.com/quantumnic/biblelens) by Nicola Spieser.
@@ -14,13 +14,16 @@ Based on [BibleLens](https://github.com/quantumnic/biblelens) by Nicola Spieser.
 
 ---
 
-Bible Logos runs on your own computer. It downloads public-domain Bible texts and reference data once, stores them in a local SQLite database, and gives you a fast, private study environment in the browser.
+> [!NOTE]
+> **Bible Logos is a work in progress.** Not everything has been checked yet: some reference data, verse alignments between translations and features may contain mistakes. Please treat it as a study aid, check important points against a printed Bible, and [report anything that looks wrong](https://github.com/VictorOsondu/bible-logos/issues).
+
+Bible Logos runs on your own computer. It downloads openly licensed Bible texts and reference data once, stores them in a local SQLite database, and gives you a fast, private study environment in the browser.
 
 ## ✨ What it does
 
 ### 📖 Reader with the original languages one click away
 
-- Read any chapter in the **King James Version, American Standard Version, Bible in Basic English, Young's Literal Translation and the Latin Vulgate**, alone or side by side.
+- Read any chapter in **15 translations**, alone or side by side (see [Translations](#-translations)).
 - **Every word of the KJV is linked to its Hebrew or Greek original.** Click a word to see the original script, transliteration, pronunciation, Strong's definition, derivation and every other place it occurs.
 - Words the KJV translators added are shown in *italics*, as in printed editions.
 - A calm, reading-first layout with light and dark themes (following your device by default) that works as well on a phone as on a desktop.
@@ -45,6 +48,33 @@ Bible Logos runs on your own computer. It downloads public-domain Bible texts an
 - Reference indexes (parables, miracles, prophecies, covenants, people, places, names of God and more) that link straight to the verses.
 - Research links for any verse, with live results from Semantic Scholar, PubMed and Open Library.
 
+## 📚 Translations
+
+**Every translation in Bible Logos is in the public domain or under an open licence**, so it can be used, shared and studied freely. Each one is credited in the reader beneath the text.
+
+| Code | Translation | Licence | Notes |
+|---|---|---|---|
+| KJV | King James Version (with Strong's numbers) | Public domain (Crown patent in the UK) | Every word linked to the Hebrew or Greek |
+| BSB | Berean Standard Bible | Public domain | |
+| WEB | World English Bible | Public domain | |
+| LSV | Literal Standard Version | CC BY-SA 4.0, © Covenant Press | |
+| ASV | American Standard Version | Public domain | |
+| YLT | Young's Literal Translation | Public domain | |
+| DBY | Darby Translation | Public domain | |
+| WBT | Webster's Bible | Public domain | |
+| UKJV | Updated King James Version | Public domain | |
+| BBE | Bible in Basic English | Public domain | |
+| OEB | Open English Bible | Public domain (CC0) | Still being translated: parts of the Old Testament are missing |
+| JPS | Jewish Publication Society Tanakh (1917) | Public domain | Hebrew Scriptures only; renumbered to the English verse numbers |
+| CPDV | Catholic Public Domain Version | Public domain | Psalms numbered as in the Latin Vulgate |
+| WYC | Wycliffe Bible | Public domain | Middle English; Psalms numbered as in the Latin Vulgate |
+| VUL | Latin Vulgate | Public domain | |
+
+Only the 66 books of the Protestant canon are included for now. Not yet available:
+
+- **World Messianic Bible (WMB)**: the only copies the seed can reach either mix footnotes into the verse text or are missing passages (including Malachi 4). It will be added from eBible.org's own files.
+- **unfoldingWord Literal and Simplified Texts (ULT/UST)**: these are published on git.door43.org, which the current build environment cannot reach. Both are CC BY-SA 4.0 and will be added later.
+
 ## 🚀 Getting started
 
 You need [Node.js](https://nodejs.org) 20.9 or later.
@@ -53,7 +83,7 @@ You need [Node.js](https://nodejs.org) 20.9 or later.
 git clone https://github.com/VictorOsondu/bible-logos.git
 cd bible-logos
 npm install
-npm run seed   # downloads the texts and builds data/bible.db (about 120 MB, under a minute)
+npm run seed   # downloads the texts and builds data/bible.db (about 200 MB, a minute or two)
 npm run dev    # then open http://localhost:3000
 ```
 
@@ -97,7 +127,10 @@ The seed script downloads everything below; none of it is stored in this reposit
 |---|---|---|
 | [CrossWire Bible Society KJV module](https://gitlab.com/crosswire-bible-society/kjv) | KJV text with Strong's numbers and Greek morphology | Text public domain; module markup GPL |
 | [Open Scriptures Strong's dictionaries](https://github.com/openscriptures/strongs) | Hebrew and Greek lexicon | CC BY-SA |
-| [scrollmapper/bible_databases](https://github.com/scrollmapper/bible_databases) | ASV, BBE, YLT and Vulgate texts | Public domain |
+| [scrollmapper/bible_databases](https://github.com/scrollmapper/bible_databases) | BSB, ASV, YLT, Webster, UKJV, BBE, OEB, JPS, CPDV, Wycliffe and Vulgate texts | See [Translations](#-translations) |
+| [seven1m/open-bibles](https://github.com/seven1m/open-bibles) | World English Bible and Darby texts | Public domain |
+| [wldeh/bible-api](https://github.com/wldeh/bible-api) | Literal Standard Version text | CC BY-SA 4.0 |
+| [BibleNLP/ebible](https://github.com/BibleNLP/ebible) | English–Hebrew verse number mapping (Paratext `eng.vrs`), used to renumber the JPS | Reference data (verse numbers only) |
 | [OpenBible.info](https://www.openbible.info/labs/cross-references/) (via scrollmapper) | Cross-references | CC BY |
 | [Semantic Scholar](https://www.semanticscholar.org/), [PubMed](https://pubmed.ncbi.nlm.nih.gov/), [Open Library](https://openlibrary.org/) | Live research results | Queried on demand |
 
@@ -105,7 +138,8 @@ The seed script downloads everything below; none of it is stored in this reposit
 
 - **Next.js 16** (App Router) with **React 19**, **TypeScript** and **Tailwind CSS 4**
 - **SQLite** via `better-sqlite3`, with an FTS5 full-text index
-- `scripts/seed.ts` builds the database; `scripts/kjv-strongs.ts` parses the Strong's lexicon and the tagged KJV
+- `scripts/seed.ts` builds the database; `scripts/bibles.ts` reads each Bible format and renumbers Hebrew verse numbers; `scripts/kjv-strongs.ts` parses the Strong's lexicon and the tagged KJV
+- `src/lib/translations.ts` lists the translations, their licences and notes
 - `src/lib/strongs.ts` holds the Strong's queries shared by the pages and API
 - `src/lib/navigation.ts` lists the app's pages for the sidebar, home page and search
 - Fixed reference pages are pre-rendered at build time; the reader is rendered on request

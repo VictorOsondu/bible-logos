@@ -1,3 +1,4 @@
+import { byTranslationOrder, getTranslation } from '@/lib/translations';
 import { getDb } from '@/lib/db';
 import { getBookById, BIBLE_BOOKS } from '@/lib/bible-books';
 import Link from 'next/link';
@@ -36,8 +37,8 @@ export default async function ComparePage(props: Props) {
   const verses = db.prepare(`
     SELECT translation, text FROM verses
     WHERE book = ? AND chapter = ? AND verse = ?
-    ORDER BY CASE translation WHEN 'KJV' THEN 1 WHEN 'ASV' THEN 2 WHEN 'YLT' THEN 3 WHEN 'BBE' THEN 4 ELSE 5 END
   `).all(bookId, chapter, verse) as { translation: string; text: string }[];
+  verses.sort((a, b) => byTranslationOrder(a.translation, b.translation));
   
   const texts = verses.map(v => v.text);
   const diffs = diffWords(texts);
@@ -100,6 +101,7 @@ export default async function ComparePage(props: Props) {
                 <span className="text-[11px] font-semibold tracking-wider text-parchment-500">
                   {v.translation}
                 </span>
+                <span className="text-xs text-parchment-500">{getTranslation(v.translation)?.name}</span>
               </div>
               <p className="bible-text text-parchment-100 text-lg leading-relaxed">
                 {diffs[i]?.map((part, j) => (
