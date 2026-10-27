@@ -1,5 +1,8 @@
 @import 'tailwindcss';
 
+/* The desktop sidebar's icon-only state, set on <html> before first paint (see src/lib/preferences.ts) */
+@custom-variant collapsed (&:where(html[data-sidebar='collapsed'] *));
+
 @theme {
   --color-parchment-50: rgb(var(--parchment-50));
   --color-parchment-100: rgb(var(--parchment-100));

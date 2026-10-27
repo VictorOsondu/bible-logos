@@ -102,5 +102,7 @@ describe('Strong\'s queries', () => {
   it('returns tagged tokens for a chapter', () => {
     const tokens = getChapterTokens(db, 1, 1);
     expect(tokens[1][1]).toEqual({ t: 'God', s: ['H430'] });
+    expect(getChapterTokens(db, 1, 1, 'HTL')[1][0]).toEqual({ t: 'bereShit', s: ['H7225'] });
+    expect(getChapterTokens(db, 1, 1, 'ASV')).toEqual({});
   });
 });

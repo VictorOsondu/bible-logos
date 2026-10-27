@@ -30,6 +30,11 @@ export function getDb(): Database.Database {
   return db;
 }
 
+/** The translations present in the database (an optional one may have been skipped by the seed). */
+export function getAvailableTranslations(): string[] {
+  return (getDb().prepare('SELECT DISTINCT translation FROM verses').all() as { translation: string }[]).map(t => t.translation);
+}
+
 export class DatabaseNotAvailableError extends Error {
   constructor(message: string) {
     super(message);

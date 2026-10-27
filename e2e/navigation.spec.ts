@@ -16,6 +16,30 @@ test.describe('navigation', () => {
     await expect(nav).not.toBeInViewport();
   });
 
+  test('desktop sidebar collapses to icons and remembers it', async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop only');
+    await page.goto('/');
+    const nav = page.getByRole('complementary', { name: 'Main navigation' });
+    const fullWidth = (await nav.boundingBox())!.width;
+    await page.getByRole('button', { name: 'Collapse sidebar' }).click();
+    await expect.poll(async () => (await nav.boundingBox())!.width).toBeLessThan(fullWidth / 2);
+    await page.reload();
+    expect((await nav.boundingBox())!.width).toBeLessThan(fullWidth / 2);
+    // Labels stay available to assistive technology
+    await nav.getByRole('link', { name: 'Concordance' }).click();
+    await expect(page).toHaveURL(/\/concordance/);
+    await page.getByRole('button', { name: 'Expand sidebar' }).click();
+    await expect.poll(async () => (await nav.boundingBox())!.width).toBe(fullWidth);
+  });
+
+  test('books page opens a chapter', async ({ page }) => {
+    await page.goto('/reader');
+    await page.getByRole('button', { name: 'New Testament' }).click();
+    await page.getByRole('button', { name: /^Romans/ }).click();
+    await page.getByRole('region', { name: 'Chapters of Romans' }).getByRole('link', { name: '8', exact: true }).click();
+    await expect(page).toHaveURL(/\/reader\/romans\/8$/);
+  });
+
   test('search palette jumps to a verse', async ({ page, isMobile }) => {
     await page.goto('/concordance');
     if (isMobile) await page.locator('header').getByRole('button', { name: 'Search' }).click();

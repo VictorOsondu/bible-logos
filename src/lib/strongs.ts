@@ -139,12 +139,12 @@ export const tokensToText = (tokens: VerseToken[]) =>
   tokens.map(t => (typeof t === 'string' ? t : t.t)).join('');
 
 /**
- * Tagged KJV tokens for a chapter, keyed by verse, with only what the reader displays
- * (the stored morphology codes are left out to keep pages small).
+ * A chapter's Strong's-tagged tokens in one translation (the KJV or the HTL), keyed by verse, with
+ * only what the reader displays (the stored morphology codes are left out to keep pages small).
  */
-export function getChapterTokens(db: Database.Database, book: number, chapter: number) {
-  const rows = db.prepare('SELECT verse, tokens FROM verse_tokens WHERE book = ? AND chapter = ?')
-    .all(book, chapter) as { verse: number; tokens: string }[];
+export function getChapterTokens(db: Database.Database, book: number, chapter: number, translation = 'KJV') {
+  const rows = db.prepare('SELECT verse, tokens FROM verse_tokens WHERE translation = ? AND book = ? AND chapter = ?')
+    .all(translation, book, chapter) as { verse: number; tokens: string }[];
   const tokens: Record<number, VerseToken[]> = {};
   for (const r of rows) {
     tokens[r.verse] = (JSON.parse(r.tokens) as VerseToken[]).map(t =>

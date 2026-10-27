@@ -1,51 +1,135 @@
 <div align="center">
 
-# 📖 Bible Logos
+<img src="src/app/icon.svg" width="72" height="72" alt="">
 
-### A simple but powerful tool for personal Bible study and research.
+# Bible Logos
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](LICENSE)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)](https://typescriptlang.org)
+**A simple but powerful tool for personal Bible study and research.**
 
-Based on [BibleLens](https://github.com/quantumnic/biblelens) by Nicola Spieser.
+Read 19 openly licensed translations side by side, including the Hebrew Old Testament in transliteration, open the Hebrew or Greek behind every word of the King James Version, and follow 430,000 cross-references, all on your own computer.
+
+[![CI](https://github.com/VictorOsondu/bible-logos/actions/workflows/ci.yml/badge.svg)](https://github.com/VictorOsondu/bible-logos/actions/workflows/ci.yml)
+[![Licence: MIT](https://img.shields.io/badge/licence-MIT-a0701a.svg)](LICENSE)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6)](https://www.typescriptlang.org)
+
+[Features](#features) · [Translations](#translations) · [Getting started](#getting-started) · [Contributing](#contributing) · [Data sources](#data-sources)
+
+<img src="docs/screenshots/reader.png" alt="Psalm 23 in the reader, with the Hebrew word behind “shepherd” open beside the text" width="900">
 
 </div>
 
----
+> [!NOTE]
+> **Bible Logos is a work in progress.** Not everything has been checked yet: some reference data, verse alignments between translations and features may contain mistakes. Please treat it as a study aid, check important points against a printed Bible, and [report anything that looks wrong](https://github.com/VictorOsondu/bible-logos/issues).
 
-Bible Logos runs on your own computer. It downloads public-domain Bible texts and reference data once, stores them in a local SQLite database, and gives you a fast, private study environment in the browser.
+Bible Logos began as a fork of [BibleLens](https://github.com/quantumnic/biblelens) by Nicola Spieser. It downloads openly licensed texts and reference data once, keeps them in a local SQLite database, and gives you a fast, private study space in the browser. There are no accounts, no adverts and no tracking: your notes and bookmarks stay in your browser.
 
-## ✨ What it does
+## Features
 
-### 📖 Reader with the original languages one click away
+### The original languages, one click away
 
-- Read any chapter in the **King James Version, American Standard Version, Bible in Basic English, Young's Literal Translation and the Latin Vulgate**, alone or side by side.
-- **Every word of the KJV is linked to its Hebrew or Greek original.** Click a word to see the original script, transliteration, pronunciation, Strong's definition, derivation and every other place it occurs.
-- Words the KJV translators added are shown in *italics*, as in printed editions.
-- A calm, reading-first layout with light and dark themes (following your device by default) that works as well on a phone as on a desktop.
+Every word of the King James Version is linked to its Hebrew or Greek original. Click a word to see the original script, transliteration, pronunciation and Strong's definition, how the KJV translates it elsewhere, and every verse where it occurs. Words the translators supplied are shown in *italics*, as in printed editions.
 
-### 🔤 Strong's concordance
+### Translations side by side
 
-- The **complete** Strong's lexicon: 8,674 Hebrew and 5,523 Greek entries.
-- Search by number (`H2617`, `G26`), by transliteration as you would naturally spell it (`chesed`, `agape`, `shalom`), by original script, or by English meaning (`mercy`, `grace`).
-- For each word, see how the KJV translates it (e.g. *chesed*: mercy 125×, kindness 35×, lovingkindness 21×) and browse every verse it appears in.
+Choose any of the [19 translations](#translations) and read them verse by verse. Every translation is stored with the KJV's verse numbers, so they always line up, and each one's licence is credited beneath the text.
 
-### 🔗 Cross-references and search
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/parallel-dark.png" alt="John 1 in the KJV, BSB and LSV, in the dark theme"></td>
+    <td width="50%"><img src="docs/screenshots/translations.png" alt="Choosing translations, with the sidebar collapsed to icons"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Three translations together, in the dark theme</sub></td>
+    <td align="center"><sub>Choosing translations, with the menu collapsed to icons</sub></td>
+  </tr>
+</table>
 
-- **430,000+ cross-references** from the OpenBible.info dataset, ranked by relevance.
-- Full-text search across all translations.
-- Side-by-side translation comparison.
+### Strong's concordance
 
-### 📝 Personal study
+The complete Strong's lexicon: 8,674 Hebrew and 5,523 Greek entries. Search by number (`H2617`, `G26`), by transliteration as you would naturally spell it (`chesed`, `agape`, `shalom`), by original script or by English meaning. Each entry shows how the KJV renders the word (*chesed*: mercy 125×, kindness 35×, lovingkindness 21×) and every verse it appears in.
+
+### Cross-references and search
+
+Tap any verse for its cross-references from the OpenBible.info dataset, ranked by relevance, along with verses that share its key words, related research and a link to compare every translation. Full-text search covers every translation and understands phrases and partial words.
+
+<table>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/cross-references.png" alt="Cross-references for John 3:16"></td>
+    <td width="50%"><img src="docs/screenshots/concordance.png" alt="The Strong's entry for chesed (H2617)"></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>Cross-references for John 3:16</sub></td>
+    <td align="center"><sub>A Strong's entry: <i>chesed</i>, H2617</sub></td>
+  </tr>
+</table>
+
+### Personal study
 
 - Pick up where you left off: the home page remembers the last chapter you read.
-- Bookmark any verse from the reader; bookmarks, history, study notes and reading plans are saved in your browser.
-- Key Passages: the Beatitudes, the Lord's Prayer, the Ten Commandments and the Bible's songs and doxologies, each opened in the reader.
-- Reference indexes (parables, miracles, prophecies, covenants, people, places, names of God and more) that link straight to the verses.
-- Research links for any verse, with live results from Semantic Scholar, PubMed and Open Library.
+- Bookmarks, reading history, study notes and reading plans, all kept in your browser.
+- Key Passages: the Beatitudes, the Lord's Prayer, the Ten Commandments, and the Bible's songs and doxologies.
+- Themes: guided topic studies with connected passages, explanations, original-language insights, reflection questions and private reflections saved in your browser.
+- Reference indexes of parables, miracles, prophecies, covenants, people, places, names of God and more, each linking straight to the verses.
 
-## 🚀 Getting started
+### Designed for reading
+
+<img src="docs/screenshots/mobile.png" alt="John 1 on a phone" width="260" align="right">
+
+A calm, uncluttered layout that puts the text first:
+
+- Light and dark themes, following your device unless you choose.
+- Works as well on a phone as on a desktop, with study tools in a sheet that slides up from the bottom.
+- On wider screens the menu collapses to icons for more reading space.
+- Everything works by keyboard: <kbd>⌘K</kbd> or <kbd>Ctrl K</kbd> jumps to any verse or page, <kbd>←</kbd> and <kbd>→</kbd> move between chapters, and <kbd>Esc</kbd> closes a panel.
+
+<br clear="right">
+
+## Translations
+
+**Every translation in Bible Logos is in the public domain or under an open licence**, so it can be read, shared and studied freely.
+
+| Code | Translation | Licence | Notes |
+|---|---|---|---|
+| KJV | King James Version, with Strong's numbers | Public domain (Crown patent in the UK) | Every word linked to the Hebrew or Greek |
+| BSB | Berean Standard Bible | Public domain | |
+| WEB | World English Bible | Public domain | |
+| LSV | Literal Standard Version | CC BY-SA 4.0, © Covenant Press | |
+| ASV | American Standard Version | Public domain | |
+| YLT | Young's Literal Translation | Public domain | |
+| DBY | Darby Translation | Public domain | |
+| WBT | Webster's Bible | Public domain | |
+| UKJV | Updated King James Version | Public domain | |
+| BBE | Bible in Basic English | Public domain | |
+| ULT | unfoldingWord® Literal Text | CC BY-SA 4.0, unfoldingWord | In progress: Numbers, 1–2 Chronicles, Ecclesiastes, Isaiah, Jeremiah and Ezekiel not yet published |
+| UST | unfoldingWord® Simplified Text | CC BY-SA 4.0, unfoldingWord | As for the ULT; words in {braces} are implied by the original |
+| OEB | Open English Bible | Public domain (CC0) | In progress: parts of the Old Testament not yet translated |
+| WMB | World Messianic Bible | Public domain (the name is a trademark) | The World English Bible with Hebrew forms of names |
+| HTL | Hebrew Old Testament, transliterated | CC BY 4.0, STEPBible.org (Tyndale House, Cambridge) | The Hebrew word for word in Latin letters (see below) |
+| JPS | Jewish Publication Society Tanakh (1917) | Public domain | Hebrew Scriptures only; renumbered to the English verse numbers |
+| CPDV | Catholic Public Domain Version | Public domain | Psalms numbered as in the Latin Vulgate |
+| WYC | Wycliffe Bible | Public domain | Middle English; Psalms numbered as in the Latin Vulgate |
+| VUL | Latin Vulgate | Public domain | |
+
+Only the 66 books of the Protestant canon are included for now.
+
+### Reading the Hebrew in transliteration
+
+**HTL** gives the Hebrew Old Testament word for word in Latin letters, so you can follow the sound and shape of the original beside an English translation without reading Hebrew script. It comes from STEPBible's *Translators Amalgamated Hebrew OT* (TAHOT), which follows the Leningrad Codex:
+
+> **Genesis 1:1** bereShit baRa' 'EloHim 'et hashaMayim ve'Et ha'Aretz
+
+As with the KJV, **you can click any word** to open its Strong's entry: *bereShit* opens H7225, *rê'shîyth*, "beginning". Each word links to its main element. A few small words made only of a prefix and a pronoun ending (such as *bo*, "in him") have no Strong's number and are not linked.
+
+- A **capital letter** marks the stressed syllable: *bereShit* is said *be-re-SHEET*.
+- An **apostrophe** stands for the letters aleph and ayin, which have no English equivalent.
+- **Hyphens** join words the Hebrew links with a maqqef, as in *'el-Hevel* ("to Abel").
+- Where the Hebrew margin tells readers to say a word differently from how it is written (*qere*), the spoken form is given.
+- Words found only in other ancient witnesses, such as the Septuagint, are left out.
+- The divine name is shown as *Yahweh*, as in TAHOT.
+- Verse numbers follow the English Bible; psalm titles, which the Hebrew counts as verse 1, begin verse 1.
+
+## Getting started
 
 You need [Node.js](https://nodejs.org) 20.9 or later.
 
@@ -53,71 +137,84 @@ You need [Node.js](https://nodejs.org) 20.9 or later.
 git clone https://github.com/VictorOsondu/bible-logos.git
 cd bible-logos
 npm install
-npm run seed   # downloads the texts and builds data/bible.db (about 120 MB, under a minute)
+npm run seed   # downloads the texts and builds data/bible.db (about 220 MB, a minute or two)
 npm run dev    # then open http://localhost:3000
 ```
 
-Run `npm run seed` again at any time to rebuild the database from scratch.
+Run `npm run seed` again at any time to rebuild the database. Downloads are kept in `data/sources/`, so later runs are quicker.
 
-Other commands:
+### Running with Docker
 
-| Command | Purpose |
-|---|---|
-| `npm run typecheck` | Type-check with TypeScript |
-| `npm run lint` | Lint with ESLint |
-| `npm test` | Run the unit tests (Vitest); `npm run test:coverage` adds a coverage report |
-| `npm run test:e2e` | Run the browser tests (Playwright) against a production build |
-| `npm run build && npm start` | Production build; the build stops early if `data/bible.db` is missing |
-
-For the browser tests, run `npx playwright install chromium` once, then `npm run build` before `npm run test:e2e`.
-
-## 🚢 Running in production
-
-The simplest route is the Docker image, which seeds the database and builds the app in one step:
+The Docker image seeds the database and builds the app in one step:
 
 ```bash
 docker build -t bible-logos .
 docker run -p 3000:3000 bible-logos
 ```
 
-The image runs as a non-root user and only contains the standalone server, its static files and the read-only database.
+The image runs as a non-root user and contains only the standalone server, its static files and the read-only database. `GET /api/health` returns `200 {"status":"ok"}` when the database can be read (and `503` otherwise), and the image uses it as its health check.
 
-- **Health check:** `GET /api/health` returns `200 {"status":"ok"}` when the database can be read, and `503` otherwise. The image uses it as its `HEALTHCHECK`.
+<details>
+<summary><b>Notes for running it on a server</b></summary>
+
 - **Security headers:** a Content Security Policy, `X-Frame-Options: DENY`, `nosniff`, a strict referrer policy and a permissions policy are set in `next.config.js`. Set HSTS wherever HTTPS is terminated. Scripts still need `'unsafe-inline'` for the data Next.js inlines into each page.
 - **Research API:** `/api/research` caches results for a day and is rate-limited (20 requests a minute per client, 120 overall). Limits are held in memory, so they apply per server process. Behind a proxy, make sure it sets `X-Forwarded-For`.
 - **Telemetry:** set `NEXT_TELEMETRY_DISABLED=1` to stop Next.js sending anonymous usage data (the image and CI already do).
 
-CI (`.github/workflows/ci.yml`) runs the type check, lint, unit tests, a full seed and build, and the browser tests on every push and pull request. Dependabot proposes dependency updates weekly.
+</details>
 
-## 📊 Data sources
+## Contributing
 
-The seed script downloads everything below; none of it is stored in this repository. Each download is pinned to an exact commit and checked against a SHA-256 hash in `scripts/sources.ts`, so the database is the same on every machine. Downloads are kept in `data/sources/` and reused. To move to a newer version of a source, update its URL and hash there; the seed reports the hash it actually received when they differ.
+Corrections and contributions are very welcome. Reports of mistakes in the text or data are especially valuable while the project is a work in progress. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first: it covers the rules for content (open licences only, every source credited, a translation's wording never changed), setting up, and the checks to run.
+
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run typecheck` | Type-check with TypeScript |
+| `npm run lint` | Lint with ESLint |
+| `npm test` | Unit tests (Vitest); `npm run test:coverage` adds a coverage report |
+| `npm run test:e2e` | Browser tests (Playwright) against a production build; run `npx playwright install chromium` once first |
+| `npm run build && npm start` | Production build; stops early if `data/bible.db` is missing |
+| `npm run screenshots` | Retakes the screenshots in this README from a running server |
+
+CI runs the type check, lint, unit tests, a full seed and build, and the browser tests on every push and pull request. Dependabot proposes dependency updates weekly.
+
+## Data sources
+
+The seed script downloads everything below; none of it is stored in this repository. Each download is pinned to an exact commit or release and checked against a SHA-256 hash in `scripts/sources.ts`, so the database is the same on every machine. To update a source, change its URL and hash there; the seed reports the hash it received when they differ.
 
 | Source | Used for | Licence |
 |---|---|---|
 | [CrossWire Bible Society KJV module](https://gitlab.com/crosswire-bible-society/kjv) | KJV text with Strong's numbers and Greek morphology | Text public domain; module markup GPL |
 | [Open Scriptures Strong's dictionaries](https://github.com/openscriptures/strongs) | Hebrew and Greek lexicon | CC BY-SA |
-| [scrollmapper/bible_databases](https://github.com/scrollmapper/bible_databases) | ASV, BBE, YLT and Vulgate texts | Public domain |
+| [scrollmapper/bible_databases](https://github.com/scrollmapper/bible_databases) | BSB, ASV, YLT, Webster, UKJV, BBE, OEB, JPS, CPDV, Wycliffe and Vulgate texts | See [Translations](#translations) |
+| [seven1m/open-bibles](https://github.com/seven1m/open-bibles) | World English Bible and Darby texts | Public domain |
+| [wldeh/bible-api](https://github.com/wldeh/bible-api) | Literal Standard Version text | CC BY-SA 4.0 |
+| [unfoldingWord on Door43](https://git.door43.org/unfoldingWord) (release v91) | ULT and UST texts | CC BY-SA 4.0 |
+| [eBible.org](https://ebible.org/Scriptures/details.php?id=engwmb) | World Messianic Bible text | Public domain |
+| [STEPBible Data](https://github.com/STEPBible/STEPBible-Data) (TAHOT) | Hebrew Old Testament transliteration | CC BY 4.0, STEPBible.org |
+| [BibleNLP/ebible](https://github.com/BibleNLP/ebible) | English–Hebrew verse number mapping (Paratext `eng.vrs`), used to renumber the JPS | Reference data (verse numbers only) |
 | [OpenBible.info](https://www.openbible.info/labs/cross-references/) (via scrollmapper) | Cross-references | CC BY |
 | [Semantic Scholar](https://www.semanticscholar.org/), [PubMed](https://pubmed.ncbi.nlm.nih.gov/), [Open Library](https://openlibrary.org/) | Live research results | Queried on demand |
 
-## 🏗️ How it is built
+eBible.org does not version its files. If it publishes an update to the World Messianic Bible, the seed leaves the WMB out (with a warning) until its hash in `scripts/sources.ts` is refreshed, rather than failing.
 
-- **Next.js 16** (App Router) with **React 19**, **TypeScript** and **Tailwind CSS 4**
-- **SQLite** via `better-sqlite3`, with an FTS5 full-text index
-- `scripts/seed.ts` builds the database; `scripts/kjv-strongs.ts` parses the Strong's lexicon and the tagged KJV
-- `src/lib/strongs.ts` holds the Strong's queries shared by the pages and API
-- `src/lib/navigation.ts` lists the app's pages for the sidebar, home page and search
-- Fixed reference pages are pre-rendered at build time; the reader is rendered on request
+## How it is built
 
-## 🙏 Credits
+- **Next.js 16** (App Router) with **React 19**, **TypeScript** and **Tailwind CSS 4**.
+- **SQLite** via `better-sqlite3`, read-only at run time, with an FTS5 full-text index.
+- `scripts/seed.ts` builds the database. `scripts/download.ts` fetches and verifies the sources, `scripts/bibles.ts` reads each Bible format (JSON, Zefania, USFX and USFM) and renumbers Hebrew verse numbers, and `scripts/kjv-strongs.ts` parses the Strong's lexicon and the tagged KJV.
+- `src/lib/translations.ts` lists the translations with their licences and notes; `src/lib/strongs.ts` holds the Strong's queries; `src/lib/navigation.ts` lists the app's pages.
+- Fixed reference pages are pre-rendered at build time; the reader is rendered on request.
+
+## Credits
 
 Bible Logos began as a fork of **[BibleLens](https://github.com/quantumnic/biblelens)** by Nicola Spieser, released under the MIT licence. Thank you for the foundation.
 
-Strong's data: James Strong (1890/1894); JSON edition by Open Scriptures. Tagged KJV: CrossWire Bible Society, with Old Testament Strong's numbers from The Bible Foundation and New Testament data from the KJV2003 Project.
+Strong's data: James Strong (1890/1894); JSON edition by Open Scriptures. Tagged KJV: CrossWire Bible Society, with Old Testament Strong's numbers from The Bible Foundation and New Testament data from the KJV2003 Project. Thanks also to everyone who publishes Bible texts under open licences, and to the projects listed under [Data sources](#data-sources).
 
-## 📄 Licence
+## Licence
 
-MIT. See [LICENSE](LICENSE).
+The code is released under the MIT licence; see [LICENSE](LICENSE). Newly authored Themes study prose in `src/content/themes/studies.json` is © 2026 Bible Logos contributors and licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) for non-commercial sharing and adaptation with attribution and changes indicated. See [the scope and attribution notice](public/themes-licence.txt) and [full legal terms](https://creativecommons.org/licenses/by-nc/4.0/legalcode.en). This does not revoke earlier MIT grants. Bible texts and datasets keep their own licences, as listed above; readers retain rights to their personal notes.
 
-*Bible Logos presents the text and its sources; the conclusions are yours.*
+*Bible Logos links study commentary to Scripture and its sources; read in context and examine the conclusions for yourself.*
