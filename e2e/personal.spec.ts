@@ -4,7 +4,9 @@ test.describe('personal features', () => {
   test('bookmarks, history and continue reading', async ({ page }) => {
     await page.goto('/reader/psalms/23');
     await page.getByRole('button', { name: 'Verse 1: show study tools' }).click();
-    await page.getByRole('button', { name: 'Bookmark' }).click();
+    // By keyboard: on a phone the click can be retried at a scroll position behind the open panel
+    await page.getByRole('button', { name: 'Bookmark' }).focus();
+    await page.keyboard.press('Enter');
     await expect(page.getByRole('button', { name: 'Saved' })).toBeVisible();
 
     await page.goto('/bookmarks');

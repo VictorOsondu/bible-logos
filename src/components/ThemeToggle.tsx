@@ -2,12 +2,7 @@
 
 import { useSyncExternalStore } from 'react';
 import { Moon, Sun } from 'lucide-react';
-
-export const THEME_KEY = 'biblelogos-theme';
-const THEME_EVENT = 'biblelogos-theme';
-
-/** Applies a saved theme before first paint, so the page never flashes the wrong colours. */
-export const themeScript = `try{var t=localStorage.getItem('${THEME_KEY}');if(t==='light'||t==='dark')document.documentElement.dataset.theme=t}catch(e){}`;
+import { THEME_EVENT, THEME_KEY } from '@/lib/preferences';
 
 const darkQuery = () => window.matchMedia('(prefers-color-scheme: dark)');
 

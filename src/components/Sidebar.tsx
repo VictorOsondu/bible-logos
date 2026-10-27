@@ -3,18 +3,22 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookOpen, ChevronDown, Menu, Search, X } from 'lucide-react';
-import { BIBLE_BOOKS, getBookBySlug } from '@/lib/bible-books';
-import { NAV_SECTIONS, openSearch, type NavLink } from '@/lib/navigation';
+import { BookOpen, Menu, Search, X } from 'lucide-react';
+import { REFERENCE_SECTION, SIDEBAR_SECTIONS, openSearch, type NavLink } from '@/lib/navigation';
 import ThemeToggle from './ThemeToggle';
+import SidebarToggle from './SidebarToggle';
 
 const iconButton = 'p-2 rounded-lg text-parchment-400 hover:text-parchment-100 hover:bg-parchment-800/70 transition-colors';
 
+// On wide screens the sidebar can shrink to icons only (the `collapsed` variant); labels then stay
+// available to screen readers and as tooltips.
+const label = 'lg:collapsed:sr-only';
+
 function Logo() {
   return (
-    <Link href="/" className="flex items-center gap-2 text-parchment-50">
-      <BookOpen size={20} className="text-gold-400" />
-      <span className="font-serif text-lg font-semibold tracking-tight">Bible Logos</span>
+    <Link href="/" className="flex items-center gap-2 text-parchment-50" title="Bible Logos">
+      <BookOpen size={20} className="text-gold-400 shrink-0" />
+      <span className={`font-serif text-lg font-semibold tracking-tight ${label}`}>Bible Logos</span>
     </Link>
   );
 }
@@ -23,26 +27,11 @@ export default function Sidebar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
 
-  // The book being read, from /reader/<book>/<chapter>
-  const readerMatch = /^\/reader\/([^/]+)\/(\d+)/.exec(pathname);
-  const currentBook = readerMatch ? getBookBySlug(readerMatch[1]) : undefined;
-  const currentChapter = readerMatch ? Number(readerMatch[2]) : undefined;
-
-  const [testament, setTestament] = useState<'OT' | 'NT'>(currentBook?.testament ?? 'OT');
-  const [expandedBook, setExpandedBook] = useState<number | null>(currentBook?.id ?? null);
-  const [bookFilter, setBookFilter] = useState('');
-  const isReferencePage = NAV_SECTIONS.find(s => s.label === 'Reference')!.links.some(l => pathname.startsWith(l.href));
-  const [showReference, setShowReference] = useState(isReferencePage);
-
-  // After navigating: close the mobile drawer and follow the book being read.
+  // Close the mobile drawer after navigating
   const [lastPathname, setLastPathname] = useState(pathname);
   if (pathname !== lastPathname) {
     setLastPathname(pathname);
     setIsOpen(false);
-    if (currentBook) {
-      setTestament(currentBook.testament);
-      setExpandedBook(currentBook.id);
-    }
   }
 
   // While the drawer is open: Escape closes it and the page behind does not scroll.
@@ -57,30 +46,28 @@ export default function Sidebar() {
     };
   }, [isOpen]);
 
-  const filter = bookFilter.trim().toLowerCase();
-  const books = BIBLE_BOOKS.filter(b =>
-    filter ? b.name.toLowerCase().includes(filter) || b.abbrev.toLowerCase().includes(filter) : b.testament === testament
-  );
+  const isActive = (href: string) =>
+    pathname === href || pathname.startsWith(`${href}/`) ||
+    (href === '/reference' && REFERENCE_SECTION.links.some(l => pathname.startsWith(l.href)));
 
   const navLink = (link: NavLink) => {
-    const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
+    const active = isActive(link.href);
     const Icon = link.icon;
     return (
       <Link
         key={link.href}
         href={link.href}
+        title={link.label}
         aria-current={active ? 'page' : undefined}
-        className={`flex items-center gap-3 px-3 py-1.5 rounded-lg text-sm transition-colors ${
+        className={`flex items-center gap-3 px-3 py-2 lg:collapsed:justify-center rounded-lg text-sm transition-colors ${
           active ? 'bg-parchment-800 text-parchment-50 font-medium' : 'text-parchment-300 hover:bg-parchment-800/60 hover:text-parchment-100'
         }`}
       >
-        <Icon size={16} className={active ? 'text-gold-400' : 'text-parchment-500'} />
-        {link.label}
+        <Icon size={17} className={`shrink-0 ${active ? 'text-gold-400' : 'text-parchment-500'}`} />
+        <span className={label}>{link.label}</span>
       </Link>
     );
   };
-
-  const sectionHeading = 'px-3 pt-5 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-parchment-500';
 
   return (
     <>
@@ -99,115 +86,43 @@ export default function Sidebar() {
       {isOpen && <div className="fixed inset-0 z-40 bg-black/40 lg:hidden" onClick={() => setIsOpen(false)} />}
 
       <aside
-        className={`fixed lg:sticky top-0 left-0 z-50 lg:z-auto h-dvh w-80 max-w-[85vw] lg:w-72 shrink-0 flex flex-col
-          bg-parchment-950 lg:bg-parchment-900/40 border-r border-parchment-800 transition-transform duration-200
+        className={`fixed lg:sticky top-0 left-0 z-50 lg:z-auto h-dvh w-72 max-w-[85vw] lg:w-60 lg:collapsed:w-16 shrink-0 flex flex-col
+          bg-parchment-950 lg:bg-parchment-900/40 border-r border-parchment-800 transition-[transform,width] duration-200
           ${isOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full lg:translate-x-0'}`}
         aria-label="Main navigation"
       >
-        <div className="h-14 flex items-center justify-between px-4 shrink-0">
+        <div className="h-14 flex items-center justify-between lg:collapsed:justify-center px-4 lg:collapsed:px-0 shrink-0">
           <Logo />
-          <div className="flex items-center">
-            <ThemeToggle className={`${iconButton} hidden lg:block`} />
-            <button onClick={() => setIsOpen(false)} className={`${iconButton} lg:hidden`} aria-label="Close menu">
-              <X size={20} />
-            </button>
-          </div>
-        </div>
-
-        <div className="px-3 shrink-0">
-          <button
-            onClick={() => { setIsOpen(false); openSearch(); }}
-            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-parchment-800/60 text-sm text-parchment-500 hover:text-parchment-300 transition-colors"
-          >
-            <Search size={15} />
-            <span className="flex-1 text-left">Go to a verse or page…</span>
-            <kbd className="hidden lg:inline text-[10px] font-sans text-parchment-500">⌘K</kbd>
+          <button onClick={() => setIsOpen(false)} className={`${iconButton} lg:hidden`} aria-label="Close menu">
+            <X size={20} />
           </button>
         </div>
 
-        <nav className="flex-1 overflow-y-auto px-3 pb-6">
-          {NAV_SECTIONS.filter(s => s.label !== 'Reference').map(section => (
-            <div key={section.label}>
-              <h2 className={sectionHeading}>{section.label}</h2>
+        <div className="px-3 lg:collapsed:px-2 shrink-0">
+          <button
+            onClick={() => { setIsOpen(false); openSearch(); }}
+            title="Go to a verse or page (⌘K)"
+            className="w-full flex items-center lg:collapsed:justify-center gap-2 px-3 py-2 rounded-lg bg-parchment-800/60 text-sm text-parchment-500 hover:text-parchment-300 transition-colors"
+          >
+            <Search size={15} className="shrink-0" />
+            <span className={`flex-1 text-left ${label}`}>Go to…</span>
+            <kbd className="hidden lg:inline lg:collapsed:hidden text-[10px] font-sans text-parchment-500">⌘K</kbd>
+          </button>
+        </div>
+
+        <nav className="flex-1 overflow-y-auto px-3 lg:collapsed:px-2 pb-4">
+          {SIDEBAR_SECTIONS.map(section => (
+            <div key={section.label} className="pt-5 lg:collapsed:pt-3 lg:collapsed:mt-3 lg:collapsed:border-t lg:collapsed:first:border-t-0 border-parchment-800">
+              <h2 className={`px-3 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-parchment-500 ${label}`}>{section.label}</h2>
               {section.links.map(navLink)}
             </div>
           ))}
-
-          {NAV_SECTIONS.filter(s => s.label === 'Reference').map(section => (
-            <div key={section.label}>
-              <button
-                onClick={() => setShowReference(v => !v)}
-                aria-expanded={showReference}
-                className={`${sectionHeading} w-full flex items-center justify-between hover:text-parchment-300`}
-              >
-                {section.label}
-                <ChevronDown size={14} className={`transition-transform ${showReference ? '' : '-rotate-90'}`} />
-              </button>
-              {showReference && section.links.map(navLink)}
-            </div>
-          ))}
-
-          {/* Books */}
-          <h2 className={sectionHeading}>Bible</h2>
-          <div className="flex gap-1 p-1 mb-2 rounded-lg bg-parchment-800/60 text-xs font-medium">
-            {(['OT', 'NT'] as const).map(t => (
-              <button
-                key={t}
-                onClick={() => { setTestament(t); setBookFilter(''); }}
-                className={`flex-1 py-1.5 rounded-md transition-colors ${
-                  testament === t && !filter ? 'bg-parchment-950 text-parchment-100 shadow-xs' : 'text-parchment-500 hover:text-parchment-300'
-                }`}
-              >
-                {t === 'OT' ? 'Old Testament' : 'New Testament'}
-              </button>
-            ))}
-          </div>
-          <input
-            type="search"
-            value={bookFilter}
-            onChange={e => setBookFilter(e.target.value)}
-            placeholder="Find a book"
-            className="w-full mb-2 px-3 py-1.5 rounded-lg bg-transparent border border-parchment-800 text-sm text-parchment-200 placeholder-parchment-600 focus:outline-hidden focus:border-gold-500/50"
-          />
-          {books.map(book => {
-            const expanded = expandedBook === book.id;
-            const slug = book.name.toLowerCase().replace(/ /g, '-');
-            const isCurrent = currentBook?.id === book.id;
-            return (
-              <div key={book.id}>
-                <button
-                  onClick={() => setExpandedBook(expanded ? null : book.id)}
-                  aria-expanded={expanded}
-                  className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-sm transition-colors ${
-                    isCurrent ? 'text-parchment-50 font-medium' : 'text-parchment-300 hover:bg-parchment-800/60 hover:text-parchment-100'
-                  }`}
-                >
-                  {book.name}
-                  <span className="text-xs text-parchment-500 tabular-nums">{book.chapters}</span>
-                </button>
-                {expanded && (
-                  <div className="grid grid-cols-6 gap-1 px-2 py-2">
-                    {Array.from({ length: book.chapters }, (_, i) => i + 1).map(ch => {
-                      const active = isCurrent && ch === currentChapter;
-                      return (
-                        <Link
-                          key={ch}
-                          href={`/reader/${slug}/${ch}`}
-                          aria-current={active ? 'page' : undefined}
-                          className={`text-center text-xs py-1.5 rounded-md tabular-nums transition-colors ${
-                            active ? 'bg-gold-600 text-parchment-950 font-semibold' : 'text-parchment-300 hover:bg-parchment-800'
-                          }`}
-                        >
-                          {ch}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
         </nav>
+
+        <div className="hidden lg:flex lg:collapsed:flex-col shrink-0 items-center gap-1 px-3 py-3 lg:collapsed:px-2 border-t border-parchment-800">
+          <ThemeToggle className={iconButton} />
+          <SidebarToggle className={iconButton} />
+        </div>
       </aside>
     </>
   );

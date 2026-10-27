@@ -1,26 +1,77 @@
+import { USFM_CODES } from './bibles';
+
 // Every file the seed script downloads, pinned to an exact commit and checked against a SHA-256
 // hash, so a change upstream can never silently alter (or break) the database.
 //
-// To update a source: change its commit, run `npm run seed`, and replace the hashes it reports.
+// To update a source: change its commit, run `npm run seed`, and replace the hash it reports.
 
 const SCROLLMAPPER = 'https://raw.githubusercontent.com/scrollmapper/bible_databases/e1b254cef86d0e65b1a5d1a94b8b112d0f296a2c/formats';
 const OPEN_SCRIPTURES = 'https://raw.githubusercontent.com/openscriptures/strongs/0acd2f251c2d35ff8db2dece4e0593979d3ac223';
 const CROSSWIRE = 'https://gitlab.com/crosswire-bible-society/kjv/-/raw/d490be7e34762deb2c76cb2c1306d4808e27890d';
+const OPEN_BIBLES = 'https://raw.githubusercontent.com/seven1m/open-bibles/f257a3559025c3f873b48a75019f53a9354ed7de';
+const BIBLE_API = 'https://raw.githubusercontent.com/wldeh/bible-api/1d6987e268fcadb1e96ceb487e3d365a5e837f4a/bibles';
+const STEPBIBLE = 'https://raw.githubusercontent.com/STEPBible/STEPBible-Data/ed476a8ee6e3f7b3a46fc48af6c7dabc02387b1d/Translators%20Amalgamated%20OT%2BNT';
+const EBIBLE_CORPUS = 'https://raw.githubusercontent.com/BibleNLP/ebible/32326194b9131b6881d902e1fec191719fe56e2d';
 
 export interface Source {
   url: string;
   sha256: string;
 }
 
+/** A translation published as one JSON file per chapter; the hash covers the assembled text. */
+export interface ChapterSource {
+  base: string;
+  name: string;
+  sha256: string;
+  /** Book folders that differ from the book's name in lower case without spaces */
+  folders?: Record<string, string>;
+}
+
+/** A translation published as one file per book; the hash covers all the files in order. */
+export interface FileSetSource {
+  name: string;
+  urls: string[];
+  sha256: string;
+}
+
 const source = (url: string, sha256: string): Source => ({ url, sha256 });
+const chapters = (name: string, sha256: string, folders?: Record<string, string>): ChapterSource =>
+  ({ base: `${BIBLE_API}/${name}`, name, sha256, folders });
+
+/**
+ * How each translation (other than the KJV) is downloaded and read. An optional source is skipped
+ * with a warning if it cannot be fetched or has changed, rather than stopping the seed.
+ */
+export type TranslationSource =
+  | { format: 'scrollmapper' | 'zefania' | 'usfx'; source: Source; hebrewVerses?: boolean }
+  | { format: 'zipped-usfx'; source: Source; optional: true }
+  | { format: 'chapters'; source: ChapterSource }
+  | { format: 'usfm-books'; source: FileSetSource }
+  | { format: 'tahot'; sources: Source[] };
+
+/** One part of STEPBible's Translators Amalgamated Hebrew OT (TAHOT), e.g. 'Gen-Deu'. */
+const tahot = (books: string, sha256: string): Source =>
+  source(`${STEPBIBLE}/TAHOT%20${books}%20-%20Translators%20Amalgamated%20Hebrew%20OT%20-%20STEPBible.org%20CC%20BY.txt`, sha256);
+
+// Books unfoldingWord has not yet released in the ULT and UST
+const UNFOLDINGWORD_UNRELEASED = ['NUM', '1CH', '2CH', 'ECC', 'ISA', 'JER', 'EZK'];
+
+/** An unfoldingWord text at a release tag on Door43; files are numbered 01–39 and 41–67. */
+const unfoldingWord = (repo: string, tag: string, sha256: string): TranslationSource => ({
+  format: 'usfm-books',
+  source: {
+    name: `${repo}-${tag}`,
+    sha256,
+    urls: USFM_CODES.flatMap((code, i) => UNFOLDINGWORD_UNRELEASED.includes(code) ? [] : [
+      `https://git.door43.org/unfoldingWord/${repo}/raw/tag/${tag}/${String(i < 39 ? i + 1 : i + 2).padStart(2, '0')}-${code}.usfm`,
+    ]),
+  },
+});
+
+const scrollmapper = (file: string, sha256: string, hebrewVerses = false): TranslationSource =>
+  ({ format: 'scrollmapper', source: source(`${SCROLLMAPPER}/json/${file}`, sha256), hebrewVerses });
 
 export const SOURCES = {
-  // Translations (scrollmapper/bible_databases)
-  asv: source(`${SCROLLMAPPER}/json/ASV.json`, '602445e22c280a682ac4c489117ead179271f5ee50a78ee4531b249c71e7ce99'),
-  bbe: source(`${SCROLLMAPPER}/json/BBE.json`, '2396c027cfd1c47c9bb325c5c1ed1b1c125b95ef4c5382ddba4f8e50651f8068'),
-  ylt: source(`${SCROLLMAPPER}/json/YLT.json`, 'd55ef42dae715c4fc5d00049011b818a42a99e0ff419f5f08bc37cea0b4f12e3'),
-  vulgate: source(`${SCROLLMAPPER}/json/Vulgate.json`, '9fb72853e4086b61370c8370a9223b09f853b7e44b588e444915f4a2b7c95345'),
-
   // OpenBible.info cross-references, via scrollmapper
   crossReferences: [
     'c20f36ccb5ffa49ed50cd02dcb944dedc608d16c12278d625700301dfdcbb431',
@@ -38,4 +89,41 @@ export const SOURCES = {
 
   // Strong's-tagged KJV (CrossWire Bible Society; text public domain, module GPL)
   kjvOsis: source(`${CROSSWIRE}/kjv.osis.xml`, '4bcbfe45722fca396adbeac9c81025bbb173cb1e30296da90864f0400cb0e3f5'),
+
+  // English verse numbering and how it maps to the Hebrew (Paratext eng.vrs, via BibleNLP/ebible)
+  englishVersification: source(`${EBIBLE_CORPUS}/metadata/eng.vrs`, '003981c7f43c69b73b60d40a3f35f72e7ee017a686a6fb206f19a1b721157541'),
+};
+
+/** Every translation except the KJV, keyed by its id in src/lib/translations.ts. */
+export const TRANSLATION_SOURCES: Record<string, TranslationSource> = {
+  BSB: scrollmapper('BSB.json', 'cec3c644088a8ef4a50cf1e2de035f79d8825f394625d116bb7ee7e1d57739c9'),
+  WEB: { format: 'usfx', source: source(`${OPEN_BIBLES}/eng-web.usfx.xml`, '5ffa2626f170a109a4a96afc90775c06f0821cb4ba81ed34e63663e085708d68') },
+  LSV: { format: 'chapters', source: chapters('en-lsv', '3f20223b137dfab4c90e00b11da40a127752e726460c5d549f530113ce83e4c8', { songofsolomon: 'songofsongs' }) },
+  ASV: scrollmapper('ASV.json', '602445e22c280a682ac4c489117ead179271f5ee50a78ee4531b249c71e7ce99'),
+  YLT: scrollmapper('YLT.json', 'd55ef42dae715c4fc5d00049011b818a42a99e0ff419f5f08bc37cea0b4f12e3'),
+  // scrollmapper's Darby has lost spaces before capitals ("ofGod"), so it comes from open-bibles
+  DBY: { format: 'zefania', source: source(`${OPEN_BIBLES}/eng-darby.zefania.xml`, '387887cec188342b0a4f9eb26aee8578fc88594d63c52204dfebe86c16b4514f') },
+  WBT: scrollmapper('Webster.json', '21d32fca7a463385a5049aca0894318fd60396211be72fd8e8ee9ed76bd6355e'),
+  UKJV: scrollmapper('UKJV.json', 'bdfd7bbc03786a1c077ff292595f8768d201582a87b236d2466c603fdc9cc01b'),
+  BBE: scrollmapper('BBE.json', '2396c027cfd1c47c9bb325c5c1ed1b1c125b95ef4c5382ddba4f8e50651f8068'),
+  OEB: scrollmapper('OEB.json', '7b1552b1d39027f909f23e5b0dc25116fb1dd6c785cac5aac4c2e56dd1082c89'),
+  ULT: unfoldingWord('en_ult', 'v91', '204f8678f378cf4c7191b7c23d3e6a040870b61cf4471935f4ee56c709ed9964'),
+  UST: unfoldingWord('en_ust', 'v91', 'd73e140d103517bf1ea31f454262b8c27581f4d776bab87949572f310495c88f'),
+  // eBible.org does not version its files, so when it publishes an update the seed skips the WMB
+  // until this hash is refreshed
+  WMB: { format: 'zipped-usfx', source: source('https://ebible.org/Scriptures/engwmb_usfx.zip', '98f05b0e1dd1c0e37656b4f862c1e9affc4112d7b9d745d54c7d04a7b2cd63cb'), optional: true },
+  // The Hebrew Old Testament in transliteration, from STEPBible (CC BY 4.0)
+  HTL: {
+    format: 'tahot',
+    sources: [
+      tahot('Gen-Deu', 'e9b8546ee48fe0bfc57c3b70f5f40e98d96580e803526d19026224e31753368b'),
+      tahot('Jos-Est', '195fee1dc3653bab33701f170734eb894ed647c10cd08cc61749375fe8b73775'),
+      tahot('Job-Sng', 'bb508af3af07822fca84cc43a0eba79eb70eecf672aabc0245b8d8cecf329d96'),
+      tahot('Isa-Mal', 'f3ded203d2a74d6368932c97ae550d1d0754b271af491dc0dedf36fe3ba0bcc5'),
+    ],
+  },
+  JPS: scrollmapper('JPS.json', 'cb698cfbf2e97843dd4357b725c96ac6e9b2f3f23c5e3e3f6a3cdb5912ca183a', true),
+  CPDV: scrollmapper('CPDV.json', 'f91a5dc9556d77a441a18adff5a272f8f4b1fea1745e01d0c3c2a93aa7929a38'),
+  WYC: scrollmapper('Wycliffe.json', '61a5d8486068d3b9d66fa2bb3664ecd9db3d3d81a3dbe5267300663336854edf'),
+  VUL: scrollmapper('Vulgate.json', '9fb72853e4086b61370c8370a9223b09f853b7e44b588e444915f4a2b7c95345'),
 };

@@ -1,3 +1,9 @@
+Scope: This MIT licence applies to application code and documentation, except
+for the newly authored Themes study content in src/content/themes/studies.json,
+which is licensed under CC BY-NC 4.0 as specified in public/themes-licence.txt.
+Third-party texts and datasets retain their own licences. Existing MIT grants
+are unaffected.
+
 MIT License
 
 Copyright (c) 2026 Nicola Spieser

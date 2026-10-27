@@ -1,7 +1,7 @@
 // The app's pages, shared by the sidebar, home page and search palette.
 import {
-  ALargeSmall, ArrowLeftRight, Bookmark, CalendarCheck, Columns2, Crown, Flame, HandHeart, Handshake,
-  Hourglass, Languages, Link2, MapPin, Network, NotebookPen, Quote, ScrollText, Search, Sparkles, Sprout,
+  ALargeSmall, ArrowLeftRight, BookOpen, Bookmark, CalendarCheck, Columns2, Crown, Flame, HandHeart, Handshake,
+  Hourglass, Languages, Library, Link2, MapPin, Network, NotebookPen, Quote, ScrollText, Search, Sparkles, Sprout,
   Star, Sun, Tags, Users, type LucideIcon,
 } from 'lucide-react';
 
@@ -21,11 +21,12 @@ export const NAV_SECTIONS: NavSection[] = [
   {
     label: 'Study',
     links: [
+      { href: '/reader', icon: BookOpen, label: 'Books', description: 'Choose a book and chapter to read' },
       { href: '/search', icon: Search, label: 'Search', description: 'Full-text search in every translation' },
       { href: '/compare', icon: Columns2, label: 'Compare', description: 'Translations side by side' },
       { href: '/concordance', icon: Languages, label: 'Concordance', description: "Strong's Hebrew and Greek lexicon" },
       { href: '/passages', icon: Star, label: 'Key Passages', description: 'Well-known passages, songs and prayers' },
-      { href: '/themes', icon: Tags, label: 'Themes', description: 'Theological themes and their key words' },
+      { href: '/themes', icon: Tags, label: 'Themes', description: 'Guided topic studies with passages and reflection' },
     ],
   },
   {
@@ -58,6 +59,14 @@ export const NAV_SECTIONS: NavSection[] = [
     ],
   },
 ];
+
+export const REFERENCE_SECTION = NAV_SECTIONS.find(s => s.label === 'Reference')!;
+
+/** The sidebar keeps to the main pages: the reference indexes share one entry, at the end of Study. */
+export const SIDEBAR_SECTIONS: NavSection[] = NAV_SECTIONS.filter(s => s !== REFERENCE_SECTION).map(s => s.label !== 'Study' ? s : {
+  ...s,
+  links: [...s.links, { href: '/reference', icon: Library, label: 'Reference', description: 'People, places, parables, prophecies and more' }],
+});
 
 /** Asks the search palette to open (it listens for this event). */
 export const openSearch = () => window.dispatchEvent(new Event('open-search'));

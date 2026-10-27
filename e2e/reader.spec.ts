@@ -25,6 +25,24 @@ test.describe('reader', () => {
     await expect(page.getByRole('complementary', { name: 'John 3:16' }).getByText(/cross-references? found/)).toBeVisible();
   });
 
+  test('words in the transliterated Hebrew open their Strong\'s entry', async ({ page }) => {
+    await page.goto('/reader/genesis/1?translations=KJV,HTL');
+    await expect(page.getByText(/or a word in the KJV or HTL/)).toBeVisible();
+    await page.locator('#v1').getByRole('button', { name: 'bereShit', exact: true }).click();
+    const panel = page.getByRole('complementary', { name: "Strong's H7225" });
+    await expect(panel).toBeVisible();
+    await expect(panel.getByText(/beginning/i).first()).toBeVisible();
+  });
+
+  test('translations can be added side by side', async ({ page }) => {
+    await page.goto('/reader/malachi/4');
+    await page.locator('summary', { hasText: 'Choose translations' }).click();
+    await page.getByRole('link', { name: /^BSB Berean Standard Bible/ }).click();
+    await expect(page).toHaveURL(/translations=KJV,BSB$/);
+    await expect(page.locator('#v5')).toContainText('Elijah');
+    await expect(page.getByText(/Berean Standard Bible \(BSB\): Public domain/)).toBeVisible();
+  });
+
   test('previous and next chapter links cross into neighbouring books', async ({ page }) => {
     await page.goto('/reader/malachi/4');
     await page.getByRole('link', { name: /^Next/ }).last().click();

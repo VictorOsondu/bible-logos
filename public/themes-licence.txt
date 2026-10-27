@@ -1,0 +1,37 @@
+Bible Logos — Themes content licence
+
+Copyright © 2026 Bible Logos contributors.
+
+The newly authored study prose in src/content/themes/studies.json (overviews,
+study sections, language notes and reflection questions), displayed at /themes
+and /themes/[slug], is licensed under the Creative Commons
+Attribution-NonCommercial 4.0 International licence (CC BY-NC 4.0).
+
+Licence: https://creativecommons.org/licenses/by-nc/4.0/
+Full legal terms: https://creativecommons.org/licenses/by-nc/4.0/legalcode.en
+
+You may share and adapt this material for non-commercial purposes under those
+terms, including appropriate attribution, a link to the licence and an
+indication of changes. NonCommercial means not primarily intended for or
+directed towards commercial advantage or monetary compensation. The full
+legal terms govern; this notice is a summary and scope statement.
+
+Suggested attribution:
+“[Study title]”, Bible Logos contributors, Bible Logos Themes,
+https://github.com/VictorOsondu/bible-logos/tree/main/src/content/themes,
+CC BY-NC 4.0, https://creativecommons.org/licenses/by-nc/4.0/.
+Indicate any changes you make.
+
+Scope and exclusions
+
+This licence covers only the newly authored study material identified above.
+It does not cover application code, Bible translations, Strong's lexicon
+entries, third-party reference data, or personal notes written by readers.
+Those materials retain their respective rights and licences. Scripture
+references and links do not change the licence of the passages they point to.
+Material previously distributed under MIT remains available under MIT; this
+notice does not revoke existing permissions or relicense third-party work.
+
+Application code remains under the MIT licence in LICENSE.
+Bible text and dataset licences are documented in README.md and displayed
+with the respective texts. Personal notes remain the reader's own content.

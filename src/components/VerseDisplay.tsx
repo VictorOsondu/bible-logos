@@ -23,7 +23,8 @@ interface Verse {
 interface Props {
   verses: Verse[];
   translations: string[];
-  kjvTokens?: Record<number, VerseToken[]>; // Strong's-tagged KJV, keyed by verse
+  /** Strong's-tagged words by translation (the KJV and HTL), then by verse */
+  tokens?: Record<string, Record<number, VerseToken[]>>;
 }
 
 type Panel = 'crossref' | 'strongs' | 'research' | 'intertextual';
@@ -46,7 +47,7 @@ const subscribeToHash = (onChange: () => void) => {
 };
 const useHash = () => useSyncExternalStore(subscribeToHash, () => window.location.hash, () => '');
 
-export default function VerseDisplay({ verses, translations, kjvTokens }: Props) {
+export default function VerseDisplay({ verses, translations, tokens: taggedTokens }: Props) {
   const [selectedVerse, setSelectedVerse] = useState<number | null>(null);
   const [panel, setPanel] = useState<Panel | null>(null);
   const [selectedStrongs, setSelectedStrongs] = useState<string | null>(null);
@@ -101,7 +102,7 @@ export default function VerseDisplay({ verses, translations, kjvTokens }: Props)
     setPanel('strongs');
   };
 
-  const tokensFor = (v: Verse) => (v.translation === 'KJV' ? kjvTokens?.[v.verse] : undefined);
+  const tokensFor = (v: Verse) => taggedTokens?.[v.translation]?.[v.verse];
   const plainText = (v: Verse) => {
     const tokens = tokensFor(v);
     return tokens ? tokensToText(tokens) : v.text;
@@ -155,7 +156,8 @@ export default function VerseDisplay({ verses, translations, kjvTokens }: Props)
 
   return (
     <div className="xl:flex xl:gap-8 xl:justify-center">
-      <div className="max-w-2xl mx-auto xl:mx-0 w-full">
+      {/* While the bottom sheet is open, room below the verses lets even the last one scroll clear of it */}
+      <div className={`max-w-2xl mx-auto xl:mx-0 w-full ${panel ? 'pb-[60dvh] xl:pb-0' : ''}`}>
         {[...grouped.entries()].map(([verseNum, list]) => {
           const selected = selectedVerse === verseNum;
           return (

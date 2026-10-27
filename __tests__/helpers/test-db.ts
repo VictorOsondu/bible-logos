@@ -58,11 +58,12 @@ export function createTestDb(): Database.Database {
     CREATE INDEX idx_ws_strongs ON word_strongs(strongs_id);
 
     CREATE TABLE IF NOT EXISTS verse_tokens (
+      translation TEXT NOT NULL DEFAULT 'KJV',
       book INTEGER NOT NULL,
       chapter INTEGER NOT NULL,
       verse INTEGER NOT NULL,
       tokens TEXT NOT NULL,
-      PRIMARY KEY (book, chapter, verse)
+      PRIMARY KEY (translation, book, chapter, verse)
     );
 
     CREATE VIRTUAL TABLE IF NOT EXISTS verses_fts USING fts5(text, content='verses', content_rowid='id');
@@ -135,6 +136,10 @@ export function seedTestDb(db: Database.Database): void {
   db.prepare('INSERT INTO verse_tokens (book, chapter, verse, tokens) VALUES (?, ?, ?, ?)').run(
     1, 1, 1,
     JSON.stringify(['In the beginning ', { t: 'God', s: ['H430'] }, ' ', { t: 'created', s: ['H853', 'H1254'] }, ' the heaven.'])
+  );
+  db.prepare('INSERT INTO verse_tokens (translation, book, chapter, verse, tokens) VALUES (?, ?, ?, ?, ?)').run(
+    'HTL', 1, 1, 1,
+    JSON.stringify([{ t: 'bereShit', s: ['H7225'] }, ' ', { t: "baRa'", s: ['H1254'] }, ' ', { t: "'EloHim", s: ['H430'] }])
   );
 
 

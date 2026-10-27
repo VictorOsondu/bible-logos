@@ -1,0 +1,614 @@
+[
+  {
+    "slug": "new-creation",
+    "title": "New Creation",
+    "overview": "How does the promise of renewal connect present discipleship with future hope?",
+    "passages": [
+      {
+        "label": "2 Corinthians 5:14–21",
+        "book": "2-corinthians",
+        "chapter": 5,
+        "verse": 14
+      },
+      {
+        "label": "Romans 8:18–25",
+        "book": "romans",
+        "chapter": 8,
+        "verse": 18
+      },
+      {
+        "label": "Revelation 21:1–5",
+        "book": "revelation",
+        "chapter": 21,
+        "verse": 1
+      }
+    ],
+    "sections": [
+      {
+        "title": "Reconciliation and a changed life",
+        "text": "Read Paul’s language of new creation within the surrounding account of Christ’s love and reconciliation. Notice how a changed way of seeing people connects with a calling to serve as ambassadors."
+      },
+      {
+        "title": "Creation’s hope and God’s presence",
+        "text": "Romans describes creation groaning while waiting in hope. Revelation pictures God dwelling with his people and the end of death and mourning. Compare what is promised, what remains awaited and how believers live while waiting."
+      }
+    ],
+    "words": [
+      {
+        "id": "G2537",
+        "label": "kainos · new",
+        "note": "Compare its use in these passages without assuming the adjective alone settles how renewal takes place."
+      }
+    ],
+    "questions": [
+      "How does reconciliation shape Paul’s description of new creation?",
+      "What is creation waiting for in Romans 8?",
+      "How might future hope shape care for people and the world today?"
+    ],
+    "related": [],
+    "parentSlug": null
+  },
+  {
+    "slug": "the-godhead",
+    "title": "The Godhead",
+    "overview": "",
+    "passages": [],
+    "sections": [],
+    "words": [],
+    "questions": [],
+    "related": [],
+    "parentSlug": null
+  },
+  {
+    "slug": "living-letters",
+    "title": "Living Letters",
+    "overview": "Letters give sound a shape and words a form. Explore how the Sepher Yetzirah pictures the Hebrew alphabet as part of the formation of the world, and reflect on Scripture’s language of word, breath and life.",
+    "passages": [
+      {
+        "label": "Genesis 1:1–5",
+        "book": "genesis",
+        "chapter": 1,
+        "verse": 1
+      },
+      {
+        "label": "Psalm 33:6–9",
+        "book": "psalms",
+        "chapter": 33,
+        "verse": 6
+      },
+      {
+        "label": "John 1:1–5",
+        "book": "john",
+        "chapter": 1,
+        "verse": 1
+      },
+      {
+        "label": "2 Corinthians 3:1–6",
+        "book": "2-corinthians",
+        "chapter": 3,
+        "verse": 1
+      }
+    ],
+    "sections": [
+      {
+        "title": "A world formed through expression",
+        "text": "In the Sepher Yetzirah, letters are more than marks on a page. They belong to a symbolic account of how the world takes shape through divine expression. Number, writing and sound offer different ways of approaching order and meaning: what can be counted, what can be formed into signs, and what can be spoken.\n\nThe title Book of Formation suits this emphasis. The work explores patterns of formation rather than retelling the sequence of Genesis. Here, “living letters” is our study title for that connection between language and life."
+      },
+      {
+        "title": "Ten and twenty-two",
+        "text": "The book begins with thirty-two paths of wisdom: ten sephiroth and twenty-two letters. In this account, the ten sephiroth belong to its treatment of number, spirit, elements and the directions of space. The twenty-two letters provide the alphabet through which forms and combinations are imagined.\n\nThe pattern holds variety within unity. Many letters and many forms belong to a creation whose source is one God. The numbers give the reader a framework for contemplation rather than a list of separate creators."
+      },
+      {
+        "title": "Three families of letters",
+        "text": "The twenty-two letters are arranged as three mothers, seven doubles and twelve simples. Each family connects language with patterns in the world, in time and in human life. The correspondences below follow the supplied Westcott edition.\n\nAleph, Mem and Shin receive particular attention. Aleph is associated with air, Mem with water and Shin with fire. Air mediates between the other two, pictured as a balance. The same pattern is carried into the seasons and the body: temperate conditions between heat and cold, and the chest between the head and belly.",
+        "letterGroups": [
+          {
+            "name": "Three mothers",
+            "letters": "א · מ · ש",
+            "names": "Aleph, Mem, Shin",
+            "connections": "Air, water and fire; balance; temperate conditions, cold and heat; chest, belly and head.",
+            "entries": [
+              {
+                "letter": "א",
+                "name": "Aleph",
+                "meaning": "Air and mediation. Aleph stands between the water of Mem and the fire of Shin, giving the image of a balance that holds different forces together.",
+                "usage": "In the book’s correspondences, Aleph belongs to air in the world, temperate conditions in the year, and breath in the chest in the person. Read it with Mem and Shin to follow the same balancing pattern across all three settings.",
+                "reflection": "Where might listening and a measured response bring balance to opposing pressures?"
+              },
+              {
+                "letter": "מ",
+                "name": "Mem",
+                "meaning": "Water. Mem belongs to the receptive side of the book’s elemental pattern, set alongside the fire of Shin with Aleph as mediator.",
+                "usage": "Mem is associated with water, with the earth in the world, with cold in the year, and with the belly in the person. Trace these as symbolic correspondences in chapter III rather than definitions of every Hebrew word containing Mem.",
+                "reflection": "What do the images of water and receptivity invite you to notice about receiving and sustaining life?"
+              },
+              {
+                "letter": "ש",
+                "name": "Shin",
+                "meaning": "Fire. Shin brings the fiery side of the threefold pattern into view, set opposite Mem’s water and held in relation through Aleph’s air.",
+                "usage": "Shin is associated with fire, the heavens in the world, heat in the year, and the head in the person. Compare its place with Mem and Aleph to see how the book carries one pattern through world, year and person.",
+                "reflection": "How might the image of fire help you reflect on energy, intensity and the need for balance?"
+              }
+            ]
+          },
+          {
+            "name": "Seven doubles",
+            "letters": "ב · ג · ד · כ · פ · ר · ת",
+            "names": "Beth, Gimel, Daleth, Kaph, Peh, Resh, Tau",
+            "connections": "Paired qualities such as life and death or peace and war; seven celestial bodies, days of the week and openings of perception.",
+            "entries": [
+              {
+                "letter": "ב",
+                "name": "Beth",
+                "meaning": "Beth belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Beth here.",
+                "usage": "Read Beth within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Beth beside Aleph (בא) and reverse their order (אב). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+              },
+              {
+                "letter": "ג",
+                "name": "Gimel",
+                "meaning": "Gimel belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Gimel here.",
+                "usage": "Read Gimel within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Gimel beside Aleph (גא) and reverse their order (אג). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+              },
+              {
+                "letter": "ד",
+                "name": "Daleth",
+                "meaning": "Daleth belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Daleth here.",
+                "usage": "Read Daleth within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Daleth beside Aleph (דא) and reverse their order (אד). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+              },
+              {
+                "letter": "כ",
+                "name": "Kaph",
+                "meaning": "Kaph belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Kaph here.",
+                "usage": "Read Kaph within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Kaph beside Aleph (כא) and reverse their order (אכ). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+              },
+              {
+                "letter": "פ",
+                "name": "Peh",
+                "meaning": "Peh belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Peh here.",
+                "usage": "Read Peh within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Peh beside Aleph (פא) and reverse their order (אפ). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+              },
+              {
+                "letter": "ר",
+                "name": "Resh",
+                "meaning": "Resh belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Resh here.",
+                "usage": "Read Resh within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Resh beside Aleph (רא) and reverse their order (אר). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+              },
+              {
+                "letter": "ת",
+                "name": "Tau",
+                "meaning": "Tau belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Tau here.",
+                "usage": "Read Tau within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Tau beside Aleph (תא) and reverse their order (את). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+              }
+            ]
+          },
+          {
+            "name": "Twelve simples",
+            "letters": "ה · ו · ז · ח · ט · י · ל · נ · ס · ע · צ · ק",
+            "names": "Heh, Vau, Zain, Cheth, Teth, Yod, Lamed, Nun, Samech, Oin, Tzaddi, Qoph",
+            "connections": "Human activities and capacities; twelve zodiacal constellations, months and bodily organs.",
+            "entries": [
+              {
+                "letter": "ה",
+                "name": "Heh",
+                "meaning": "Heh belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Heh in this study.",
+                "usage": "Read Heh within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Heh. As an illustration of the pairing described in chapter II, place Heh beside Aleph (הא) and reverse their order (אה). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "ו",
+                "name": "Vau",
+                "meaning": "Vau belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Vau in this study.",
+                "usage": "Read Vau within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Vau. As an illustration of the pairing described in chapter II, place Vau beside Aleph (וא) and reverse their order (או). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "ז",
+                "name": "Zain",
+                "meaning": "Zain belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Zain in this study.",
+                "usage": "Read Zain within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Zain. As an illustration of the pairing described in chapter II, place Zain beside Aleph (זא) and reverse their order (אז). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "ח",
+                "name": "Cheth",
+                "meaning": "Cheth belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Cheth in this study.",
+                "usage": "Read Cheth within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Cheth. As an illustration of the pairing described in chapter II, place Cheth beside Aleph (חא) and reverse their order (אח). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "ט",
+                "name": "Teth",
+                "meaning": "Teth belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Teth in this study.",
+                "usage": "Read Teth within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Teth. As an illustration of the pairing described in chapter II, place Teth beside Aleph (טא) and reverse their order (אט). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "י",
+                "name": "Yod",
+                "meaning": "Yod belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Yod in this study.",
+                "usage": "Read Yod within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Yod. As an illustration of the pairing described in chapter II, place Yod beside Aleph (יא) and reverse their order (אי). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "ל",
+                "name": "Lamed",
+                "meaning": "Lamed belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Lamed in this study.",
+                "usage": "Read Lamed within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Lamed. As an illustration of the pairing described in chapter II, place Lamed beside Aleph (לא) and reverse their order (אל). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "נ",
+                "name": "Nun",
+                "meaning": "Nun belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Nun in this study.",
+                "usage": "Read Nun within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Nun. As an illustration of the pairing described in chapter II, place Nun beside Aleph (נא) and reverse their order (אנ). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "ס",
+                "name": "Samech",
+                "meaning": "Samech belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Samech in this study.",
+                "usage": "Read Samech within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Samech. As an illustration of the pairing described in chapter II, place Samech beside Aleph (סא) and reverse their order (אס). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "ע",
+                "name": "Oin",
+                "meaning": "Oin belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Oin in this study.",
+                "usage": "Read Oin within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Oin. As an illustration of the pairing described in chapter II, place Oin beside Aleph (עא) and reverse their order (אע). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "צ",
+                "name": "Tzaddi",
+                "meaning": "Tzaddi belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Tzaddi in this study.",
+                "usage": "Read Tzaddi within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Tzaddi. As an illustration of the pairing described in chapter II, place Tzaddi beside Aleph (צא) and reverse their order (אצ). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              },
+              {
+                "letter": "ק",
+                "name": "Qoph",
+                "meaning": "Qoph belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Qoph in this study.",
+                "usage": "Read Qoph within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Qoph. As an illustration of the pairing described in chapter II, place Qoph beside Aleph (קא) and reverse their order (אק). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
+                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Letters in relationship",
+        "text": "A single letter has possibilities that emerge when it meets another. The book describes the letters being paired and combined, giving the image of 231 gates. Pairing each of the twenty-two letters with every different letter, counting each pair once, gives 22 × 21 ÷ 2 = 231.\n\nThis pairing is different from rearranging all the letters in a group. Elsewhere, the book explores how changing an arrangement multiplies its possibilities. For this study, the central idea is relationship: the same small alphabet can take part in many expressions."
+      },
+      {
+        "title": "World, year and person",
+        "text": "The book repeatedly places its patterns in three settings: the universe, the year and the human being. Elements belong to the world; seasons and cycles belong to time; breath, perception and bodily life belong to the person. Its letter groups connect these settings through a shared symbolic order.\n\nThis invites a way of looking in which the person belongs within a larger whole. The correspondences express the source’s cosmology; they are not anatomical explanations or ordinary dictionary meanings of the letters."
+      },
+      {
+        "title": "Reading alongside Scripture",
+        "text": "Genesis 1 presents God speaking as creation takes form. Psalm 33 connects the heavens with God’s word and breath. Read these passages slowly, noticing who speaks, what happens and how creation responds. They offer a biblical starting point for reflecting on speech and life.\n\nJohn 1 brings its own distinctive claim about the Word and the source of life. In 2 Corinthians 3, Paul describes people as a letter of Christ, written by the Spirit on human hearts. His image concerns a community shaped by God’s work. These passages can enter a conversation with the Book of Formation without assuming that Paul or John is teaching its alphabetic scheme."
+      },
+      {
+        "title": "From contemplation to response",
+        "text": "The source also calls for restraint in speech and attention to the heart. Its interest in letters is accompanied by the discipline of considering what can be spoken and how the mind is directed.\n\nFor personal reflection, ask how words give shape to relationships. What do our words communicate about the life within us? Paul’s image of a letter written on hearts offers a practical question to carry away: what might others read in the way we live?"
+      }
+    ],
+    "words": [
+      {
+        "id": "H1697",
+        "label": "dabar · word",
+        "note": "Explore the Hebrew word used for “word” in Psalm 33:6, then compare the surrounding language of breath and command."
+      },
+      {
+        "id": "H7307",
+        "label": "ruach · breath, wind, spirit",
+        "note": "Compare the renderings in Genesis 1:2 and Psalm 33:6. Let each passage’s setting guide the reading."
+      },
+      {
+        "id": "G1121",
+        "label": "gramma · letter",
+        "note": "Read the contrast between letter and Spirit in 2 Corinthians 3:6 within Paul’s discussion of ministry and covenant."
+      }
+    ],
+    "questions": [
+      "What changes when you think of a letter as sound and expression as well as a written shape?",
+      "How do the three families of letters connect the world, time and human life in this account?",
+      "Where do you see a shared interest in word and life between the source and the biblical readings? Where do their purposes differ?",
+      "What might it mean for your life to be a letter that others can read?"
+    ],
+    "related": [
+      "creation",
+      "the-bible"
+    ],
+    "parentSlug": null,
+    "sources": [
+      {
+        "citation": "Sepher Yetzirah: The Book of Formation, with The Fifty Gates of Intelligence & The Thirty-two Paths of Wisdom. Translated by William Wynn Westcott; fourth edition edited and revised, with notes and bibliography, by Darcy Kuntz. Holmes Publishing Group, 1996. ISBN 1-55818-333-7.",
+        "detail": "Based on the excerpt supplied for this study, especially the Introduction to the Third Edition (pp. 9–14), chapters I–VI (pp. 17–21), and Notes to the Sepher Yetzirah (pp. 28–34). The biblical comparisons and reflection questions are this study’s own discussion. The source edition retains its own copyright; the Themes licence applies to our original commentary."
+      }
+    ]
+  },
+  {
+    "slug": "sin",
+    "title": "Sin",
+    "overview": "How do Scripture’s accounts of wrongdoing lead towards confession and mercy?",
+    "passages": [
+      {
+        "label": "Genesis 3:1–13",
+        "book": "genesis",
+        "chapter": 3,
+        "verse": 1
+      },
+      {
+        "label": "Psalm 51:1–12",
+        "book": "psalms",
+        "chapter": 51,
+        "verse": 1
+      },
+      {
+        "label": "Romans 3:9–26",
+        "book": "romans",
+        "chapter": 3,
+        "verse": 9
+      }
+    ],
+    "sections": [
+      {
+        "title": "Wrongdoing and fractured relationships",
+        "text": "Observe the sequence of desire, action, hiding and blame in Genesis 3. Attend to what the story says about relationships with God and with one another before trying to build a definition from a single word."
+      },
+      {
+        "title": "Confession and the need for grace",
+        "text": "Psalm 51 asks for mercy and renewal. Romans 3 places human accountability beside God’s action in Christ. Compare confession, cleansing and righteousness, taking care to follow the distinct argument of each passage."
+      }
+    ],
+    "words": [
+      {
+        "id": "H2403",
+        "label": "chattat · sin",
+        "note": "Check the context: the word can also be used in connection with a sin offering."
+      },
+      {
+        "id": "G266",
+        "label": "hamartia · sin",
+        "note": "Study the word in sentences and arguments; an etymology alone cannot explain Paul’s account of sin."
+      }
+    ],
+    "questions": [
+      "What forms of avoidance appear in Genesis 3?",
+      "What does the psalmist ask God to do?",
+      "How does Romans move from accountability to hope?"
+    ],
+    "related": [
+      "justification",
+      "redemption"
+    ],
+    "parentSlug": "new-creation"
+  },
+  {
+    "slug": "redemption",
+    "title": "Redemption",
+    "overview": "What does it mean to be rescued and brought into a new relationship with God?",
+    "passages": [
+      {
+        "label": "Exodus 6:6–8",
+        "book": "exodus",
+        "chapter": 6,
+        "verse": 6
+      },
+      {
+        "label": "Ephesians 1:3–14",
+        "book": "ephesians",
+        "chapter": 1,
+        "verse": 3
+      },
+      {
+        "label": "1 Peter 1:18–21",
+        "book": "1-peter",
+        "chapter": 1,
+        "verse": 18
+      }
+    ],
+    "sections": [
+      {
+        "title": "Rescue and belonging",
+        "text": "Read Exodus 6 in the setting of Israel’s forced labour. God’s promise includes both release from oppression and life as his people. Notice who acts, what is promised, and how the promise connects with the covenant."
+      },
+      {
+        "title": "Redemption in Christ",
+        "text": "Ephesians places redemption within a larger account of blessing, forgiveness and hope in Christ. Read the whole paragraph before isolating a single image. Compare Peter’s language of ransom and ask how rescue changes the way believers live."
+      }
+    ],
+    "words": [
+      {
+        "id": "H1350",
+        "label": "gaal · redeem",
+        "note": "Trace the family and rescue settings in which this Hebrew verb occurs."
+      },
+      {
+        "id": "G629",
+        "label": "apolytrōsis · redemption",
+        "note": "Compare its use in Ephesians 1:7 with the future hope in Romans 8:23."
+      }
+    ],
+    "questions": [
+      "How do rescue and belonging connect in these passages?",
+      "What does each passage say redemption is from, and what is it for?",
+      "What response does Peter call for in the surrounding verses?"
+    ],
+    "related": [
+      "justification",
+      "sanctification"
+    ],
+    "parentSlug": "new-creation"
+  },
+  {
+    "slug": "sanctification",
+    "title": "Sanctification",
+    "overview": "What does belonging to God mean for daily life?",
+    "passages": [
+      {
+        "label": "Leviticus 20:7–8",
+        "book": "leviticus",
+        "chapter": 20,
+        "verse": 7
+      },
+      {
+        "label": "1 Thessalonians 4:1–8",
+        "book": "1-thessalonians",
+        "chapter": 4,
+        "verse": 1
+      },
+      {
+        "label": "1 Corinthians 6:11–20",
+        "book": "1-corinthians",
+        "chapter": 6,
+        "verse": 11
+      }
+    ],
+    "sections": [
+      {
+        "title": "Set apart for God",
+        "text": "Read Leviticus within its covenant setting. Notice the commands to the people alongside the statement about God making them holy. Consider how belonging and conduct are held together."
+      },
+      {
+        "title": "A life shaped by that belonging",
+        "text": "Paul connects holiness with embodied choices and the treatment of other people. Compare the description of the Corinthians with the instructions that follow. Look for both what God has done and what the community is called to practise."
+      }
+    ],
+    "words": [
+      {
+        "id": "H6942",
+        "label": "qadash · make holy",
+        "note": "Explore how this verb is used of people, places and objects."
+      },
+      {
+        "id": "G38",
+        "label": "hagiasmos · sanctification",
+        "note": "Compare translations and consider the specific conduct in 1 Thessalonians 4."
+      }
+    ],
+    "questions": [
+      "Who acts in making a people holy?",
+      "Which ordinary choices receive attention in these readings?",
+      "What practice could help you respond to one of these commands?"
+    ],
+    "related": [
+      "redemption"
+    ],
+    "parentSlug": "new-creation"
+  },
+  {
+    "slug": "justification",
+    "title": "Justification",
+    "overview": "How do the biblical writers connect righteousness, faith and a life of obedience?",
+    "passages": [
+      {
+        "label": "Romans 3:21–31",
+        "book": "romans",
+        "chapter": 3,
+        "verse": 21
+      },
+      {
+        "label": "Romans 5:1–11",
+        "book": "romans",
+        "chapter": 5,
+        "verse": 1
+      },
+      {
+        "label": "James 2:14–26",
+        "book": "james",
+        "chapter": 2,
+        "verse": 14
+      }
+    ],
+    "sections": [
+      {
+        "title": "Read Paul’s argument",
+        "text": "Romans 3 follows an extended account of human wrongdoing. Track the relationship between grace, faith and boasting, then follow the argument into Romans 4. Ask what Abraham’s story contributes to Paul’s explanation."
+      },
+      {
+        "title": "Read James alongside Paul",
+        "text": "James examines a claim to faith that leaves a neighbour without practical help. Attend to the question each author addresses and the examples each uses. Christian traditions explain the relationship between justification and works differently; begin by describing each passage on its own terms."
+      }
+    ],
+    "words": [
+      {
+        "id": "G1347",
+        "label": "dikaiōsis · justification",
+        "note": "Compare Romans 4:25 and 5:18 within their surrounding arguments."
+      }
+    ],
+    "questions": [
+      "What grounds for boasting does Paul exclude?",
+      "What kind of faith is James questioning?",
+      "How might these passages shape both assurance and care for others?"
+    ],
+    "related": [
+      "redemption",
+      "sin"
+    ],
+    "parentSlug": "new-creation"
+  },
+  {
+    "slug": "jesus",
+    "title": "Jesus",
+    "overview": "",
+    "passages": [],
+    "sections": [],
+    "words": [],
+    "questions": [],
+    "related": [],
+    "parentSlug": null
+  },
+  {
+    "slug": "creation",
+    "title": "Creation",
+    "overview": "",
+    "passages": [],
+    "sections": [],
+    "words": [],
+    "questions": [],
+    "related": [],
+    "parentSlug": null
+  },
+  {
+    "slug": "the-bible",
+    "title": "The Bible",
+    "overview": "",
+    "passages": [],
+    "sections": [],
+    "words": [],
+    "questions": [],
+    "related": [],
+    "parentSlug": null
+  },
+  {
+    "slug": "the-old-testament",
+    "title": "The Old Testament",
+    "overview": "",
+    "passages": [],
+    "sections": [],
+    "words": [],
+    "questions": [],
+    "related": [],
+    "parentSlug": "the-bible"
+  },
+  {
+    "slug": "the-new-testament",
+    "title": "The New Testament",
+    "overview": "",
+    "passages": [],
+    "sections": [],
+    "words": [],
+    "questions": [],
+    "related": [],
+    "parentSlug": "the-bible"
+  }
+]

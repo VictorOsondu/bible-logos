@@ -6,15 +6,15 @@ import ScrollToTop from '@/components/ScrollToTop';
 import Footer from '@/components/Footer';
 import ReadingProgress from '@/components/ReadingProgress';
 import SearchModal from '@/components/SearchModal';
-import { themeScript } from '@/components/ThemeToggle';
+import { preferencesScript } from '@/lib/preferences';
 
 const ui = Inter({ subsets: ['latin', 'greek'], variable: '--font-ui', display: 'swap' });
 const reading = Literata({ subsets: ['latin', 'greek'], variable: '--font-reading', display: 'swap', style: ['normal', 'italic'] });
 
 export const metadata: Metadata = {
   title: 'Bible Logos — Personal Bible Study & Research',
-  description: "Read the Bible in several translations with every KJV word linked to its Hebrew or Greek original, Strong's concordance and cross-references.",
-  keywords: ['Bible', 'study', "Strong's concordance", 'cross-references', 'KJV', 'ASV', 'Vulgate', 'Hebrew', 'Greek'],
+  description: "Read the Bible in 19 openly licensed translations with every KJV word linked to its Hebrew or Greek original, Strong's concordance and cross-references.",
+  keywords: ['Bible', 'study', "Strong's concordance", 'cross-references', 'KJV', 'BSB', 'WEB', 'LSV', 'Hebrew', 'Greek'],
   openGraph: {
     title: 'Bible Logos — Personal Bible Study & Research',
     description: "Personal Bible study with Strong's concordance, cross-references and translation comparison.",
@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <html lang="en-GB" className={`${ui.variable} ${reading.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: preferencesScript }} />
       </head>
       <body className="min-h-screen bg-parchment-950 text-parchment-100">
         <ReadingProgress />
