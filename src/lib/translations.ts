@@ -7,6 +7,12 @@ export interface Translation {
   licence: string;
   /** Anything a reader should know when comparing it verse by verse */
   note?: string;
+  language?: string;
+  direction?: 'rtl' | 'ltr';
+  sourceUrl?: string;
+  licenceUrl?: string;
+  /** Editions read with native references, separately until an alignment is reviewed. */
+  nativeReferences?: boolean;
 }
 
 export const TRANSLATIONS: Translation[] = [
@@ -29,6 +35,12 @@ export const TRANSLATIONS: Translation[] = [
   { id: 'CPDV', name: 'Catholic Public Domain Version', licence: 'Public domain', note: 'Psalms are numbered as in the Latin Vulgate.' },
   { id: 'WYC', name: 'Wycliffe Bible', licence: 'Public domain', note: 'Middle English. Psalms are numbered as in the Latin Vulgate.' },
   { id: 'VUL', name: 'Latin Vulgate', licence: 'Public domain' },
+  { id: 'LXX-SWETE', name: 'Greek Septuagint — Swete', licence: 'CC BY-SA 4.0, Open Greek and Latin / First1KGreek; digitization by Nathan Smith', language: 'grc', direction: 'ltr', nativeReferences: true, sourceUrl: 'https://github.com/nathans/lxx-swete', licenceUrl: 'https://creativecommons.org/licenses/by-sa/4.0/', note: 'Ancient Greek translation, in Swete’s native numbering. This digitization lacks Ecclesiastes; alternative texts are listed separately. Words joined into passages; source labels retained.' },
+  { id: 'HEB-SG', name: 'Hebrew New Testament — Salkinson–Ginsburg', licence: 'Public domain', language: 'he', direction: 'rtl', nativeReferences: true, sourceUrl: 'https://ebible.org/find/details.php?id=hebsg', note: 'Salkinson–Ginsburg (1886). A Hebrew translation of the Greek New Testament, not an original Hebrew NT. Native references; notes omitted.' },
+  { id: 'WEB-DC', name: 'World English Bible — Deuterocanon', licence: 'Public domain; World English Bible is a trademark', language: 'en', nativeReferences: true, sourceUrl: 'https://ebible.org/details.php?id=eng-web', note: 'Additional books from WEB Classic, using this edition’s native references. The existing WEB Bible text is unchanged.' },
+  { id: 'DID-HB', name: 'Didache — Hitchcock & Brown (1884)', licence: 'Public-domain historical translation', language: 'en', nativeReferences: true, sourceUrl: 'https://www.gutenberg.org/ebooks/42053', note: 'English translation by Roswell D. Hitchcock and Francis Brown. Whole chapters, without invented verse divisions; notes and line-break hyphens omitted.' },
+  { id: 'ENO-CHARLES', name: '1 Enoch — R. H. Charles (1917)', licence: 'Public-domain historical translation', language: 'en', nativeReferences: true, sourceUrl: 'https://www.gutenberg.org/ebooks/77935', note: 'English translation by R. H. Charles. Whole-chapter sections with source verse numbers and alternate readings retained inline. Commentary and typographic emphasis omitted.' },
+
 ];
 
 export const TRANSLATION_IDS = TRANSLATIONS.map(t => t.id);

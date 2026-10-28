@@ -62,7 +62,7 @@
   {
     "slug": "living-letters",
     "title": "Living Letters",
-    "overview": "Letters give sound a shape and words a form. Explore how the Sepher Yetzirah pictures the Hebrew alphabet as part of the formation of the world, and reflect on Scripture’s language of word, breath and life.",
+    "overview": "In the Kabbalistic tradition explored here, Hebrew letters are living forms through which divine speech brings creation into being and continually sustains it. Explore their visible shapes, spoken names and numerical relationships, and reflect on Scripture’s language of word, breath, light and life.",
     "passages": [
       {
         "label": "Genesis 1:1–5",
@@ -87,12 +87,42 @@
         "book": "2-corinthians",
         "chapter": 3,
         "verse": 1
+      },
+      {
+        "label": "Hebrews 4:12",
+        "book": "hebrews",
+        "chapter": 4,
+        "verse": 12
+      },
+      {
+        "label": "Jeremiah 23:29",
+        "book": "jeremiah",
+        "chapter": 23,
+        "verse": 29
+      },
+      {
+        "label": "Psalm 107:20",
+        "book": "psalms",
+        "chapter": 107,
+        "verse": 20
       }
     ],
     "sections": [
       {
         "title": "A world formed through expression",
-        "text": "In the Sepher Yetzirah, letters are more than marks on a page. They belong to a symbolic account of how the world takes shape through divine expression. Number, writing and sound offer different ways of approaching order and meaning: what can be counted, what can be formed into signs, and what can be spoken.\n\nThe title Book of Formation suits this emphasis. The work explores patterns of formation rather than retelling the sequence of Genesis. Here, “living letters” is our study title for that connection between language and life."
+        "text": "The Sepher Yetzirah presents the Hebrew alphabet within an account of the world’s formation through divine expression. Letters participate in the ordering of creation; their combinations belong to the relationship between the one divine source and the many forms of life. The title Book of Formation points towards this interest in how things take shape.\n\nThe supplied video introduction, INTRO - Secrets of the Hebrew Letters, develops a Kabbalistic understanding of letters as archetypal forms that channel divine light and wisdom into creation. In this reading, a letter carries an animating presence as well as a sound or an idea. “Living letters” names this connection between expression, existence and the life continually received from God."
+      },
+      {
+        "title": "Letters of light and continuing creation",
+        "text": "The written letter gives a visible form to what this mystical teaching understands as a hidden spiritual pattern. The accompanying description supplied for this study pictures that hidden form as light or fire: the mark on the page makes tangible something whose source remains beyond ordinary sight.\n\nThe video connects this understanding with divine speech in Genesis and the teaching that Torah serves as creation’s blueprint. Its example is אור, ‘or, light: Aleph, Vav and Resh. Within this interpretation, the letters of the word are understood as channels of the light’s existence and vitality.\n\nCreation, in the video’s account, continues at every moment. Divine speech sustains the world through the ongoing combination of letters. To contemplate a living letter is therefore to consider how existence is continually received, and how visible things can disclose a deeper dependence on their source."
+      },
+      {
+        "title": "Form, name and number",
+        "text": "The video identifies three primary approaches to each letter: its form, its name and its number. Form invites close attention to the visible shape and the story a teacher draws from it. Name invites attention to the spoken letter and the images associated with its name. Number introduces relationships explored through numerical values and combinations.\n\nThese approaches complement one another. Looking at a shape, hearing a name and tracing a numerical relationship can bring different aspects of the same letter into view. The letter details below offer shape observations, pronunciation and attributed symbolic readings. The Gematria sub-theme develops numerical values and letter-combination methods.\n\nThe video refers to Rabbi Yitzchak Ginsburgh’s The Hebrew Letters when introducing this framework. Its Kabbalistic perspective and the Golden Dawn course’s interpretations are identified as distinct sources within this study."
+      },
+      {
+        "title": "Worlds, souls and divinity",
+        "text": "The video also presents a teaching it attributes to the Baal Shem Tov: each letter can be contemplated through worlds, souls and divinity. Worlds directs attention to embodied and practical life. Souls turns towards inward life and meaning. Divinity considers the letter in relation to God’s creative presence.\n\nThis is a different threefold perspective from the Book of Formation’s world, year and person. The two frameworks invite comparison while retaining their own terms. Here, worlds, souls and divinity adds a way of moving from what can be observed towards personal response and the divine source of life.\n\nFor contemplation, choose one letter and first attend to its visible shape and spoken name. Consider where its attributed imagery meets ordinary life, what it brings to attention inwardly, and how it directs your thoughts towards God. Let a small insight settle before deciding how it might shape your next action. These are this study’s reflection prompts, inspired by the video’s movement from teaching to meditation."
       },
       {
         "title": "Ten and twenty-two",
@@ -113,21 +143,51 @@
                 "name": "Aleph",
                 "meaning": "Air and mediation. Aleph stands between the water of Mem and the fire of Shin, giving the image of a balance that holds different forces together.",
                 "usage": "In the book’s correspondences, Aleph belongs to air in the world, temperate conditions in the year, and breath in the chest in the person. Read it with Mem and Shin to follow the same balancing pattern across all three settings.",
-                "reflection": "Where might listening and a measured response bring balance to opposing pressures?"
+                "reflection": "Where could your strength prepare space for someone else to grow?",
+                "shape": "Notice the diagonal stroke and the smaller strokes reaching above and below it. Compare its slant with the upright Vau (ו).",
+                "sound": "Usually silent in modern Hebrew; it can mark a glottal onset. It carries a vowel rather than supplying an “a” sound by itself.",
+                "soundExercise": "Listen to the name Alef, then say it slowly. Notice that the opening vowel belongs to the name; the isolated letter is not an “ah” vowel.",
+                "interpretation": "The course reads Aleph through ox imagery as strength, stability and unity. Lesson 20 adds the image of a plough preparing ground for growth and a reading of guidance. Alongside the Book of Formation’s air and balance, these become images of strength directed towards a purpose. Its analysis of component strokes is a symbolic reading of the shape.\n\nIn its later Tree of Life teaching, lesson 20 places Aleph on path 11, called Scintillating Intelligence. It develops life emerging beyond the hidden source, pictured through a curtain or veil. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 5; lesson 20, pp. 19–20 in the supplied lessons 18–20 file. Tree of Life reading: lesson 20, Markdown page 19 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/alef.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "מ",
                 "name": "Mem",
                 "meaning": "Water. Mem belongs to the receptive side of the book’s elemental pattern, set alongside the fire of Shin with Aleph as mediator.",
                 "usage": "Mem is associated with water, with the earth in the world, with cold in the year, and with the belly in the person. Trace these as symbolic correspondences in chapter III rather than definitions of every Hebrew word containing Mem.",
-                "reflection": "What do the images of water and receptivity invite you to notice about receiving and sustaining life?"
+                "reflection": "What helps you move from agitation towards a sustaining stillness?",
+                "shape": "Compare the opening of מ with the enclosure of final ם. Locate the lower-left gap before moving between the two forms.",
+                "sound": "An m sound.",
+                "soundExercise": "Listen to Mem, then sustain m with your lips gently closed. Compare its resonance with Nun’s n.",
+                "interpretation": "Alongside the Book of Formation’s water association, the course interprets Mem through receptive and protective action. It contrasts the ordinary and final shapes as rough water and still water. These are meditative readings of the forms, rather than different dictionary meanings assigned by final position.\n\nIn its later Tree of Life teaching, lesson 32 places Mem on path 23, called Stable Intelligence. It develops consistency taking shape through limitation and change. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 7. Tree of Life reading: lesson 32, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/mem.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ש",
                 "name": "Shin",
                 "meaning": "Fire. Shin brings the fiery side of the threefold pattern into view, set opposite Mem’s water and held in relation through Aleph’s air.",
                 "usage": "Shin is associated with fire, the heavens in the world, heat in the year, and the head in the person. Compare its place with Mem and Aleph to see how the book carries one pattern through world, year and person.",
-                "reflection": "How might the image of fire help you reflect on energy, intensity and the need for balance?"
+                "reflection": "How can your energy sustain a commitment over time?",
+                "shape": "Count the three upward branches. With pointing, compare שׁ, with the dot on the right, and שׂ, with the dot on the left.",
+                "sound": "שׁ has an sh sound; שׂ has an s sound. The unpointed shape does not show which is intended.",
+                "soundExercise": "Listen to Shin, then alternate sh and s. Notice how the tongue’s position changes the sound while the basic letter shape remains the same.",
+                "interpretation": "Alongside its Book of Formation association with fire, the course gives Shin tooth imagery and reads it through movement and duration. It links Shin with Qoph and Tav in Qesheth, “bow,” treating the bow as an image of reciprocity between God and humanity. This is the course’s symbolic construction.\n\nIn its later Tree of Life teaching, lesson 40 places Shin on path 31, called Perpetual Intelligence. It develops the recurring relationship of solar and lunar rhythms in its cosmology. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 9. Tree of Life reading: lesson 40, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/shin.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               }
             ]
           },
@@ -140,51 +200,121 @@
               {
                 "letter": "ב",
                 "name": "Beth",
-                "meaning": "Beth belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Beth here.",
-                "usage": "Read Beth within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Beth beside Aleph (בא) and reverse their order (אב). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+                "meaning": "Beth’s house image becomes a symbol of interior life: a dwelling that receives and contains.",
+                "usage": "Beth is one of the seven doubles. Chapter IV places this family alongside paired qualities, seven celestial bodies, days of the week and openings of perception. Individual planetary assignments vary between editions; the later course interpretation below is identified separately.",
+                "reflection": "What kind of welcome do your words make within your home or community?",
+                "shape": "Look for the roof, right wall and baseline, with an opening on the left. Compare the projecting baseline with the rounded Kaph (כ).",
+                "sound": "בּ has a b sound; ב without the central dot has a v sound in modern Hebrew.",
+                "soundExercise": "Listen to Bet. Alternate a brief b sound with a sustained v sound, noticing the change from closed lips to lower lip against upper teeth.",
+                "interpretation": "Beth’s house image becomes a symbol of interior life: a dwelling that receives and contains. Lesson 1 combines Beth with Aleph in its symbolic discussion of fatherhood. This is the course’s interpretive association, rather than a method for deriving every word’s meaning from its letters.\n\nIn its later Tree of Life teaching, lesson 21 places Beth on path 12, called Intelligence of Transparency. It develops perception reaching beyond its ordinary limits. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 5. Tree of Life reading: lesson 21, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/bet.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ג",
                 "name": "Gimel",
-                "meaning": "Gimel belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Gimel here.",
-                "usage": "Read Gimel within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Gimel beside Aleph (גא) and reverse their order (אג). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+                "meaning": "The course gives Gimel the camel image and interprets it through organic growth and channels of expression.",
+                "usage": "Gimel is one of the seven doubles. Chapter IV places this family alongside paired qualities, seven celestial bodies, days of the week and openings of perception. Individual planetary assignments vary between editions; the later course interpretation below is identified separately.",
+                "reflection": "What helps an inward intention become a clear expression?",
+                "shape": "Notice the descending stem and the small foot reaching left. Compare its foot with the smaller Yod (י).",
+                "sound": "A hard g sound.",
+                "soundExercise": "Listen to Gimel, then repeat its opening g without adding an extra vowel. Compare the brief closure with the flowing sound of Lamed.",
+                "interpretation": "The course gives Gimel the camel image and interprets it through organic growth and channels of expression. It also invokes the throat as a passage shaping sound. As a contemplation, this asks how something inward takes an outward form.\n\nIn its later Tree of Life teaching, lesson 22 places Gimel on path 13, called Uniting Intelligence. It develops a movement towards unity, with the High Priestess as a further image of hidden wisdom. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 5. Tree of Life reading: lesson 22, Markdown page 11 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/gimel.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ד",
                 "name": "Daleth",
-                "meaning": "Daleth belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Daleth here.",
-                "usage": "Read Daleth within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Daleth beside Aleph (דא) and reverse their order (אד). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+                "meaning": "The course associates Daleth’s door with entrance, exit and abundance made available through division.",
+                "usage": "Daleth is one of the seven doubles. Chapter IV places this family alongside paired qualities, seven celestial bodies, days of the week and openings of perception. Individual planetary assignments vary between editions; the later course interpretation below is identified separately.",
+                "reflection": "Which threshold in your life calls for a thoughtful decision to open or close?",
+                "shape": "Look at the broad roof and right-hand stem. Compare its corner with the more rounded shoulder of Resh (ר); the exact appearance depends on the font.",
+                "sound": "A d sound in modern Hebrew.",
+                "soundExercise": "Listen to Dalet, then compare its initial d with the r at the start of Resh. Let the sound reinforce the visual difference.",
+                "interpretation": "The course associates Daleth’s door with entrance, exit and abundance made available through division. It also uses nourishment as an image: a boundary can provide an opening through which life is sustained.\n\nIn its later Tree of Life teaching, lesson 23 places Daleth on path 14, called Illuminating Intelligence. It develops a third possibility arising from the relationship between two polarities. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 5. Tree of Life reading: lesson 23, Markdown page 21 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/dalet.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "כ",
                 "name": "Kaph",
-                "meaning": "Kaph belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Kaph here.",
-                "usage": "Read Kaph within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Kaph beside Aleph (כא) and reverse their order (אכ). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+                "meaning": "The course’s closed or half-closed hand becomes a hollow that can receive.",
+                "usage": "Kaph is one of the seven doubles. Chapter IV places this family alongside paired qualities, seven celestial bodies, days of the week and openings of perception. Individual planetary assignments vary between editions; the later course interpretation below is identified separately.",
+                "reflection": "What do you need to receive and consider before acting?",
+                "shape": "Observe the curved right side and the opening to the left. Compare Beth’s more angular outline and projecting baseline. Its final form is ך.",
+                "sound": "כּ has a k sound; כ without the central dot has a kh sound.",
+                "soundExercise": "Listen to Kaf. Compare the brief closure of k with the sustained friction of kh, keeping the throat relaxed.",
+                "interpretation": "The course’s closed or half-closed hand becomes a hollow that can receive. It reads Kaph through assimilation, reflection and mediation: what is received is held and considered. Its discussion of grammatical uses accompanies this symbolism but does not make them interchangeable.\n\nIn its later Tree of Life teaching, lesson 30 places Kaph on path 21, called Intelligence of Conciliation and Reward. It develops bodily life and inward purpose working in agreement. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 7. Tree of Life reading: lesson 30, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/kaf.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "פ",
                 "name": "Peh",
-                "meaning": "Peh belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Peh here.",
-                "usage": "Read Peh within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Peh beside Aleph (פא) and reverse their order (אפ). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+                "meaning": "The course’s open-mouth image makes Peh a symbol of speech.",
+                "usage": "Peh is one of the seven doubles. Chapter IV places this family alongside paired qualities, seven celestial bodies, days of the week and openings of perception. Individual planetary assignments vary between editions; the later course interpretation below is identified separately.",
+                "reflection": "What would make your next spoken words more truthful and life-giving?",
+                "shape": "Find the small inward-facing stroke inside the bowl. Compare this internal feature with Kaph (כ). Its final form is ף.",
+                "sound": "פּ has a p sound; פ without the central dot has an f sound.",
+                "soundExercise": "Listen to Pe. Alternate p and f: notice closed lips opening for p and air passing between lower lip and upper teeth for f.",
+                "interpretation": "The course’s open-mouth image makes Peh a symbol of speech. It places the letter’s two sound forms within its larger network of symbolic relationships. Here the mouth offers a direct bridge from contemplating a letter to considering how speech affects other people.\n\nIn its later Tree of Life teaching, lesson 36 places Peh on path 27, called Active or Exciting Intelligence. It develops the impetus behind movement and transformation, pictured as gathering fiery energy. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 8. Tree of Life reading: lesson 36, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/pe_h.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ר",
                 "name": "Resh",
-                "meaning": "Resh belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Resh here.",
-                "usage": "Read Resh within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Resh beside Aleph (רא) and reverse their order (אר). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+                "meaning": "The course reads Resh’s head image as direction and initiative: a head guiding the body and a centre extending towards a circumference.",
+                "usage": "Resh is one of the seven doubles. Chapter IV places this family alongside paired qualities, seven celestial bodies, days of the week and openings of perception. Individual planetary assignments vary between editions; the later course interpretation below is identified separately.",
+                "reflection": "What is directing your actions, and does it deserve to lead?",
+                "shape": "Look for a broad head curving into the right-hand stem. Compare the shoulder with Daleth’s (ד) more angular corner.",
+                "sound": "An r sound; its articulation varies across Hebrew traditions and speakers.",
+                "soundExercise": "Listen to Resh and imitate the speaker gently. Compare its initial sound with Dalet while looking at the two letters.",
+                "interpretation": "The course reads Resh’s head image as direction and initiative: a head guiding the body and a centre extending towards a circumference. It develops these into a symbolism of movement and renewal. These images invite reflection on what leads our actions.\n\nIn its later Tree of Life teaching, lesson 39 places Resh on path 30, called Collective Intelligence. It develops a symbolic harmony of celestial movements gathered into an ordered whole. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, pp. 8–9. Tree of Life reading: lesson 39, Markdown page 10 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/resh.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ת",
                 "name": "Tau",
-                "meaning": "Tau belongs to the seven doubles. This family expresses paired possibilities: life and death, peace and war, wisdom and folly, riches and poverty, grace and indignation, fertility and solitude, power and servitude. These are the family’s shared associations; no one pair is assigned to Tau here.",
-                "usage": "Read Tau within the sevenfold pattern of chapter IV: the seven celestial bodies, days of the week and openings of perception. The edition’s notes report differing assignments of individual letters to planets, so this study keeps those connections at the family level. As an illustration of the pairing described in chapter II, place Tau beside Aleph (תא) and reverse their order (את). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "Which contrast in this family draws your attention, and what choices does it invite you to consider?"
+                "meaning": "The course reads Tau as a cross or mark and develops reciprocity, exchange and sympathy.",
+                "usage": "Tau is one of the seven doubles. Chapter IV places this family alongside paired qualities, seven celestial bodies, days of the week and openings of perception. Individual planetary assignments vary between editions; the later course interpretation below is identified separately.",
+                "reflection": "What would a reciprocal relationship ask you to give as well as receive?",
+                "shape": "Notice the broad roof, right stem and left leg. Compare it with Cheth (ח), looking closely at the lower-left feature.",
+                "sound": "A t sound in modern Hebrew; some reading traditions give the unpointed form a different sound.",
+                "soundExercise": "Listen to Tav and compare it with Tet. Identify each shape while acknowledging that their modern consonant sounds coincide.",
+                "interpretation": "The course reads Tau as a cross or mark and develops reciprocity, exchange and sympathy. It combines first and last letters in ATH and interprets them as an inward essence. This is its mystical reading: the Hebrew particle את in a sentence should still be read through grammar and context.\n\nIn its later Tree of Life teaching, lesson 41 places Tau on path 32, called Administrative Intelligence. It develops the ordering and coordination of planetary movement in its cosmology. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 9. Tree of Life reading: lesson 41, Markdown page 13 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/tav.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               }
             ]
           },
@@ -197,94 +327,214 @@
               {
                 "letter": "ה",
                 "name": "Heh",
-                "meaning": "Heh belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Heh in this study.",
-                "usage": "Read Heh within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Heh. As an illustration of the pairing described in chapter II, place Heh beside Aleph (הא) and reverse their order (אה). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "Lesson 1 treats Heh as an image of life and breath and gives it a special role in its interpretations of divine names.",
+                "usage": "Heh is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "How could a pause for breath change your next response?",
+                "shape": "Find the small gap between the roof and the short left stroke. Compare it with the joined roof of Cheth (ח).",
+                "sound": "An h sound; at the end of some words it marks a vowel instead.",
+                "soundExercise": "Listen to He, then release a gentle h on an easy breath. Compare it with Cheth’s more constricted sound, without forcing your throat.",
+                "interpretation": "Lesson 1 treats Heh as an image of life and breath and gives it a special role in its interpretations of divine names. These symbolic readings connect the small letter with the expression of life; they do not establish a single translation for every occurrence.\n\nIn its later Tree of Life teaching, lesson 24 places Heh on path 15, called Constituting Intelligence. It develops creation taking shape within darkness, pictured as a period of gestation. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, pp. 5–6. Tree of Life reading: lesson 24, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/he_h.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ו",
                 "name": "Vau",
-                "meaning": "Vau belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Vau in this study.",
-                "usage": "Read Vau within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Vau. As an illustration of the pairing described in chapter II, place Vau beside Aleph (וא) and reverse their order (או). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "The course’s hook or link image makes Vau a symbol of joining.",
+                "usage": "Vau is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "What might your words join together where there has been distance?",
+                "shape": "Follow the narrow upright stroke and its small head. Compare its full height with the short Yod (י).",
+                "sound": "A v sound in modern Hebrew. With vowel pointing it can also mark o or u; older traditions may use w.",
+                "soundExercise": "Listen to Vav, then sustain a gentle v. Compare its name with Yod while looking at the difference in height.",
+                "interpretation": "The course’s hook or link image makes Vau a symbol of joining. It extends the reading from connection to movement, light and breath, discussing the letter within divine names and Ruach. Its mystical interpretation should be distinguished from the grammatical uses of vav.\n\nIn its later Tree of Life teaching, lesson 25 places Vau on path 16, called Triumphal or Eternal Intelligence. It develops wisdom and mercy shaping a chosen way of life. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 6. Tree of Life reading: lesson 25, Markdown page 11 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/vav.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ז",
                 "name": "Zain",
-                "meaning": "Zain belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Zain in this study.",
-                "usage": "Read Zain within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Zain. As an illustration of the pairing described in chapter II, place Zain beside Aleph (זא) and reverse their order (אז). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "Zain’s sword or arrow imagery becomes a reading of directed movement and a flash of light on metal.",
+                "usage": "Zain is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "When does clarity help you act, and when might a sharp word wound?",
+                "shape": "Notice the head spreading across the upright stem. Compare this cap with the smaller head of Vau (ו).",
+                "sound": "A voiced z sound.",
+                "soundExercise": "Listen to Zayin, then hold z and s in turn. Feel the vibration at your throat during z.",
+                "interpretation": "Zain’s sword or arrow imagery becomes a reading of directed movement and a flash of light on metal. The course connects its hissing sound with an object passing through air: an imaginative relationship between sound, motion and symbol.\n\nIn its later Tree of Life teaching, lesson 26 places Zain on path 17, called Disposing Intelligence. It develops faith and hope received through a relationship with what is higher. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 6. Tree of Life reading: lesson 26, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/zayin.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ח",
                 "name": "Cheth",
-                "meaning": "Cheth belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Cheth in this study.",
-                "usage": "Read Cheth within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Cheth. As an illustration of the pairing described in chapter II, place Cheth beside Aleph (חא) and reverse their order (אח). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "The course reads Cheth as an enclosure or field in which effort is required.",
+                "usage": "Cheth is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "What is entrusted to your care within the boundaries of daily life?",
+                "shape": "Observe the two uprights joined by a roof. Compare the continuous enclosure with the gap in Heh (ה).",
+                "sound": "A throat-friction sound, commonly like kh in modern Hebrew; some traditions distinguish it from Khaph.",
+                "soundExercise": "Listen to Het and compare it with He. Keep the contrast gentle: an open breath for h and a narrower passage for kh.",
+                "interpretation": "The course reads Cheth as an enclosure or field in which effort is required. Its contrast with Heh moves from the image of universal life to life taking a bounded, material form. This offers a reflection on the care needed to cultivate what lives within limits.\n\nIn its later Tree of Life teaching, lesson 27 places Cheth on path 18, called Intelligence of the House of Influence. It develops hidden abundance becoming available through its effects. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 6. Tree of Life reading: lesson 27, Markdown page 13 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/het.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ט",
                 "name": "Teth",
-                "meaning": "Teth belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Teth in this study.",
-                "usage": "Read Teth within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Teth. As an illustration of the pairing described in chapter II, place Teth beside Aleph (טא) and reverse their order (אט). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "The course imagines Teth as a coiled serpent guarding its eggs and develops the images of a shield, roof, haven and refuge.",
+                "usage": "Teth is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "How can protection make room for growth rather than become confinement?",
+                "shape": "Look for the inward-turning upper stroke and the surrounding bowl. Compare this opening with the fully enclosed Samech (ס).",
+                "sound": "A t sound in modern Hebrew, like Tav; historical traditions distinguish them.",
+                "soundExercise": "Listen to Tet and Tav. Notice that similar modern sounds can belong to visibly different letters.",
+                "interpretation": "The course imagines Teth as a coiled serpent guarding its eggs and develops the images of a shield, roof, haven and refuge. Read these as its symbols of protection and shelter, rather than as a claim about the meaning of every Hebrew word with Teth.\n\nIn its later Tree of Life teaching, lesson 28 places Teth on path 19, called Intelligence of Secret Works. It develops an unseen influence supporting spiritual activity. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 6. Tree of Life reading: lesson 28, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/tet.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "י",
                 "name": "Yod",
-                "meaning": "Yod belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Yod in this study.",
-                "usage": "Read Yod within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Yod. As an illustration of the pairing described in chapter II, place Yod beside Aleph (יא) and reverse their order (אי). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "Yod is interpreted as a hand reaching into action and as a flame rising free of a material base.",
+                "usage": "Yod is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "What small action could express a creative or generous intention today?",
+                "shape": "Notice how little space this small suspended mark occupies. Compare it with the longer Vau (ו).",
+                "sound": "A y sound; it can also help mark a vowel.",
+                "soundExercise": "Listen to Yud, the modern name often used for Yod. Repeat its opening y and notice the movement into the vowel.",
+                "interpretation": "Yod is interpreted as a hand reaching into action and as a flame rising free of a material base. The course develops these into images of a creative impulse and discusses the letter’s role in divine names. The smallness of its written form becomes a useful contrast with the scope of its symbolism.\n\nIn its later Tree of Life teaching, lesson 29 places Yod on path 20, called Intelligence of Will. It develops a latent intention becoming conscious and active. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, pp. 6–7. Tree of Life reading: lesson 29, Markdown page 11 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/yud.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ל",
                 "name": "Lamed",
-                "meaning": "Lamed belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Lamed in this study.",
-                "usage": "Read Lamed within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Lamed. As an illustration of the pairing described in chapter II, place Lamed beside Aleph (לא) and reverse their order (אל). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "The course develops Lamed’s goad image through extension: an outstretched arm, an unfolded wing, and power reaching beyond itself.",
+                "usage": "Lamed is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "Where might guidance help someone move forward without being pushed?",
+                "shape": "Find the tall ascending stroke above the usual letter height, then follow it down into the lower curve.",
+                "sound": "An l sound.",
+                "soundExercise": "Listen to Lamed and hold its opening l briefly. Notice the tongue’s contact behind the upper teeth before the vowel begins.",
+                "interpretation": "The course develops Lamed’s goad image through extension: an outstretched arm, an unfolded wing, and power reaching beyond itself. In its reading of AL/EL, Lamed contributes extension to Aleph’s power. This is a specific symbolic interpretation of a divine name.\n\nIn its later Tree of Life teaching, lesson 31 places Lamed on path 22, called Faithful Intelligence. It develops the relationship between fidelity, guiding laws and the growth of virtues. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 7. Tree of Life reading: lesson 31, Markdown page 11 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/lamed.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "נ",
                 "name": "Nun",
-                "meaning": "Nun belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Nun in this study.",
-                "usage": "Read Nun within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Nun. As an illustration of the pairing described in chapter II, place Nun beside Aleph (נא) and reverse their order (אנ). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "Nun’s fish image becomes a symbol of life brought forth: offspring, fruit and reflected existence.",
+                "usage": "Nun is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "What is taking shape through your care that may grow beyond you?",
+                "shape": "Notice the descending stroke and baseline of נ. Compare its extended final form ן with the small head retained at the top.",
+                "sound": "An n sound.",
+                "soundExercise": "Listen to Nun, then sustain n and m in turn. Notice how the tongue and lips change position.",
+                "interpretation": "Nun’s fish image becomes a symbol of life brought forth: offspring, fruit and reflected existence. The course contrasts an inward-folded beginning with an unfolding final form. It uses these images in its readings of sonship and inspiration.\n\nIn its later Tree of Life teaching, lesson 33 places Nun on path 24, called Imaginative Intelligence. It develops transformation, pictured as a flower growing from decaying matter. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 7. Tree of Life reading: lesson 33, Markdown page 11 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/nun.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ס",
                 "name": "Samech",
-                "meaning": "Samech belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Samech in this study.",
-                "usage": "Read Samech within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Samech. As an illustration of the pairing described in chapter II, place Samech beside Aleph (סא) and reverse their order (אס). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "The course reads Samech as a supporting link or prop, moving beyond simple joining to sustaining.",
+                "usage": "Samech is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "What steady support could you offer without drawing attention to yourself?",
+                "shape": "Follow the closed rounded outline. Compare it with final Mem (ם), which is generally more angular.",
+                "sound": "An s sound.",
+                "soundExercise": "Listen to Samekh, then sustain s without adding a vowel. Compare it with Zayin’s voiced z.",
+                "interpretation": "The course reads Samech as a supporting link or prop, moving beyond simple joining to sustaining. Circular and spiral movement extend the symbolism: support can be imagined as something that holds a relationship through change.\n\nIn its later Tree of Life teaching, lesson 34 places Samech on path 25, called Intelligence of Probation. It develops the testing of ideals when competing desires pull in different directions. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 7. Tree of Life reading: lesson 34, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/samekh.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ע",
                 "name": "Oin",
-                "meaning": "Oin belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Oin in this study.",
-                "usage": "Read Oin within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Oin. As an illustration of the pairing described in chapter II, place Oin beside Aleph (עא) and reverse their order (אע). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "The course uses the eye to explore outer sight and inner perception.",
+                "usage": "Oin is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "What might you understand differently if you looked with greater patience?",
+                "shape": "Look for two upper branches meeting below. Compare the branching form with the more enclosed Teth (ט).",
+                "sound": "Often silent or glottal in modern Israeli speech; some traditions retain a distinct pharyngeal consonant.",
+                "soundExercise": "Listen to Ayin and compare its name with Alef. Notice the different names even when their consonants are not clearly distinguished in a modern pronunciation.",
+                "interpretation": "The course uses the eye to explore outer sight and inner perception. It also proposes a “third eye” account involving glands. That is part of its esoteric interpretation, not an anatomical explanation adopted here. The useful contemplative question is how seeing and understanding relate.\n\nIn its later Tree of Life teaching, lesson 35 places Oin on path 26, called Renewing Intelligence. It develops consciousness adapting to change while retaining an organising structure. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 8. Tree of Life reading: lesson 35, Markdown page 11 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/ayin.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "צ",
                 "name": "Tzaddi",
-                "meaning": "Tzaddi belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Tzaddi in this study.",
-                "usage": "Read Tzaddi within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Tzaddi. As an illustration of the pairing described in chapter II, place Tzaddi beside Aleph (צא) and reverse their order (אצ). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "The course interprets Tzaddi through a hook, severance and movement towards an end.",
+                "usage": "Tzaddi is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "What needs a clear ending so that something worthwhile can be completed?",
+                "shape": "Follow the two upper strokes into the bent lower form צ. Compare it with the descending final form ץ.",
+                "sound": "A ts sound in modern Hebrew.",
+                "soundExercise": "Listen to Tsadi and try the final sound of “cats,” then move that ts to the beginning of a syllable.",
+                "interpretation": "The course interprets Tzaddi through a hook, severance and movement towards an end. It distinguishes an undertaking from an accomplished ending through its ordinary and final forms, then develops the image of refuge. These are its symbolic associations rather than settled accounts of the letter name’s origin.\n\nIn its later Tree of Life teaching, lesson 37 places Tzaddi on path 28, called Natural Intelligence. It develops growth unfolding according to its own nature rather than being forced. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 8. Tree of Life reading: lesson 37, Markdown page 11 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/tsadi.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               },
               {
                 "letter": "ק",
                 "name": "Qoph",
-                "meaning": "Qoph belongs to the twelve simples. This family connects letters with activities and capacities such as sight, hearing, speech, work, movement and sleep. These are shared associations of the twelve, rather than a fixed individual meaning assigned to Qoph in this study.",
-                "usage": "Read Qoph within the twelvefold pattern of chapter V: the zodiacal constellations, months of the year and bodily organs. The study follows the group-level relationships in the supplied English text without assigning one month, organ or activity exclusively to Qoph. As an illustration of the pairing described in chapter II, place Qoph beside Aleph (קא) and reverse their order (אק). This illustrates how changing the order changes the arrangement; it does not assign a word meaning to the pair.",
-                "reflection": "How might paying attention to a daily activity such as listening, working or resting change the way you live it?"
+                "meaning": "The course reads Qoph through an ear or instrument and develops themes of force, restraint and decision.",
+                "usage": "Qoph is one of the twelve simples. Chapter V relates this family to twelve constellations, months, bodily organs and human activities. This study retains those correspondences at family level; the later course interpretation below is identified separately.",
+                "reflection": "Where would restraint give your decisions more purpose?",
+                "shape": "Notice the rounded upper part and the separate left stroke extending below the baseline. Compare its gap with Heh’s (ה).",
+                "sound": "Usually a k sound in modern Hebrew; other traditions preserve a distinct sound.",
+                "soundExercise": "Listen to Qof and Kaf. Hear their similar modern consonants while identifying their different outlines.",
+                "interpretation": "The course reads Qoph through an ear or instrument and develops themes of force, restraint and decision. Its older phonetic language differs from modern pronunciation. Keep this symbolic reading separate from the practical k sound taught here.\n\nIn its later Tree of Life teaching, lesson 38 places Qoph on path 29, called Corporeal Intelligence. It develops awareness of bodily form and material existence. This belongs to the course’s later path framework; it is presented here as an attributed symbolic reading.",
+                "attribution": "Golden Dawn Correspondence Course, Lesson 1, p. 8. Tree of Life reading: lesson 38, Markdown page 1 in the supplied course.",
+                "audio": {
+                  "src": "https://s3.amazonaws.com/lang_src/qof.mp3",
+                  "sourceUrl": "https://pollylingu.al/he/en/alphabet",
+                  "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                }
               }
             ]
           }
         ]
       },
       {
-        "title": "Letters in relationship",
-        "text": "A single letter has possibilities that emerge when it meets another. The book describes the letters being paired and combined, giving the image of 231 gates. Pairing each of the twenty-two letters with every different letter, counting each pair once, gives 22 × 21 ÷ 2 = 231.\n\nThis pairing is different from rearranging all the letters in a group. Elsewhere, the book explores how changing an arrangement multiplies its possibilities. For this study, the central idea is relationship: the same small alphabet can take part in many expressions."
+        "title": "Shape, sound and symbolic interpretation",
+        "text": "Open any letter to observe its shape, hear its modern Hebrew name and practise listening to its sound. The chart retains the older English letter names used by the supplied edition; the recordings use modern names such as Vav, Ayin and Tav. A letter name is not the same as its consonant sound, and Hebrew pronunciation varies across traditions.\n\nThe Book of Formation associations follow the supplied Westcott edition. The separately labelled Golden Dawn interpretations summarise lesson 1 of the supplied correspondence course, with later Tree of Life readings from lessons 20–41. They offer symbolic readings of images, shapes and relationships, not dictionary definitions for every word containing a letter. Shape observations and exercises are this study’s own learning prompts. Numerical values and letter-combination methods are explored in the Gematria sub-theme."
       },
       {
         "title": "World, year and person",
@@ -292,11 +542,11 @@
       },
       {
         "title": "Reading alongside Scripture",
-        "text": "Genesis 1 presents God speaking as creation takes form. Psalm 33 connects the heavens with God’s word and breath. Read these passages slowly, noticing who speaks, what happens and how creation responds. They offer a biblical starting point for reflecting on speech and life.\n\nJohn 1 brings its own distinctive claim about the Word and the source of life. In 2 Corinthians 3, Paul describes people as a letter of Christ, written by the Spirit on human hearts. His image concerns a community shaped by God’s work. These passages can enter a conversation with the Book of Formation without assuming that Paul or John is teaching its alphabetic scheme."
+        "text": "Genesis 1 presents God speaking as creation takes form. Psalm 33 connects the heavens with God’s word and breath. Read these passages slowly, noticing who speaks, what happens and how creation responds. They offer a biblical starting point for reflecting on speech and life.\n\nJohn 1 brings its own distinctive claim about the Word and the source of life. In 2 Corinthians 3, Paul describes people as a letter of Christ, written by the Spirit on human hearts. His image concerns a community shaped by God’s work.\n\nHebrews 4:12 describes God’s word as living and active, penetrating to the thoughts and intentions of the heart. Read it with verses 11–13, where the call to enter God’s rest leads into an account of being fully known before God.\n\nJeremiah 23:29 pictures God’s word as fire and as a hammer breaking rock. In the surrounding challenge to false prophets, these images express the force of God’s authentic word and the responsibility to speak it faithfully.\n\nPsalm 107:20 presents God sending his word to heal and deliver people who cry out in distress. The surrounding verses move from affliction towards rescue and thanksgiving, bringing healing and gratitude into this study of word and life.\n\nThese passages offer distinct biblical accounts of God’s effective word: creating, discerning, confronting and healing. They can enter a conversation with the Book of Formation while retaining their own purposes and contexts."
       },
       {
         "title": "From contemplation to response",
-        "text": "The source also calls for restraint in speech and attention to the heart. Its interest in letters is accompanied by the discipline of considering what can be spoken and how the mind is directed.\n\nFor personal reflection, ask how words give shape to relationships. What do our words communicate about the life within us? Paul’s image of a letter written on hearts offers a practical question to carry away: what might others read in the way we live?"
+        "text": "The Book of Formation calls for restraint in speech and attention to the heart. The video likewise moves from an idea about each letter towards meditation, with the aim of letting understanding take root in inward life. Contemplation becomes a way of attending, receiving and responding.\n\nFor personal reflection, ask how words give shape to relationships. What do our words communicate about the life within us? Paul’s image of a letter written on hearts offers a practical question to carry away: what might others read in the way we live?"
       }
     ],
     "words": [
@@ -317,20 +567,148 @@
       }
     ],
     "questions": [
-      "What changes when you think of a letter as sound and expression as well as a written shape?",
+      "How does the idea of creation being continually sustained change the way you attend to ordinary life?",
+      "Choose a letter. What do its shape, spoken name and attributed imagery each bring to your attention?",
       "How do the three families of letters connect the world, time and human life in this account?",
+      "How do worlds, souls and divinity offer a different perspective from world, year and person?",
       "Where do you see a shared interest in word and life between the source and the biblical readings? Where do their purposes differ?",
       "What might it mean for your life to be a letter that others can read?"
     ],
     "related": [
       "creation",
-      "the-bible"
+      "the-bible",
+      "gematria"
     ],
     "parentSlug": null,
     "sources": [
       {
         "citation": "Sepher Yetzirah: The Book of Formation, with The Fifty Gates of Intelligence & The Thirty-two Paths of Wisdom. Translated by William Wynn Westcott; fourth edition edited and revised, with notes and bibliography, by Darcy Kuntz. Holmes Publishing Group, 1996. ISBN 1-55818-333-7.",
         "detail": "Based on the excerpt supplied for this study, especially the Introduction to the Third Edition (pp. 9–14), chapters I–VI (pp. 17–21), and Notes to the Sepher Yetzirah (pp. 28–34). The biblical comparisons and reflection questions are this study’s own discussion. The source edition retains its own copyright; the Themes licence applies to our original commentary."
+      },
+      {
+        "citation": "Golden Dawn Correspondence Course. Supplied Markdown transcriptions of lessons 1–3 and 18–41; author, publisher and edition not established from the supplied files.",
+        "detail": "Letter interpretations are paraphrased from lesson 1, pp. 5–9, and the opening discussions of lessons 20–41. Aleph also draws on the shape imagery in lesson 20, pp. 19–20 of the lessons 18–20 file. Each letter identifies its lesson and Markdown page. Lesson 2, p. 11 informs attention to shape; the exercises involve observation and listening. The later Tree of Life path framework is distinguished from the core Book of Formation letter families. OCR is damaged in places; third-party material retains its own rights."
+      },
+      {
+        "citation": "Polly Lingual / Pangaea Learning, Hebrew alphabet.",
+        "detail": "Free-to-access recordings of modern Hebrew letter names are streamed from the provider only when Play is selected. Older study names may differ from the recorded names. Audio is not included in the Themes prose licence and retains the provider’s copyright.",
+        "url": "https://pollylingu.al/he/en/alphabet"
+      },
+      {
+        "citation": "Gavriel Z. Bellino, Foundations of Hebrew: Pronunciation of Consonants.",
+        "detail": "Reference for modern consonant distinctions and vowel uses. Sound descriptions are brief learning aids; they do not reconstruct the pronunciation of the Book of Formation or replace instruction in a specific reading tradition.",
+        "url": "https://images.shulcloud.com/609/uploads/class_files/Foundations/Hebrew-Reading-Practice/PronunciationofConsonants.pdf"
+      },
+      {
+        "citation": "shivimpanim, INTRO - Secrets of the Hebrew Letters. YouTube video.",
+        "url": "https://www.youtube.com/watch?v=d0jJhroi5sQ",
+        "detail": "Based on the transcript supplied for this study; title and channel checked through YouTube’s oEmbed metadata. The discussion of letters as channels of divine light, continuing creation, form/name/number, and worlds/souls/divinity summarises the video’s Kabbalistic teaching. The image of a written letter manifesting a hidden form of light or fire comes from the accompanying description supplied with the transcript. The video attributes the three levels to the Baal Shem Tov and refers to Rabbi Yitzchak Ginsburgh’s The Hebrew Letters; those teachings are reported through the video rather than from a direct reading of the book. Biblical comparisons and contemplation prompts are our original discussion."
+      }
+    ],
+    "editionPassages": [
+      {
+        "label": "Genesis 1:1–5 · Swete Greek",
+        "book": "genesis",
+        "chapter": 1,
+        "verse": 1,
+        "translation": "LXX-SWETE"
+      },
+      {
+        "label": "John 1:1–5 · Salkinson–Ginsburg Hebrew",
+        "book": "john",
+        "chapter": 1,
+        "verse": 1,
+        "translation": "HEB-SG"
+      },
+      {
+        "label": "Hebrews 4:12 · Salkinson–Ginsburg Hebrew",
+        "book": "hebrews",
+        "chapter": 4,
+        "verse": 12,
+        "translation": "HEB-SG"
+      },
+      {
+        "label": "Jeremiah 23:29 · Swete Greek",
+        "book": "jeremiah",
+        "chapter": 23,
+        "verse": 29,
+        "translation": "LXX-SWETE"
+      },
+      {
+        "label": "Greek Psalm 106:20 · compare Psalm 107:20",
+        "book": "psalms",
+        "chapter": 106,
+        "verse": 20,
+        "translation": "LXX-SWETE"
+      }
+    ]
+  },
+  {
+    "slug": "gematria",
+    "title": "Gematria",
+    "parentSlug": "living-letters",
+    "overview": "Explore numerical values and the ways interpreters compare, expand and exchange Hebrew letters. Follow the arithmetic, distinguish the methods, and consider what each reading can and cannot establish.",
+    "passages": [
+      {
+        "label": "Genesis 1:1–5",
+        "book": "genesis",
+        "chapter": 1,
+        "verse": 1
+      }
+    ],
+    "sections": [
+      {
+        "title": "Letters as numbers",
+        "text": "Gematria assigns numerical values to letters and adds them to obtain a word’s total. In the ordinary convention, the first nine letters have values 1–9, the next nine 10–90, and the last four 100–400. The five final forms keep the values of their ordinary forms in this convention.\n\nThe supplied course also uses an expanded convention assigning 500–900 to final forms. A total is meaningful only when its spelling and convention are stated. The table below uses ordinary values."
+      },
+      {
+        "title": "The ordinary values",
+        "text": "א 1 · ב 2 · ג 3 · ד 4 · ה 5 · ו 6 · ז 7 · ח 8 · ט 9\n\nי 10 · כ / ך 20 · ל 30 · מ / ם 40 · נ / ן 50 · ס 60 · ע 70 · פ / ף 80 · צ / ץ 90\n\nק 100 · ר 200 · ש 300 · ת 400"
+      },
+      {
+        "title": "A transparent worked example",
+        "text": "The letters of אל, conventionally transliterated EL or AL, total 1 + 30 = 31. Lesson 1 reads Aleph as power and Lamed as extension, then offers a symbolic interpretation of the divine name. The arithmetic and the interpretation are two different steps: the sum can be checked independently of whether a reader accepts the symbolism.\n\nLesson 4 compares אחד (one) and אהבה (love): 1 + 8 + 4 = 13, and 1 + 5 + 2 + 5 = 13. The course uses that shared total for contemplation. Equal totals do not establish that two words have the same lexical meaning or that a biblical author intended a numerical connection.\n\nThe Living Letters video uses אור, ‘or, light, as an example of letters giving expression to creation. Applying the ordinary values shown here gives Aleph 1 + Vav 6 + Resh 200 = 207. This calculation is our worked extension of the example; the supplied transcript does not give this total."
+      },
+      {
+        "title": "Letters in relationship",
+        "text": "A single letter has possibilities that emerge when it meets another. The book describes the letters being paired and combined, giving the image of 231 gates. Pairing each of the twenty-two letters with every different letter, counting each pair once, gives 22 × 21 ÷ 2 = 231.\n\nThis pairing is different from rearranging all the letters in a group. Elsewhere, the book explores how changing an arrangement multiplies its possibilities. For this study, the central idea is relationship: the same small alphabet can take part in many expressions.\n\nThis account of pairings belongs to the Book of Formation framework. Compare it with the later course’s methods below while keeping the operations distinct."
+      },
+      {
+        "title": "Notariqon: letters unfolded into words",
+        "text": "Lesson 5 describes expanding a word by using its letters as the initials of a sentence, or taking initials from a sentence to form a word. The course applies this to the opening word of Genesis. This makes a new interpretive expression; it is not a translation of the original sentence.\n\nWhen examining an example, write out which letters are selected, which words are supplied, and where the interpreter has made a choice. An expansion can suggest a theme without proving that the theme was encoded by the original author."
+      },
+      {
+        "title": "Temurah: exchanging and rearranging letters",
+        "text": "Lesson 6 describes systems in which letters are exchanged for partners in a specified alphabet arrangement. A simple illustration of an alphabet reversed into pairs gives א ↔ ת, ב ↔ ש, ג ↔ ר, and so on. This kind of substitution differs from rearranging the letters already present in a word.\n\nKeep the starting text, mapping rule and resulting letters visible. A substitution can produce a new sequence without producing a meaningful Hebrew word. Do not assign a translation until the resulting form has been checked in its own right."
+      },
+      {
+        "title": "Reading an interpretation responsibly",
+        "text": "Ask four questions: What spelling is used? What numerical or substitution convention is applied? Can the operation be reproduced? What additional interpretive step connects the result to the proposed meaning?\n\nFor biblical study, return to the passage’s grammar, argument and setting. These methods document forms of symbolic interpretation; they do not make every numerical coincidence an explanation of the text. The supplied transcription contains damaged glyphs and occasional arithmetic mismatches, so its examples need checking before reuse."
+      }
+    ],
+    "words": [],
+    "questions": [
+      "Calculate אל using the table. Which part is arithmetic, and which part belongs to the course’s symbolic interpretation?",
+      "How does a shared total differ from a shared meaning?",
+      "How do unordered pairs, initials, substitution and rearrangement differ?"
+    ],
+    "related": [
+      "living-letters",
+      "the-bible"
+    ],
+    "sources": [
+      {
+        "citation": "Sepher Yetzirah: The Book of Formation, with The Fifty Gates of Intelligence & The Thirty-two Paths of Wisdom. Translated by William Wynn Westcott; fourth edition edited and revised, with notes and bibliography, by Darcy Kuntz. Holmes Publishing Group, 1996. ISBN 1-55818-333-7.",
+        "detail": "Based on the excerpt supplied for this study, especially the Introduction to the Third Edition (pp. 9–14), chapters I–VI (pp. 17–21), and Notes to the Sepher Yetzirah (pp. 28–34). The biblical comparisons and reflection questions are this study’s own discussion. The source edition retains its own copyright; the Themes licence applies to our original commentary."
+      },
+      {
+        "citation": "Golden Dawn Correspondence Course. Supplied Markdown transcriptions of lessons 1–6; author, publisher and edition not established from the supplied files.",
+        "detail": "Original summaries draw on lesson 1, p. 5; lesson 4, pp. 1–2; lesson 5, p. 19 in the lessons 4–5 file; and lesson 6, pp. 1–2. The reversed-alphabet illustration is our explanation of substitution. Page references follow the supplied Markdown headings. Interpretations are attributed to the course; third-party sources retain their own rights."
+      },
+      {
+        "citation": "shivimpanim, INTRO - Secrets of the Hebrew Letters. YouTube video.",
+        "url": "https://www.youtube.com/watch?v=d0jJhroi5sQ",
+        "detail": "The supplied transcript introduces אור, light, and the framework of form, name and number. The total 207 is calculated here using ordinary values; it is not quoted from the video."
       }
     ]
   },

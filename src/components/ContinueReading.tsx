@@ -12,7 +12,7 @@ export default function ContinueReading() {
   const last = useHistory()[0];
 
   const book = last ? getBookById(last.book) : undefined;
-  const href = book ? `/reader/${book.name.toLowerCase().replace(/ /g, '-')}/${last!.chapter}` : '/reader/genesis/1';
+  const href = book ? `/reader/${book.name.toLowerCase().replace(/ /g, '-')}/${last!.chapter}?translations=${last!.translation ?? 'KJV'}` : '/reader/genesis/1';
 
   return (
     <div className="grid sm:grid-cols-[1fr_auto_auto] gap-2">
@@ -22,7 +22,7 @@ export default function ContinueReading() {
       >
         <span>
           <span className="block text-xs font-medium opacity-80">{book ? 'Continue reading' : 'Start reading'}</span>
-          <span className="block font-serif text-lg font-semibold">{book ? `${book.name} ${last!.chapter}` : 'Genesis 1'}</span>
+          <span className="block font-serif text-lg font-semibold">{book ? `${book.name} ${last!.chapterLabel ?? last!.chapter}` : 'Genesis 1'}</span>
         </span>
         <ArrowRight size={20} className="transition-transform group-hover:translate-x-0.5" />
       </Link>

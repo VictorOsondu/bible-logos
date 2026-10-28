@@ -37,7 +37,7 @@ describe('bible-books', () => {
 
   it('getBookById returns undefined for invalid id', () => {
     expect(getBookById(0)).toBeUndefined();
-    expect(getBookById(67)).toBeUndefined();
+    expect(getBookById(999)).toBeUndefined();
     expect(getBookById(-1)).toBeUndefined();
   });
 

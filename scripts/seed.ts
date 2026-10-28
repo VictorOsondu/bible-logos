@@ -1,4 +1,5 @@
 import Database from 'better-sqlite3';
+import { importLibrary, LIBRARY_VERSION_IDS } from './library';
 import path from 'path';
 import fs from 'fs';
 import { parseLexicon, parseKjvOsis, tokensToText, TaggedVerse } from './kjv-strongs';
@@ -127,7 +128,7 @@ async function main() {
 
   // Other translations whose words are linked to Strong's numbers (the HTL), stored once the lexicon is in
   const taggedTranslations: { id: string; verses: TaggedFlatVerse[] }[] = [];
-  for (const id of TRANSLATION_IDS.filter(id => id !== 'KJV')) {
+  for (const id of TRANSLATION_IDS.filter(id => id !== 'KJV' && !LIBRARY_VERSION_IDS.includes(id))) {
     console.log(`Loading ${id}...`);
     const source = TRANSLATION_SOURCES[id];
     let verses: FlatVerse[];
@@ -142,6 +143,8 @@ async function main() {
     if (verses.length && 'tokens' in verses[0]) taggedTranslations.push({ id, verses: verses as TaggedFlatVerse[] });
     console.log(`  ${id}: ${verses.length} verses`);
   }
+
+  await importLibrary(db);
 
   // Build FTS index
   console.log('Building full-text search index...');

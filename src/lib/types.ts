@@ -43,11 +43,4 @@ export interface WordStrongs {
   position: number;
 }
 
-/** Bible book info */
-export interface BookInfo {
-  id: number;
-  name: string;
-  abbrev: string;
-  chapters: number;
-  testament: 'OT' | 'NT';
-}
+export type { BookInfo } from './bible-books';

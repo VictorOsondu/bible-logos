@@ -1,0 +1,226 @@
+{
+  "revision": "26bad3eb42bba98471d154c954e36a6f30a0279d",
+  "sha256": "5cf3ee82efa214caee9059ada09f67a1079fc397f3c1343aa1b72d8c49be5458",
+  "files": [
+    {
+      "name": "01.Genesis.txt",
+      "work": 1
+    },
+    {
+      "name": "02.Exodus.txt",
+      "work": 2
+    },
+    {
+      "name": "03.Leviticus.txt",
+      "work": 3
+    },
+    {
+      "name": "04.Numeri.txt",
+      "work": 4
+    },
+    {
+      "name": "05.Deuteronomium.txt",
+      "work": 5
+    },
+    {
+      "name": "06.Josue.txt",
+      "work": 6
+    },
+    {
+      "name": "08.Judices.txt",
+      "work": 7
+    },
+    {
+      "name": "10.Ruth.txt",
+      "work": 8
+    },
+    {
+      "name": "11.Regnorum_I.txt",
+      "work": 9
+    },
+    {
+      "name": "12.Regnorum_II.txt",
+      "work": 10
+    },
+    {
+      "name": "13.Regnorum_III.txt",
+      "work": 11
+    },
+    {
+      "name": "14.Regnorum_IV.txt",
+      "work": 12
+    },
+    {
+      "name": "15.Paralipomenon_I.txt",
+      "work": 13
+    },
+    {
+      "name": "16.Paralipomenon_II.txt",
+      "work": 14
+    },
+    {
+      "name": "17.Esdras_A.txt",
+      "work": 75
+    },
+    {
+      "name": "18.Esdras_B.txt",
+      "work": 90
+    },
+    {
+      "name": "19.Esther.txt",
+      "work": 70
+    },
+    {
+      "name": "20.Judith.txt",
+      "work": 68
+    },
+    {
+      "name": "21.Tobias.txt",
+      "work": 67
+    },
+    {
+      "name": "23.Machabaeorum_i.txt",
+      "work": 73
+    },
+    {
+      "name": "24.Machabaeorum_ii.txt",
+      "work": 74
+    },
+    {
+      "name": "25.Machabaeorum_iii.txt",
+      "work": 78
+    },
+    {
+      "name": "26.Machabaeorum_iv.txt",
+      "work": 80
+    },
+    {
+      "name": "27.Psalmi.txt",
+      "work": 19
+    },
+    {
+      "name": "28.Odae.txt",
+      "work": 91
+    },
+    {
+      "name": "29.Proverbia.txt",
+      "work": 20
+    },
+    {
+      "name": "31.Canticum.txt",
+      "work": 22
+    },
+    {
+      "name": "32.Job.txt",
+      "work": 18
+    },
+    {
+      "name": "33.Sapientia_Salomonis.txt",
+      "work": 71
+    },
+    {
+      "name": "34.Ecclesiasticus.txt",
+      "work": 72
+    },
+    {
+      "name": "35.Psalmi_Salomonis.txt",
+      "work": 92
+    },
+    {
+      "name": "36.Osee.txt",
+      "work": 28
+    },
+    {
+      "name": "37.Amos.txt",
+      "work": 30
+    },
+    {
+      "name": "38.Michaeas.txt",
+      "work": 33
+    },
+    {
+      "name": "39.Joel.txt",
+      "work": 29
+    },
+    {
+      "name": "40.Abdias.txt",
+      "work": 31
+    },
+    {
+      "name": "41.Jonas.txt",
+      "work": 32
+    },
+    {
+      "name": "42.Nahum.txt",
+      "work": 34
+    },
+    {
+      "name": "43.Habacuc.txt",
+      "work": 35
+    },
+    {
+      "name": "44.Sophonias.txt",
+      "work": 36
+    },
+    {
+      "name": "45.Aggaeus.txt",
+      "work": 37
+    },
+    {
+      "name": "46.Zacharias.txt",
+      "work": 38
+    },
+    {
+      "name": "47.Malachias.txt",
+      "work": 39
+    },
+    {
+      "name": "48.Isaias.txt",
+      "work": 23
+    },
+    {
+      "name": "49.Jeremias.txt",
+      "work": 24
+    },
+    {
+      "name": "50.Baruch.txt",
+      "work": 69
+    },
+    {
+      "name": "51.Threni_seu_Lamentationes.txt",
+      "work": 25
+    },
+    {
+      "name": "52.Epistula_Jeremiae.txt",
+      "work": 81
+    },
+    {
+      "name": "53.Ezechiel.txt",
+      "work": 26
+    },
+    {
+      "name": "54.Susanna_translatio_Graeca.txt",
+      "work": 82
+    },
+    {
+      "name": "55.Susanna_Theodotionis_versio.txt",
+      "work": 83
+    },
+    {
+      "name": "56.Daniel_translatio_Graeca.txt",
+      "work": 84
+    },
+    {
+      "name": "57.Daniel_Theodotionis_versio.txt",
+      "work": 85
+    },
+    {
+      "name": "58.Bel_et_Draco_translatio_Graeca.txt",
+      "work": 86
+    },
+    {
+      "name": "59.Bel_et_Draco_Theodotionis_versio.txt",
+      "work": 87
+    }
+  ]
+}

@@ -14,3 +14,6 @@ export function toFtsQuery(input: string): string | null {
     .filter(Boolean);
   return terms.length ? terms.join(' ') : null;
 }
+
+/** Strip vowel/cantillation and accent marks for searching, preserving the source text separately. */
+export const normalizeSearchText = (text: string) => text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().replace(/ς/g, 'σ').normalize('NFC');

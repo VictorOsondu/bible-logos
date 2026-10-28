@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import type { LivingLetter, LivingLetterGroup } from '@/lib/theme-studies';
+import LetterPronunciation from './LetterPronunciation';
 
 export default function LivingLetterChart({ groups, ordered = false }: { groups: LivingLetterGroup[]; ordered?: boolean }) {
   const [selected, setSelected] = useState<{ letter: LivingLetter; family: string } | null>(null);
@@ -29,7 +30,7 @@ export default function LivingLetterChart({ groups, ordered = false }: { groups:
     <div className="mt-6">
       <p id={`${chartId}-help`} className="text-sm text-parchment-400 mb-5">
         {ordered && 'All 22 letters in Hebrew alphabetical order, read from right to left. '}
-        Select a letter to explore its living meaning and usage. Associations for the doubles and simples are shared within their families.
+        Select a letter to explore its shape, sound and symbolic interpretations. Book of Formation associations for the doubles and simples are shared within their families.
       </p>
       {ordered ? (
         <div role="group" aria-label="Hebrew alphabet chart" aria-describedby={`${chartId}-help`} dir="rtl" className="grid grid-cols-4 sm:grid-cols-6 gap-2">
@@ -65,10 +66,16 @@ export default function LivingLetterChart({ groups, ordered = false }: { groups:
       <dialog ref={dialogRef} aria-labelledby={`${chartId}-title`} aria-describedby={`${chartId}-family`}
         onClose={() => setSelected(null)}
         onKeyDown={event => {
-          // Close is the only interactive control within the letter details.
-          if (event.key === 'Tab') {
+          if (event.key !== 'Tab') return;
+          const controls = event.currentTarget.querySelectorAll<HTMLElement>('button:not(:disabled), a[href]');
+          const first = controls[0];
+          const last = controls[controls.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
             event.preventDefault();
-            event.currentTarget.querySelector('button')?.focus();
+            last?.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first?.focus();
           }
         }}
         onClick={event => {
@@ -92,10 +99,25 @@ export default function LivingLetterChart({ groups, ordered = false }: { groups:
               </button>
             </header>
             <p lang="he" dir="rtl" className="my-5 text-center text-7xl text-gold-400 leading-normal">{selected.letter.letter}</p>
+            {selected.letter.shape && <section className="mb-5">
+              <h3 className="font-serif text-xl mb-2">Explore the shape</h3>
+              <p className="text-sm text-parchment-300 leading-relaxed">{selected.letter.shape}</p>
+            </section>}
+            {selected.letter.sound && <section className="mb-5">
+              <h3 className="font-serif text-xl mb-2">Listen and compare</h3>
+              <p className="text-sm text-parchment-300 leading-relaxed">{selected.letter.sound}</p>
+              <LetterPronunciation key={selected.letter.letter} letter={selected.letter} />
+              <p className="mt-3 text-sm text-parchment-400 leading-relaxed">{selected.letter.soundExercise}</p>
+            </section>}
             <section>
               <h3 className="font-serif text-xl mb-2">Living letter meaning</h3>
               <p className="text-sm text-parchment-300 leading-relaxed">{selected.letter.meaning}</p>
             </section>
+            {selected.letter.interpretation && <section className="mt-5">
+              <h3 className="font-serif text-xl mb-2">Golden Dawn interpretation</h3>
+              {selected.letter.interpretation.split('\n\n').map(paragraph => <p key={paragraph} className="mt-3 text-sm text-parchment-300 leading-relaxed">{paragraph}</p>)}
+              <p className="mt-3 text-xs text-parchment-500 leading-relaxed">{selected.letter.attribution}</p>
+            </section>}
             <section className="mt-5">
               <h3 className="font-serif text-xl mb-2">Usage in the Book of Formation</h3>
               <p className="text-sm text-parchment-300 leading-relaxed">{selected.letter.usage}</p>

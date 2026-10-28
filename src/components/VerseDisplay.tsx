@@ -59,7 +59,7 @@ export default function VerseDisplay({ verses, translations, tokens: taggedToken
   const hashMatch = /^#v(\d+)$/.exec(useHash());
   const targetVerse = hashMatch ? Number(hashMatch[1]) : null;
   const bookmarks = useBookmarks();
-  const bookmarked = selectedVerse !== null && isBookmarked(bookmarks, book, chapter, selectedVerse);
+  const bookmarked = selectedVerse !== null && isBookmarked(bookmarks, book, chapter, selectedVerse, translations[0]);
 
   // Scroll to a linked verse (#v16). Browsers do this on a full page load, but not after
   // client-side navigation, where the verses render after the router has tried to scroll.
@@ -201,7 +201,7 @@ export default function VerseDisplay({ verses, translations, tokens: taggedToken
                     <Columns2 size={13} /> Compare
                   </Link>
                   <button
-                    onClick={() => toggleBookmark(book, chapter, verseNum)}
+                    onClick={() => toggleBookmark(book, chapter, verseNum, translations[0])}
                     className={`${chip} ${bookmarked ? 'text-gold-400 border-gold-400/40' : ''}`}
                     aria-pressed={bookmarked}
                   >

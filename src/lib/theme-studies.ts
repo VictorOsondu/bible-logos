@@ -7,6 +7,12 @@ export interface LivingLetter {
   meaning: string;
   usage: string;
   reflection: string;
+  shape?: string;
+  sound?: string;
+  soundExercise?: string;
+  interpretation?: string;
+  attribution?: string;
+  audio?: { src: string; sourceUrl: string; credit: string };
 }
 
 export interface LivingLetterGroup {
@@ -23,6 +29,7 @@ interface ThemeStudy {
   parentSlug: string | null;
   overview: string;
   passages: { label: string; book: string; chapter: number; verse: number }[];
+  editionPassages?: { label: string; book: string; chapter: number; verse: number; translation: string }[];
   sections: {
     title: string;
     text: string;
@@ -31,7 +38,7 @@ interface ThemeStudy {
   words: { id: string; label: string; note: string }[];
   questions: string[];
   related: string[];
-  sources?: { citation: string; detail: string }[];
+  sources?: { citation: string; detail: string; url?: string }[];
 }
 
 export const THEME_STUDIES: ThemeStudy[] = studies;
@@ -39,5 +46,5 @@ export const MAIN_THEMES = THEME_STUDIES.filter(study => study.parentSlug === nu
 export const getSubThemes = (slug: string) => THEME_STUDIES.filter(study => study.parentSlug === slug);
 export const THEME_LICENCE_URL = 'https://creativecommons.org/licenses/by-nc/4.0/';
 export const getThemeStudy = (slug: string) => THEME_STUDIES.find(study => study.slug === slug);
-export const passageHref = (passage: { book: string; chapter: number; verse: number }) =>
-  `/reader/${passage.book}/${passage.chapter}#v${passage.verse}`;
+export const passageHref = (passage: { book: string; chapter: number; verse: number; translation?: string }) =>
+  `/reader/${passage.book}/${passage.chapter}${passage.translation ? `?translations=${encodeURIComponent(passage.translation)}` : ''}#v${passage.verse}`;

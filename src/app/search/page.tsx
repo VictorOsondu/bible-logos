@@ -1,176 +1,60 @@
 import Link from 'next/link';
-import { toFtsQuery } from '@/lib/search';
+import { queryValue, boundedInteger, type QueryParams } from '@/lib/query-params';
+import { toFtsQuery, normalizeSearchText } from '@/lib/search';
 import { getBookById } from '@/lib/bible-books';
-import { TRANSLATIONS } from '@/lib/translations';
-
+import { COLLECTIONS, LIBRARY_BOOKS, slugOf } from '@/lib/text-library';
+import { getAvailableTranslations, getDb } from '@/lib/db';
+import { getTranslation } from '@/lib/translations';
+import LibrarySearchForm from '@/components/LibrarySearchForm';
 export const dynamic = 'force-dynamic';
 
-interface Props {
-  searchParams: Promise<SearchQuery>;
-}
-
-interface SearchQuery {
-  q?: string;
-  book?: string;
-  testament?: string;
-  translation?: string;
-  offset?: string;
-}
-
-interface VerseResult {
-  book: number;
-  chapter: number;
-  verse: number;
-  text: string;
-  translation: string;
-}
-
-async function searchVerses(params: SearchQuery): Promise<{ results: VerseResult[]; total: number; limit?: number; offset?: number }> {
-  const match = toFtsQuery(params.q || '');
-  if (!match) return { results: [], total: 0 };
-  
-  // Use internal API — this runs server-side
-  const { getDb } = await import('@/lib/db');
-  const db = getDb();
-  
-  const translation = params.translation || 'KJV';
+interface VerseResult { book: number; chapter: number; verse: number; text: string; translation: string; native_label: string | null; chapter_label: string | null }
+export default async function SearchPage({ searchParams }: { searchParams: Promise<QueryParams> }) {
+  const rawParams = await searchParams;
+  const params = Object.fromEntries(Object.entries(rawParams).map(([key, value]) => [key, queryValue(value)]));
+  const scope = ['bible', 'enabled', 'all'].includes(params.scope ?? '') ? params.scope! : 'bible';
+  const q = (params.q ?? '').slice(0, 1000);
+  const translation = params.translation ?? (scope === 'bible' ? 'KJV' : 'ALL');
+  const enabled = (params.collections ?? '').split(',').filter(c => COLLECTIONS.some(x => x.id === c));
+  const extraIds = LIBRARY_BOOKS.filter(b => enabled.includes(b.collection)).map(b => b.id);
   const limit = 50;
-  const offset = Math.max(parseInt(params.offset || '0') || 0, 0);
-  const book = parseInt(params.book || '') || null;
-  
-  let query = `
-    SELECT v.book, v.chapter, v.verse, v.text, v.translation
-    FROM verses_fts fts
-    JOIN verses v ON v.id = fts.rowid
-    WHERE fts.text MATCH ? AND v.translation = ?
-  `;
-  const queryParams: (string | number)[] = [match, translation];
-
-  if (book) {
-    query += ' AND v.book = ?';
-    queryParams.push(book);
+  let offset = boundedInteger(params.offset, 0, 0, 1_000_000);
+  const raw = toFtsQuery(q);
+  const normalized = toFtsQuery(normalizeSearchText(q));
+  const db = getDb();
+  const conditions = ['v.id IN (SELECT rowid FROM verses_fts WHERE text MATCH ? UNION SELECT rowid FROM library_fts WHERE text MATCH ?)'];
+  const values: (string | number)[] = [raw ?? '', normalized ?? ''];
+  if (translation !== 'ALL') { conditions.push('v.translation = ?'); values.push(translation); }
+  if (scope === 'bible') conditions.push('v.book BETWEEN 1 AND 66');
+  if (scope === 'enabled') { conditions.push(`(v.book BETWEEN 1 AND 66${extraIds.length ? ` OR v.book IN (${extraIds.map(() => '?').join(',')})` : ''})`); values.push(...extraIds); }
+  if (params.testament === 'OT') conditions.push('v.book BETWEEN 1 AND 39');
+  if (params.testament === 'NT') conditions.push('v.book BETWEEN 40 AND 66');
+  const book = Number(params.book);
+  if (Number.isInteger(book) && book > 0) { conditions.push('v.book = ?'); values.push(book); }
+  const where = conditions.join(' AND ');
+  let results: VerseResult[] = [];
+  let total = 0;
+  if (raw && normalized) {
+    total = (db.prepare(`SELECT COUNT(*) AS n FROM verses v WHERE ${where}`).get(...values) as { n: number }).n;
+    offset = total > 0 ? Math.min(offset, Math.floor((total - 1) / limit) * limit) : 0;
+    results = db.prepare(`SELECT v.*, (SELECT label FROM edition_chapters c WHERE c.translation = v.translation AND c.book = v.book AND c.chapter = v.chapter) AS chapter_label FROM verses v WHERE ${where} ORDER BY v.book, v.chapter, COALESCE(v.position, v.verse), v.translation LIMIT ? OFFSET ?`).all(...values, limit, offset) as VerseResult[];
   }
-  if (params.testament === 'OT') query += ' AND v.book <= 39';
-  if (params.testament === 'NT') query += ' AND v.book >= 40';
-  
-  query += ' ORDER BY v.book, v.chapter, v.verse LIMIT ? OFFSET ?';
-  queryParams.push(limit, offset);
-  
-  try {
-    const results = db.prepare(query).all(...queryParams) as VerseResult[];
-    
-    let countQuery = `SELECT COUNT(*) as total FROM verses_fts fts JOIN verses v ON v.id = fts.rowid WHERE fts.text MATCH ? AND v.translation = ?`;
-    const countParams: (string | number)[] = [match, translation];
-    if (book) { countQuery += ' AND v.book = ?'; countParams.push(book); }
-    if (params.testament === 'OT') countQuery += ' AND v.book <= 39';
-    if (params.testament === 'NT') countQuery += ' AND v.book >= 40';
-    
-    const total = (db.prepare(countQuery).get(...countParams) as { total: number }).total;
-    return { results, total, limit, offset };
-  } catch (error) {
-    console.error('Search failed:', error);
-    return { results: [], total: 0, limit, offset };
-  }
-}
-
-export default async function SearchPage(props: Props) {
-  const searchParams = await props.searchParams;
-  const data = await searchVerses(searchParams);
-  const { getAvailableTranslations } = await import('@/lib/db');
-  const available = getAvailableTranslations();
-  const q = searchParams.q || '';
-  const currentOffset = Math.max(parseInt(searchParams.offset || '0') || 0, 0);
-  const pageHref = (offset: number) => `/search?${new URLSearchParams({
-    q,
-    offset: String(offset),
-    testament: searchParams.testament || '',
-    translation: searchParams.translation || 'KJV',
-    ...(searchParams.book ? { book: searchParams.book } : {}),
-  })}`;
-
-  return (
-    <>
-      <main className="flex-1 p-4 lg:p-8 max-w-5xl">
-        <div className="mb-6">
-          <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-4">Search</h1>
-          
-          <form className="flex flex-wrap gap-3 items-end">
-            <div className="flex-1 min-w-[200px]">
-              <input
-                type="text" name="q" defaultValue={q}
-                placeholder="Search the Bible…"
-                className="w-full px-4 py-3 rounded-xl bg-parchment-900/70 text-parchment-100 placeholder-parchment-600 focus:outline-hidden focus:ring-2 focus:ring-gold-500/50 font-serif"
-              />
-            </div>
-            <div>
-              <select name="testament"
-                className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-3 text-sm border border-parchment-700">
-                <option value="" selected={(searchParams.testament || '') === ''}>All</option>
-                <option value="OT" selected={searchParams.testament === 'OT'}>Old Testament</option>
-                <option value="NT" selected={searchParams.testament === 'NT'}>New Testament</option>
-              </select>
-            </div>
-            <div>
-              <select name="translation"
-                className="bg-parchment-800 text-parchment-200 rounded-lg px-3 py-3 text-sm border border-parchment-700">
-                {TRANSLATIONS.filter(t => available.includes(t.id)).map(t => (
-                  <option key={t.id} value={t.id} selected={(searchParams.translation || 'KJV') === t.id}>{t.id}</option>
-                ))}
-              </select>
-            </div>
-            <button type="submit" className="px-6 py-3 bg-gold-600 text-parchment-950 rounded-xl font-semibold hover:bg-gold-500 transition-colors">
-              Search
-            </button>
-          </form>
-        </div>
-
-        {q && (
-          <p className="text-sm text-parchment-500 mb-4">
-            {data.total} result{data.total !== 1 ? 's' : ''} for &ldquo;<span className="text-gold-400">{q}</span>&rdquo;
-          </p>
-        )}
-
-        <div className="space-y-2">
-          {data.results.map((v, i) => {
-            const bookInfo = getBookById(v.book);
-            const slug = bookInfo?.name.toLowerCase().replace(/ /g, '-');
-            return (
-              <Link
-                key={i}
-                href={`/reader/${slug}/${v.chapter}#v${v.verse}`}
-                className="block p-4 rounded-xl bg-parchment-900/70 hover:bg-parchment-900 transition-all"
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <span className="text-sm font-semibold text-gold-400">{bookInfo?.name} {v.chapter}:{v.verse}</span>
-                  <span className="text-xs text-parchment-600 font-mono">{v.translation}</span>
-                </div>
-                <p className="text-sm text-parchment-300 font-serif">{v.text}</p>
-              </Link>
-            );
-          })}
-        </div>
-
-        {/* Pagination */}
-        {data.total > 50 && (
-          <div className="flex gap-2 mt-6 justify-center">
-            {currentOffset > 0 && (
-              <Link href={pageHref(currentOffset - 50)}
-                className="px-4 py-2 rounded-lg bg-parchment-800 text-gold-400 hover:bg-parchment-700 text-sm">
-                ← Previous
-              </Link>
-            )}
-            <span className="px-4 py-2 text-sm text-parchment-500">
-              {currentOffset + 1}–{Math.min(currentOffset + 50, data.total)} of {data.total}
-            </span>
-            {currentOffset + 50 < data.total && (
-              <Link href={pageHref(currentOffset + 50)}
-                className="px-4 py-2 rounded-lg bg-parchment-800 text-gold-400 hover:bg-parchment-700 text-sm">
-                Next →
-              </Link>
-            )}
-          </div>
-        )}
-      </main>
-    </>
-  );
+  const pageHref = (start: number) => `/search?${new URLSearchParams({ ...params, q, scope, translation, offset: String(start) } as Record<string, string>)}`;
+  return <main className="flex-1 p-4 lg:p-8 max-w-5xl">
+    <h1 className="text-3xl font-semibold font-serif text-parchment-50 mb-4">Search</h1>
+    <LibrarySearchForm key={JSON.stringify(params)} collections={Object.hasOwn(params, 'collections') ? enabled : undefined} q={q} scope={scope} version={translation} testament={params.testament} available={getAvailableTranslations()} />
+    {q && <p className="mt-4 text-sm text-parchment-400">{total} results for “{q}”.</p>}
+    <p className="my-4 text-sm text-parchment-400">Scope: {scope === 'all' ? 'All library' : scope === 'enabled' ? 'Bible + enabled collections' : 'Bible (66-book collection)'}.</p>
+    {scope === 'enabled' && !enabled.length && <p className="mb-4 text-sm text-parchment-400">No additional collections are included in this search. Enable collections in <Link className="text-gold-400" href="/library">Explore writings</Link>, then search again.</p>}
+    <div className="space-y-2">{results.map(v => {
+      const book = getBookById(v.book);
+      const version = getTranslation(v.translation);
+      if (!book) return null;
+      return <Link key={`${v.translation}-${v.book}-${v.chapter}-${v.verse}`} href={`/reader/${slugOf(book)}/${v.chapter}?translations=${v.translation}#v${v.verse}`} className="block p-4 rounded-xl bg-parchment-900/70 hover:bg-parchment-900">
+        <p className="text-sm text-gold-400 mb-1">{book.name} {v.chapter_label ?? v.chapter}{v.native_label === 'section' ? '' : `:${v.native_label ?? v.verse}`} <bdi className="text-xs text-parchment-400">{v.translation}{book.testament === 'Library' ? ' · Explore writings' : ''}</bdi></p>
+        <p lang={version?.language ?? 'en'} dir={version?.direction ?? 'ltr'} className="text-sm text-parchment-300 font-serif">{v.text}</p>
+      </Link>;
+    })}</div>
+    {total > limit && <nav className="flex gap-4 justify-center mt-6 text-sm text-gold-400" aria-label="Search pages">{offset > 0 && <Link href={pageHref(Math.max(0, offset - limit))}>← Previous</Link>}<span>{offset + 1}–{Math.min(offset + limit, total)} of {total}</span>{offset + limit < total && <Link href={pageHref(offset + limit)}>Next →</Link>}</nav>}
+  </main>;
 }

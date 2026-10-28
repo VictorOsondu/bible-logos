@@ -218,3 +218,7 @@ Strong's data: James Strong (1890/1894); JSON edition by Open Scriptures. Tagged
 The code is released under the MIT licence; see [LICENSE](LICENSE). Newly authored Themes study prose in `src/content/themes/studies.json` is © 2026 Bible Logos contributors and licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/) for non-commercial sharing and adaptation with attribution and changes indicated. See [the scope and attribution notice](public/themes-licence.txt) and [full legal terms](https://creativecommons.org/licenses/by-nc/4.0/legalcode.en). This does not revoke earlier MIT grants. Bible texts and datasets keep their own licences, as listed above; readers retain rights to their personal notes.
 
 *Bible Logos links study commentary to Scripture and its sources; read in context and examine the conclusions for yourself.*
+
+### Optional text library
+
+The reader includes Greek Septuagint (Swete), Hebrew New Testament (Salkinson–Ginsburg), English Deuterocanon, Didache and 1 Enoch. Open **Explore writings** to browse or enable additional collections. Run `npm run import:library` to add these editions to an existing database, or `npm run seed` to build everything. See [sources, licensing and coverage](docs/text-library-sources.md).
