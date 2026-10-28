@@ -58,6 +58,7 @@ export default async function ThemeStudyPage({ params }: { params: Promise<{ slu
           <div className="flex flex-wrap gap-2">
             {study.passages.map(passage => <Link key={passage.label} href={passageHref(passage)} className="rounded-lg border border-parchment-800 px-3 py-2 text-sm text-gold-400 hover:bg-parchment-900">{passage.label}</Link>)}
           </div>
+          {study.editionPassages && <div className="mt-5 space-y-3"><h3 className="font-serif text-lg text-parchment-100">Read in Greek and Hebrew</h3><p className="text-sm text-parchment-400">Swete preserves Greek Septuagint references; Psalm 107 is Psalm 106 in this edition. The Hebrew New Testament is a later translation from Greek. Letter patterns and gematria in that Hebrew wording belong to the named translation.</p><div className="flex flex-wrap gap-2">{study.editionPassages.map(passage => <Link key={passage.label} href={passageHref(passage)} className="rounded-lg border border-parchment-800 px-3 py-2 text-sm text-gold-400 hover:bg-parchment-900">{passage.label}</Link>)}</div></div>}
         </section>}
         {study.sections.map((section, index) => (
           <section key={section.title} className="mt-10">
@@ -97,8 +98,8 @@ export default async function ThemeStudyPage({ params }: { params: Promise<{ slu
           <section className="mt-12 border-t border-parchment-800 pt-6" aria-labelledby="study-sources">
             <h2 id="study-sources" className="font-serif text-xl text-parchment-100 mb-3">Source</h2>
             {study.sources.map(source => (
-              <div key={source.citation} className="text-sm text-parchment-400 leading-relaxed">
-                <p>{source.citation}</p>
+              <div key={source.citation} className="mt-4 text-sm text-parchment-400 leading-relaxed [overflow-wrap:anywhere]">
+                <p>{source.url ? <a href={source.url} target="_blank" rel="noreferrer" className="text-gold-400 hover:underline">{source.citation}</a> : source.citation}</p>
                 <p className="mt-3 text-xs text-parchment-500">{source.detail}</p>
               </div>
             ))}

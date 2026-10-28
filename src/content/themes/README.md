@@ -18,8 +18,14 @@ sections, contextual language notes and reflection questions. Themes awaiting
 content may leave those fields empty. Sections may include `letterGroups` with
 names, Hebrew letters, symbolic connections and `entries` for an interactive chart.
 Each entry supplies the letter, name, meaning, usage and a reflection prompt.
+Entries may also supply `shape`, `sound`, `soundExercise`, `interpretation`,
+`attribution` and `audio` (`src`, `sourceUrl`, `credit`). Shape and sound exercises
+use observation and listening. Keep later Golden Dawn interpretations explicitly
+attributed alongside the edition-specific Book of Formation associations.
+Pronunciation recordings teach modern letter names; they retain the provider's
+copyright and load only on request. Do not include them in the study prose licence.
 Keep letter-specific associations distinct from shared family associations. A study may include `sources`
-with a bibliographic `citation` and a `detail` note, displayed once at the end
+with a bibliographic `citation`, optional `url`, and a `detail` note, displayed once at the end
 of the study. Summarise source material in original prose and distinguish source
 claims from the study’s own biblical comparisons. Third-party sources retain
 their own rights.

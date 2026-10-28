@@ -5,8 +5,10 @@ import { useSyncExternalStore } from 'react';
 
 const CHANGE_EVENT = 'biblelogos-storage';
 const cache = new Map<string, { raw: string | null; value: unknown }>();
+const sessionValues = new Map<string, string>();
 
 function readRaw(key: string): string | null {
+  if (sessionValues.has(key)) return sessionValues.get(key)!;
   try {
     return localStorage.getItem(key);
   } catch {
@@ -22,7 +24,8 @@ export function readStoredJson<T>(key: string, fallback: T): T {
   let value = fallback;
   if (raw !== null) {
     try {
-      value = JSON.parse(raw) as T;
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(fallback) ? Array.isArray(parsed) : parsed !== null && typeof parsed === typeof fallback) value = parsed as T;
     } catch {
       // corrupt entry: fall back
     }
@@ -32,10 +35,13 @@ export function readStoredJson<T>(key: string, fallback: T): T {
 }
 
 export function writeStoredJson(key: string, value: unknown) {
+  const serialized = JSON.stringify(value);
   try {
-    localStorage.setItem(key, JSON.stringify(value));
+    localStorage.setItem(key, serialized);
+    sessionValues.delete(key);
   } catch {
-    // storage unavailable: nothing to save
+    // Keep the current session usable, but visibly report that persistence failed.
+    sessionValues.set(key, serialized);
   }
   window.dispatchEvent(new Event(CHANGE_EVENT));
 }
@@ -60,3 +66,6 @@ const noSubscription = () => () => {};
 export function useIsClient(): boolean {
   return useSyncExternalStore(noSubscription, () => true, () => false);
 }
+
+/** True only after a write actually failed; no warning is shown speculatively. */
+export const useSessionStorageFallback = () => useSyncExternalStore(subscribe, () => sessionValues.size > 0, () => false);

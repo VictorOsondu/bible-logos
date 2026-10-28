@@ -1,4 +1,5 @@
 import Database from 'better-sqlite3';
+import { hasLibrarySchema, DatabaseMigrationRequiredError } from './library-schema';
 import path from 'path';
 import fs from 'fs';
 
@@ -25,7 +26,9 @@ export function getDb(): Database.Database {
         'Database not found. Run "npm run seed" to populate the database.'
       );
     }
-    db = new Database(dbPath, { readonly: true, fileMustExist: true });
+    const opened = new Database(dbPath, { readonly: true, fileMustExist: true });
+    if (!hasLibrarySchema(opened)) { opened.close(); throw new DatabaseMigrationRequiredError(); }
+    db = opened;
   }
   return db;
 }

@@ -1,3 +1,4 @@
+import { LIBRARY_BOOKS } from './text-library';
 export interface BookInfo {
   id: number;
   name: string;
@@ -75,22 +76,22 @@ export const BIBLE_BOOKS: BookInfo[] = [
   { id: 66, name: 'Revelation', abbrev: 'Rev', testament: 'NT', chapters: 22 },
 ];
 
-export function getBookById(id: number): BookInfo | undefined {
-  return BIBLE_BOOKS.find(b => b.id === id);
+export function getBookById(id: number): BookInfo | import('./text-library').LibraryBook | undefined {
+  return [...BIBLE_BOOKS, ...LIBRARY_BOOKS].find(b => b.id === id);
 }
 
-export function getBookByName(name: string): BookInfo | undefined {
+export function getBookByName(name: string): BookInfo | import('./text-library').LibraryBook | undefined {
   const lower = name.toLowerCase();
-  return BIBLE_BOOKS.find(b => 
-    b.name.toLowerCase() === lower || 
+  return [...BIBLE_BOOKS, ...LIBRARY_BOOKS].find(b =>
+    b.name.toLowerCase() === lower ||
     b.abbrev.toLowerCase() === lower
   );
 }
 
-export function getBookBySlug(slug: string): BookInfo | undefined {
+export function getBookBySlug(slug: string): BookInfo | import('./text-library').LibraryBook | undefined {
   const lower = slug.toLowerCase().replace(/-/g, ' ');
-  return BIBLE_BOOKS.find(b => 
-    b.name.toLowerCase() === lower || 
+  return [...BIBLE_BOOKS, ...LIBRARY_BOOKS].find(b =>
+    b.name.toLowerCase() === lower ||
     b.abbrev.toLowerCase() === lower ||
     b.name.toLowerCase().replace(/ /g, '-') === slug.toLowerCase()
   );

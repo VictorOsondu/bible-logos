@@ -24,6 +24,7 @@ export const NAV_SECTIONS: NavSection[] = [
       { href: '/reader', icon: BookOpen, label: 'Books', description: 'Choose a book and chapter to read' },
       { href: '/search', icon: Search, label: 'Search', description: 'Full-text search in every translation' },
       { href: '/compare', icon: Columns2, label: 'Compare', description: 'Translations side by side' },
+      { href: '/library', icon: Library, label: 'Explore writings', description: 'Optional collections, ancient Jewish and early Christian writings' },
       { href: '/concordance', icon: Languages, label: 'Concordance', description: "Strong's Hebrew and Greek lexicon" },
       { href: '/passages', icon: Star, label: 'Key Passages', description: 'Well-known passages, songs and prayers' },
       { href: '/themes', icon: Tags, label: 'Themes', description: 'Guided topic studies with passages and reflection' },

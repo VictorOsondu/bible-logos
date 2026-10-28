@@ -1,3 +1,4 @@
+import { DatabaseMigrationRequiredError } from '@/lib/library-schema';
 import { NextResponse } from 'next/server';
 import { getDb, isDatabaseAvailable } from '@/lib/db';
 
@@ -15,6 +16,6 @@ export function GET() {
     return NextResponse.json({ status: 'ok' }, { headers: { 'Cache-Control': 'no-store' } });
   } catch (error) {
     console.error('Health check failed:', error);
-    return unavailable('database unreadable');
+    return unavailable(error instanceof DatabaseMigrationRequiredError ? 'database migration required: run npm run import:library' : 'database unreadable');
   }
 }

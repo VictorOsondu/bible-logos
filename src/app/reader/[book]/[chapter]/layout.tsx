@@ -1,3 +1,4 @@
+import { getDb } from '@/lib/db';
 import { notFound } from 'next/navigation';
 import { getBookBySlug } from '@/lib/bible-books';
 
@@ -10,6 +11,6 @@ export default async function ChapterLayout(props: { children: React.ReactNode; 
   const params = await props.params;
   const book = getBookBySlug(params.book);
   const chapter = Number(params.chapter);
-  if (!book || !Number.isInteger(chapter) || chapter < 1 || chapter > book.chapters) notFound();
+  if (!book || !/^\d+$/.test(params.chapter) || !Number.isSafeInteger(chapter) || chapter < 0 || !getDb().prepare('SELECT 1 FROM verses WHERE book = ? AND chapter = ? LIMIT 1').get(book.id, chapter)) notFound();
   return children;
 }

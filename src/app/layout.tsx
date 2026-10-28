@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Inter, Literata } from 'next/font/google';
 import './globals.css';
+import StorageNotice from '@/components/StorageNotice';
 import Sidebar from '@/components/Sidebar';
 import ScrollToTop from '@/components/ScrollToTop';
 import Footer from '@/components/Footer';
@@ -13,7 +14,7 @@ const reading = Literata({ subsets: ['latin', 'greek'], variable: '--font-readin
 
 export const metadata: Metadata = {
   title: 'Bible Logos — Personal Bible Study & Research',
-  description: "Read the Bible in 19 openly licensed translations with every KJV word linked to its Hebrew or Greek original, Strong's concordance and cross-references.",
+  description: "Read openly licensed Bible editions and explore ancient writings with every KJV word linked to its Hebrew or Greek original, Strong's concordance and cross-references.",
   keywords: ['Bible', 'study', "Strong's concordance", 'cross-references', 'KJV', 'BSB', 'WEB', 'LSV', 'Hebrew', 'Greek'],
   openGraph: {
     title: 'Bible Logos — Personal Bible Study & Research',
@@ -46,6 +47,7 @@ export default function RootLayout({
         <div className="lg:flex">
           <Sidebar />
           <div className="flex-1 min-w-0 flex flex-col min-h-[calc(100dvh-3.5rem)] lg:min-h-screen">
+            <StorageNotice />
             <div className="flex-1 [&>main]:w-full [&>main]:mx-auto">{children}</div>
             <Footer />
           </div>
