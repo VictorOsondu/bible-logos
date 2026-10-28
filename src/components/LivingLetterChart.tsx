@@ -30,7 +30,7 @@ export default function LivingLetterChart({ groups, ordered = false }: { groups:
     <div className="mt-6">
       <p id={`${chartId}-help`} className="text-sm text-parchment-400 mb-5">
         {ordered && 'All 22 letters in Hebrew alphabetical order, read from right to left. '}
-        Select a letter to explore its shape, sound and symbolic interpretations. Book of Formation associations for the doubles and simples are shared within their families.
+        Select a letter to explore its shape, sound and symbolic interpretations, including its Christocentric meaning and association. Book of Formation associations for the doubles and simples are shared within their families.
       </p>
       {ordered ? (
         <div role="group" aria-label="Hebrew alphabet chart" aria-describedby={`${chartId}-help`} dir="rtl" className="grid grid-cols-4 sm:grid-cols-6 gap-2">
@@ -113,6 +113,11 @@ export default function LivingLetterChart({ groups, ordered = false }: { groups:
               <h3 className="font-serif text-xl mb-2">Living letter meaning</h3>
               <p className="text-sm text-parchment-300 leading-relaxed">{selected.letter.meaning}</p>
             </section>
+            {selected.letter.christocentric && <section className="mt-5">
+              <h3 className="font-serif text-xl mb-2">Christocentric interpretation</h3>
+              <p className="text-sm font-medium text-gold-400 mb-2">{selected.letter.christocentric.association}</p>
+              <p className="text-sm text-parchment-300 leading-relaxed">{selected.letter.christocentric.meaning}</p>
+            </section>}
             {selected.letter.interpretation && <section className="mt-5">
               <h3 className="font-serif text-xl mb-2">Golden Dawn interpretation</h3>
               {selected.letter.interpretation.split('\n\n').map(paragraph => <p key={paragraph} className="mt-3 text-sm text-parchment-300 leading-relaxed">{paragraph}</p>)}

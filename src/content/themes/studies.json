@@ -62,7 +62,7 @@
   {
     "slug": "living-letters",
     "title": "Living Letters",
-    "overview": "In the Kabbalistic tradition explored here, Hebrew letters are living forms through which divine speech brings creation into being and continually sustains it. Explore their visible shapes, spoken names and numerical relationships, and reflect on Scripture’s language of word, breath, light and life.",
+    "overview": "In the Kabbalistic tradition explored here, Hebrew letters are living forms through which divine speech brings creation into being and continually sustains it. Explore their visible shapes, spoken names and numerical relationships, and reflect on Scripture’s language of word, breath, light and life. A Christocentric devotional category also follows all twenty-two letters through images of Christ’s sacrifice, presence, guidance and covenant.",
     "passages": [
       {
         "label": "Genesis 1:1–5",
@@ -105,6 +105,12 @@
         "book": "psalms",
         "chapter": 107,
         "verse": 20
+      },
+      {
+        "label": "Psalm 119:1–8 · Aleph",
+        "book": "psalms",
+        "chapter": 119,
+        "verse": 1
       }
     ],
     "sections": [
@@ -153,6 +159,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/alef.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Sacrificial animal · Christ’s sacrifice",
+                  "meaning": "Aleph directs attention to the heart of God at Calvary: the shed blood of Christ brings forgiveness and access to God’s grace. As the first letter of the alphabet, it invites us to give Christ and his sacrifice first place in our lives."
                 }
               },
               {
@@ -170,6 +180,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/mem.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Water · Baptism and living water",
+                  "meaning": "Water recalls baptism and the benefits of complete immersion in the Word of the living God. Christ himself is the source of our living water. As water surrounds and sustains bodily life and the earth, this reading invites us to let the Word surround and shape our lives."
                 }
               },
               {
@@ -187,6 +201,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/shin.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Three upright prongs · Trinity and blessing",
+                  "meaning": "The three upright prongs are read here as a symbol of the Trinity. The transcript also connects Shin with the priestly hand gesture of the Aaronic blessing and understands the fullness of that blessing as received through Christ."
                 }
               }
             ]
@@ -212,6 +230,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/bet.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "House · Dwelling in Christ",
+                  "meaning": "The house points to Christ as our dwelling place in God. He provides a home for us, dwells in us, and invites us to abide in him. In him we live and move and have our being."
                 }
               },
               {
@@ -229,6 +251,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/gimel.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Camel · Burdens carried and growth in grace",
+                  "meaning": "The camel pictures Christ carrying our heaviest burdens and freeing us from the load of sin. Through the Word of God, we grow and are weaned into a life sustained by his goodness and grace."
                 }
               },
               {
@@ -246,6 +272,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/dalet.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Door · The way to the Father",
+                  "meaning": "The door points to Jesus Christ as the only way to the Father and the way into God’s promises. This reading connects the beginning of salvation with a personal response: opening the door to receive Jesus the Messiah."
                 }
               },
               {
@@ -263,6 +293,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/kaf.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Wing or palm · Humility, protection and healing",
+                  "meaning": "The palm pictures God holding us in his hand; the wing pictures his covering of protection and healing. As we humble ourselves, we trust his care against the advances of the enemy."
                 }
               },
               {
@@ -280,6 +314,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/pe_h.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Mouth · Faith spoken through God’s Word",
+                  "meaning": "The mouth, opened by God, pictures the divine help given to his children through his Word. This reading associates receiving and trusting Jesus with mountain-moving faith expressed in speech."
                 }
               },
               {
@@ -297,6 +335,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/resh.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Head or highest · Authority and renewal",
+                  "meaning": "The head or highest points to the supreme authority of God’s Word in every area of life, including legal, mental and spiritual matters. This reading also associates Resh with the Word’s power to renew and refresh us."
                 }
               },
               {
@@ -314,6 +356,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/tav.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Cross-shaped mark · Covenant in Christ",
+                  "meaning": "The final letter returns us, like Aleph, to Calvary and the supreme sacrifice of Christ. The cross-shaped mark pictures God’s precious covenant with humanity: the mark of the covenant that circumcises our hearts in Christ. Tav, also called Tau, brings this devotional reading of the alphabet to its conclusion."
                 }
               }
             ]
@@ -339,6 +385,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/he_h.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Window · Grace and illumination",
+                  "meaning": "The window, associated here with the two occurrences of Heh in the name Yahweh, pictures God providing a way and a time to see his grace and provision. In this devotional reading, the light of God enters our lives through his Word."
                 }
               },
               {
@@ -356,6 +406,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/vav.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Hook · Faith secured in God’s Word",
+                  "meaning": "The hook pictures the strength of God’s Word binding us to him and holding all things together. Associated here with Vau, also called Vav, in God’s name, it becomes an image of revelation on which we can safely hang our faith."
                 }
               },
               {
@@ -373,6 +427,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/zayin.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Sword · The power of God’s Word",
+                  "meaning": "The sharpened, double-edged sword of the Lord pictures the power and effectiveness of God’s Word in spiritual warfare. This reading calls God’s children to teach, study, believe and speak his Word."
                 }
               },
               {
@@ -390,6 +448,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/het.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Hedge · Protection through Christ",
+                  "meaning": "The surrounding hedge pictures protection from the enemy through the shed blood of Jesus Christ and the presence of mighty angels. It invites continual remembrance of God’s care and protection."
                 }
               },
               {
@@ -407,6 +469,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/tet.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Serpent · Sin borne at Calvary",
+                  "meaning": "The serpent recalls humanity’s condition of sin and judgment and our need for salvation. It directs attention to Christ taking the sin of the whole world upon himself at Calvary, where his sacrifice brings freedom."
                 }
               },
               {
@@ -424,6 +490,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/yud.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Hand · God’s help and guidance",
+                  "meaning": "The hand reminds us that God’s presence is with us to help us in our battles. Through the Holy Spirit, he guides us into his Word and leads our lives."
                 }
               },
               {
@@ -441,6 +511,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/lamed.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Goading stick · The Good Shepherd’s instruction",
+                  "meaning": "The goading stick pictures learning through the Word of God. Christ, the Good Shepherd, prods and guides us towards growth, teaching us to become all that he calls us to be through his Word."
                 }
               },
               {
@@ -458,6 +532,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/nun.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Fish · Fruitfulness and resurrection",
+                  "meaning": "The fish pictures the Word of God making us fruitful and bringing increase. Through Jonah’s survival after being swallowed by the great fish, this reading also points to Calvary and Christ’s victory over the grave."
                 }
               },
               {
@@ -475,6 +553,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/samekh.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Prop or support · Strength when we stumble",
+                  "meaning": "The prop reminds us that we cannot stand without God. When we are about to fall, he is our strength and support. Those who trust in Jesus are invited to rely on him rather than lean on their own understanding."
                 }
               },
               {
@@ -492,6 +574,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/ayin.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Eye · Illumination in Christ",
+                  "meaning": "The eye pictures the Word of God as the entry point of illumination through the Lord Jesus Christ. Those who walk with Christ walk in the light of his wisdom and truth."
                 }
               },
               {
@@ -509,6 +595,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/tsadi.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Fishhook · Drawn into righteousness",
+                  "meaning": "The fishhook pictures God’s loving heart towards humanity and his desire to draw people into his righteousness and presence. This welcome comes through the sacrifice of his Son, Jesus Christ, the Word."
                 }
               },
               {
@@ -526,6 +616,10 @@
                   "src": "https://s3.amazonaws.com/lang_src/qof.mp3",
                   "sourceUrl": "https://pollylingu.al/he/en/alphabet",
                   "credit": "Polly Lingual / Pangaea Learning — free-to-access alphabet recording. Audio retains the provider’s copyright."
+                },
+                "christocentric": {
+                  "association": "Back of the head · Provision beyond our sight",
+                  "meaning": "The back of the head pictures God’s provision in areas we cannot see. His Word gives assurance and discernment beyond our own field of vision, expressed in the transcript as having “eyes in the back of our head.”"
                 }
               }
             ]

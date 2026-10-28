@@ -12,6 +12,7 @@ export interface LivingLetter {
   soundExercise?: string;
   interpretation?: string;
   attribution?: string;
+  christocentric?: { association: string; meaning: string };
   audio?: { src: string; sourceUrl: string; credit: string };
 }
 
